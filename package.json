@@ -1,0 +1,23 @@
+{
+  "name": "leo-personal-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "16.3.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "^24.0.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "tailwindcss": "4.3.3",
+    "typescript": "^5.9.0"
+  }
+}
