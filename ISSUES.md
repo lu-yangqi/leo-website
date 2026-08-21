@@ -18,14 +18,14 @@ This document records development problems, decisions, and unresolved limitation
 - **Resolution:** Verified the official package, replaced the truncated binary, and restored the default Turbopack commands.
 - **Status:** Resolved in Version 0.1.
 
-## Open
-
 ### Navigation has no active-route indicator
 
 - **Observed:** All navigation links have the same resting style, so the current page is not highlighted.
 - **Impact:** Navigation works correctly, but users receive less visual orientation on inner pages.
-- **Planned resolution:** Add an accessible active state when the navigation design is refined.
-- **Status:** Open, non-blocking.
+- **Resolution:** Added route detection with `usePathname()`, a distinct active style, and `aria-current="page"` for the active link.
+- **Status:** Resolved in Version 0.3.1.
+
+## Open
 
 No blocking issues are currently known.
 

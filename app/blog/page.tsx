@@ -5,11 +5,9 @@ export const metadata: Metadata = {
   description: "Technical notes and research writing by Leo Yangqi.",
 };
 
-const noteTopics = ["AI Notes", "CS231n Notes", "Research Notes"];
-
 export default function BlogPage() {
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 sm:px-10 lg:px-16">
+    <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
       <p className="text-sm font-medium tracking-[0.22em] text-cyan-300 uppercase">
         Writing
       </p>
@@ -17,19 +15,18 @@ export default function BlogPage() {
         Blog
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
-        Learning notes and research writing are coming soon.
+        Notes about AI, computer science, research, and engineering.
       </p>
 
-      <ul className="mt-10 space-y-3" aria-label="Planned blog topics">
-        {noteTopics.map((topic) => (
-          <li
-            key={topic}
-            className="border-b border-white/10 py-4 text-slate-200"
-          >
-            {topic}
-          </li>
-        ))}
-      </ul>
+      <section className="mt-12 border-t border-white/10 pt-8">
+        <h2 className="text-lg font-medium text-slate-200">
+          Articles coming soon.
+        </h2>
+        <p className="mt-3 max-w-2xl leading-7 text-slate-500">
+          This space will contain learning notes, research reflections, and
+          technical writing.
+        </p>
+      </section>
     </main>
   );
 }

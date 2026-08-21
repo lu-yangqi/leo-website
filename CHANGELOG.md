@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented in this file.
 
+## [0.3.1] - 2026-08-21
+
+### Added
+
+- Route-aware active navigation state using `usePathname()`.
+- Accessible `aria-current="page"` state for the active navigation link.
+
+### Changed
+
+- Refined default, hover, active, and keyboard focus styles for navigation links.
+- Aligned Navbar and Footer content widths with the homepage and inner pages.
+- Standardized Projects, Blog, and About page titles, descriptions, spacing, and placeholder content areas.
+- Updated the package version to 0.3.1.
+
 ## [0.3.0] - 2026-08-21
 
 ### Added
