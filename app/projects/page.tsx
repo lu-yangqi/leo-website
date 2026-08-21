@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import ProjectCard from "@/components/ProjectCard";
+import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Projects | Leo Yangqi",
@@ -15,18 +17,16 @@ export default function ProjectsPage() {
         Projects
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
-        Selected projects in artificial intelligence, computer vision, systems,
-        and security.
+        Selected work across artificial intelligence, computer vision, systems,
+        security, and personal tools.
       </p>
 
-      <section className="mt-12 border-t border-white/10 pt-8">
-        <h2 className="text-lg font-medium text-slate-200">
-          Project content coming soon.
-        </h2>
-        <p className="mt-3 max-w-2xl leading-7 text-slate-500">
-          Future versions will add project details, technology tags, and links
-          to source code or live demos.
-        </p>
+      <section className="mt-12" aria-label="Project showcase">
+        <div className="grid gap-6 md:grid-cols-2">
+          {projects.map((project) => (
+            <ProjectCard key={project.title} project={project} />
+          ))}
+        </div>
       </section>
     </main>
   );

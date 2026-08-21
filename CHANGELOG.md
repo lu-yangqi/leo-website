@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented in this file.
 
+## [4.0.0] - 2026-08-21
+
+### Added
+
+- Typed project data structure in `data/projects.ts`.
+- Reusable ProjectCard component for project metadata, technology tags, and optional links.
+- First project entry for Leo Personal Website.
+- GitHub link to the current website repository.
+
+### Changed
+
+- Replaced the Projects placeholder with a data-driven responsive showcase grid.
+- Updated the package version to 4.0.0.
+
 ## [0.3.1] - 2026-08-21
 
 ### Added

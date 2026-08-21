@@ -27,6 +27,13 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Open
 
+### Project showcase has limited content
+
+- **Observed:** The showcase currently contains only the Leo Personal Website project, and no live demo link is available because the website is not deployed.
+- **Impact:** The reusable framework works, but it does not yet demonstrate multiple-project layouts or optional demo links.
+- **Planned resolution:** Add real AI, computer vision, LLM, security, and research projects as they become ready; add demo links after deployment.
+- **Status:** Open, non-blocking.
+
 No blocking issues are currently known.
 
 ## Maintenance Rule
