@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import BlogCard from "@/components/BlogCard";
+import { getBlogPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Blog | Leo Yangqi",
@@ -6,6 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  const posts = getBlogPosts();
+
   return (
     <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
       <p className="text-sm font-medium tracking-[0.22em] text-cyan-300 uppercase">
@@ -15,17 +19,15 @@ export default function BlogPage() {
         Blog
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
-        Notes about AI, computer science, research, and engineering.
+        Notes about AI, computer science, research, security, and engineering.
       </p>
 
-      <section className="mt-12 border-t border-white/10 pt-8">
-        <h2 className="text-lg font-medium text-slate-200">
-          Articles coming soon.
-        </h2>
-        <p className="mt-3 max-w-2xl leading-7 text-slate-500">
-          This space will contain learning notes, research reflections, and
-          technical writing.
-        </p>
+      <section className="mt-12" aria-label="Blog posts">
+        <div className="grid gap-6 md:grid-cols-2">
+          {posts.map((post) => (
+            <BlogCard key={post.slug} post={post} />
+          ))}
+        </div>
       </section>
     </main>
   );

@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file.
 
+## [5.0.0] - 2026-08-21
+
+### Added
+
+- Markdown blog content directory with four initial metadata-only posts.
+- Server-side blog loader for reading files, validating metadata, generating slugs, and sorting posts.
+- Reusable BlogCard component for titles, descriptions, categories, and dates.
+
+### Changed
+
+- Replaced the Blog placeholder with a data-driven responsive blog index.
+- Updated the package version to 5.0.0.
+
 ## [4.0.0] - 2026-08-21
 
 ### Added

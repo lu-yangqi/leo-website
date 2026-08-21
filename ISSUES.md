@@ -34,6 +34,13 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Add real AI, computer vision, LLM, security, and research projects as they become ready; add demo links after deployment.
 - **Status:** Open, non-blocking.
 
+### Blog supports metadata only
+
+- **Observed:** The blog loader reads the four required single-line frontmatter fields, but there are no detail routes or Markdown body rendering.
+- **Impact:** Posts can be listed as cards, but visitors cannot open or read full articles yet. Complex YAML frontmatter is also intentionally unsupported.
+- **Planned resolution:** Add blog detail routes and a suitable Markdown rendering pipeline in a future version, expanding metadata parsing only when required.
+- **Status:** Open, non-blocking by design for Version 5.0.
+
 No blocking issues are currently known.
 
 ## Maintenance Rule
