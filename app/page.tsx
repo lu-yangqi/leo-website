@@ -52,7 +52,7 @@ function CopyEmailButton({ email, label }: { email: string; label: string }) {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center px-6 py-16 sm:px-10 lg:px-16">
+    <main className="flex flex-1 items-center px-6 py-16 sm:px-10 lg:px-16">
       <section
         className="mx-auto w-full max-w-5xl"
         aria-labelledby="intro-heading"
