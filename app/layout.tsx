@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Leo Yangqi",
+  title: "Leo Yangqi | AI Undergraduate Student",
   description:
-    "Personal website of Leo Yangqi, an AI undergraduate student at Zhejiang University.",
+    "Leo Yangqi is an AI undergraduate student at Zhejiang University interested in AI research, engineering, and computer science.",
 };
 
 export default function RootLayout({

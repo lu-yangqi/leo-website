@@ -9,7 +9,7 @@
 }
 
 html {
-  background: #020617;
+  background: #050816;
 }
 
 body {
@@ -17,10 +17,15 @@ body {
   min-height: 100vh;
   color: #e2e8f0;
   background:
-    radial-gradient(circle at 80% 15%, rgb(14 116 144 / 18%), transparent 30rem),
-    radial-gradient(circle at 10% 90%, rgb(30 64 175 / 16%), transparent 28rem),
-    #020617;
-  font-family: Arial, Helvetica, sans-serif;
+    radial-gradient(circle at 78% 18%, rgb(8 145 178 / 14%), transparent 32rem),
+    radial-gradient(circle at 12% 88%, rgb(37 99 235 / 10%), transparent 30rem),
+    #050816;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 ::selection {
