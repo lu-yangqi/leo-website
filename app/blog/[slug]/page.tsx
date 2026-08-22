@@ -8,6 +8,7 @@ import BlogPostMeta from "@/components/BlogPostMeta";
 import { LocalizedText } from "@/components/LanguageProvider";
 import { translationPair } from "@/data/i18n";
 import { getBlogPost, getBlogSlugs } from "@/lib/blog";
+import { getAbsoluteUrl, siteConfig } from "@/lib/site";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
@@ -27,9 +28,29 @@ export async function generateMetadata({
     return {};
   }
 
+  const articlePath = `/blog/${post.slug}`;
+  const articleTitle = `${post.title} | ${siteConfig.name}`;
+
   return {
-    title: `${post.title} | Leo Yangqi`,
+    title: post.title,
     description: post.description,
+    alternates: {
+      canonical: articlePath,
+    },
+    openGraph: {
+      title: articleTitle,
+      description: post.description,
+      url: getAbsoluteUrl(articlePath),
+      siteName: siteConfig.name,
+      type: "article",
+      locale: post.lang === "zh" ? "zh_CN" : "en_US",
+      publishedTime: post.date,
+    },
+    twitter: {
+      card: "summary",
+      title: articleTitle,
+      description: post.description,
+    },
   };
 }
 

@@ -6,8 +6,13 @@ import {
 } from "@/components/LanguageProvider";
 import { translationPair, translations } from "@/data/i18n";
 import { getBlogPosts } from "@/lib/blog";
+import { createPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = translations.en.metadata.blog;
+export const metadata: Metadata = createPageMetadata({
+  title: "Blog",
+  description: translations.en.metadata.blog.description,
+  path: "/blog",
+});
 
 export default function BlogPage() {
   const posts = getBlogPosts();

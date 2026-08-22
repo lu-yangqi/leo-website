@@ -10,10 +10,11 @@ experience.
 
 ## Current Version
 
-Version 7.0.0 includes:
+Version 7.1.0 includes:
 
 - A verified public Vercel deployment at
   [leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
+- Centralized production metadata, canonical URLs, sitemap discovery, and a public crawler policy
 - A persistent English / Chinese language switch for the core website
 - Centralized typed interface translations and bilingual profile content
 - A content-driven homepage with profile, project, learning, and latest-note previews
@@ -29,6 +30,16 @@ Production: [leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 
 The site is hosted on Vercel. Deployments are triggered from the GitHub
 `main` branch through Vercel's standard Next.js integration.
+
+## SEO Foundation
+
+- Canonical and basic social metadata use the centralized production origin.
+- [`sitemap.xml`](https://leo-website-lilac.vercel.app/sitemap.xml) includes core routes and Markdown Blog articles automatically.
+- [`robots.txt`](https://leo-website-lilac.vercel.app/robots.txt) allows public crawling and advertises the sitemap.
+
+English static HTML remains the canonical search representation. Chinese is a
+user-selectable shared-route presentation; no locale routes or fake
+`hreflang` entries are generated.
 
 ## Technology Stack
 

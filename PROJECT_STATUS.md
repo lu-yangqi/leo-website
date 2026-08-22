@@ -4,7 +4,10 @@ Last updated: 2026-08-22
 
 ## Current Version
 
-Version 7.0.0 — First public Vercel deployment completed and production-verified.
+Version 7.1.0 — SEO and search-engine discoverability foundation implemented and production-build verified.
+
+The Version 7.1 code is ready for the next GitHub `main` → Vercel deployment.
+Public verification of the new SEO endpoints remains pending that deployment.
 
 Production URL: [https://leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 
@@ -27,10 +30,17 @@ standard Next.js integration.
 | `/blog` | Complete | Markdown-driven blog index |
 | `/blog/[slug]` | Complete | Statically generated Markdown article pages |
 | `/about` | Complete | Authentic profile, education, interests, skills, learning, work, and contact |
+| `/sitemap.xml` | Complete | Dynamic public-page and Markdown article discovery |
+| `/robots.txt` | Complete | Public crawler policy and sitemap location |
 
 ## Completed Features
 
 - Public HTTPS production deployment through the zero-config GitHub → Vercel workflow
+- Central production origin and factual site identity in `lib/site.ts`
+- Native Next.js `metadataBase`, title template, descriptions, canonical URLs, Open Graph, and Twitter text metadata
+- Dynamic sitemap generated from fixed public routes and the existing Markdown Blog loader
+- Public crawler policy that allows indexing and advertises the production sitemap
+- Article canonical and social metadata derived from each post's existing Markdown frontmatter
 - English-default `EN | 中文` language switch in the shared Navbar
 - Persistent language selection across core-page navigation and reloads using browser storage
 - Typed centralized interface translations in `data/i18n.ts`
@@ -96,11 +106,16 @@ standard Next.js integration.
 - The metadata parser intentionally supports only simple single-line frontmatter fields.
 - Tag and category filtering are not implemented; displayed tags are intentionally non-interactive.
 - Search, table of contents, and previous/next article navigation are not implemented.
-- Shared routes serve English static HTML and restore a persisted Chinese choice after hydration; dedicated locale URLs, `hreflang`, and Chinese static HTML are deferred to Version 7.1 SEO work.
+- Shared routes serve English static HTML and restore a persisted Chinese choice after hydration; dedicated locale URLs, `hreflang`, and Chinese static HTML remain deferred to a future multilingual SEO architecture decision.
 - All current blog articles are English-language samples; the validated Chinese article path is ready but has no published Chinese sample yet.
 
 ## Validation
 
+- The Version 7.1 production build generates `/sitemap.xml` and `/robots.txt` alongside all existing public routes and four statically generated Blog articles.
+- Local production-server checks confirm correct titles, descriptions, canonical URLs, Open Graph URLs, and types for Home, About, Projects, Blog, and `/blog/personal-website-codex`.
+- The generated sitemap contains Home, About, Projects, Blog, and every article returned by `getBlogPosts()`; article `lastModified` values come from existing frontmatter dates.
+- The generated robots policy allows `/` for all crawlers and references `https://leo-website-lilac.vercel.app/sitemap.xml`.
+- TypeScript validation and `git diff --check` pass without adding dependencies.
 - The public Vercel deployment at `https://leo-website-lilac.vercel.app` is reachable over HTTPS and serves the expected production homepage.
 - Production checks passed for `/`, `/about`, `/projects`, `/blog`, `/blog/personal-website-codex`, and an unknown blog slug returning the 404 page.
 - Production language switching updates content, metadata, `aria-pressed`, `<html lang>`, contact labels, and persists Chinese across core pages.
@@ -161,7 +176,8 @@ standard Next.js integration.
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Production discoverability and advanced SEO remain outside the Version 7.0 first-deployment scope.
+- Deploy Version 7.1 through the existing GitHub `main` → Vercel workflow and verify the production sitemap, robots policy, and representative metadata.
+- Consider Search Console submission manually only after the Version 7.1 production deployment is verified.
 
 ## Maintenance Rule
 

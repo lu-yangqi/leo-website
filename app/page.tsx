@@ -15,8 +15,12 @@ import {
 import { profile } from "@/data/profile";
 import { featuredProjects } from "@/data/projects";
 import { getBlogPosts } from "@/lib/blog";
+import { createPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = translations.en.metadata.home;
+export const metadata: Metadata = createPageMetadata({
+  description: translations.en.metadata.home.description,
+  path: "/",
+});
 
 const sectionLinkClassName =
   "inline-flex text-sm font-medium text-slate-200 transition-colors hover:text-cyan-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300";

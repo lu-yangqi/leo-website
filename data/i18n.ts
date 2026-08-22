@@ -1,3 +1,5 @@
+import { siteConfig } from "@/lib/site";
+
 export type Locale = "en" | "zh";
 
 export type LocalizedText<T = string> = Readonly<{
@@ -300,27 +302,27 @@ export const translations = {
     },
     metadata: {
       site: {
-        title: "Leo Yangqi | AI Undergraduate Student",
-        description:
-          "Leo Yangqi is an undergraduate student in Artificial Intelligence at Zhejiang University exploring machine learning, AI systems, computer systems, and software engineering.",
+        title: siteConfig.title,
+        description: siteConfig.description,
       },
       home: {
-        title: "Leo Yangqi | AI Student at Zhejiang University",
-        description:
-          "Personal website of Leo Yangqi, an Artificial Intelligence undergraduate at Zhejiang University exploring machine learning, AI systems, computer systems, and software engineering.",
+        title: siteConfig.title,
+        description: siteConfig.description,
       },
       about: {
         title: "About | Leo Yangqi",
         description:
-          "About Leo Yangqi, an undergraduate student in Artificial Intelligence at Zhejiang University exploring machine learning, AI systems, computer systems, and software engineering.",
+          "Learn about Leo Yangqi, an Artificial Intelligence undergraduate at Zhejiang University, including his research interests, technical interests, current learning, and selected work.",
       },
       projects: {
         title: "Projects | Leo Yangqi",
-        description: "Personal and course projects by Leo Yangqi.",
+        description:
+          "Selected work by Leo Yangqi, including the Leo Personal Website and a Single-Cycle RISC-V CPU course project.",
       },
       blog: {
         title: "Blog | Leo Yangqi",
-        description: "Technical and learning notes by Leo Yangqi.",
+        description:
+          "Technical learning notes and development records by Leo Yangqi.",
       },
     },
   },

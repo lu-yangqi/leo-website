@@ -9,8 +9,13 @@ import ProjectCard from "@/components/ProjectCard";
 import { translationPair, translations } from "@/data/i18n";
 import { profile } from "@/data/profile";
 import { featuredProjects } from "@/data/projects";
+import { createPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = translations.en.metadata.about;
+export const metadata: Metadata = createPageMetadata({
+  title: "About",
+  description: translations.en.metadata.about.description,
+  path: "/about",
+});
 
 const tagClassName =
   "rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300";

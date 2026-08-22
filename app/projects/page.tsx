@@ -6,8 +6,13 @@ import {
 import ProjectCard from "@/components/ProjectCard";
 import { translationPair, translations } from "@/data/i18n";
 import { projects } from "@/data/projects";
+import { createPageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = translations.en.metadata.projects;
+export const metadata: Metadata = createPageMetadata({
+  title: "Projects",
+  description: translations.en.metadata.projects.description,
+  path: "/projects",
+});
 
 export default function ProjectsPage() {
   return (

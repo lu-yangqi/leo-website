@@ -107,10 +107,10 @@ This document records development problems, decisions, and unresolved limitation
 
 ### Locale-specific static SEO is not implemented
 
-- **Observed:** Version 6.2 preserves stable shared routes and restores a persisted Chinese selection after hydration, while the static HTML and initial metadata remain English.
-- **Impact:** A hard refresh may show a brief English state before Chinese is restored, and search engines do not yet receive dedicated Chinese URLs, static Chinese HTML, or `hreflang` links.
-- **Planned resolution:** Evaluate locale routes or another server-readable locale strategy alongside canonical and `hreflang` work in Version 7.1.
-- **Status:** Open, non-blocking by design for Version 6.2.
+- **Observed:** Version 7.1 provides centralized canonical URLs, general metadata, sitemap discovery, and crawler policy, while the shared-route architecture still serves English static HTML and restores a persisted Chinese selection after hydration.
+- **Impact:** A hard refresh may show a brief English state before Chinese is restored, and search engines still do not receive dedicated Chinese URLs, static Chinese HTML, or `hreflang` links.
+- **Planned resolution:** Evaluate locale routes or another server-readable locale strategy only if Chinese search discoverability justifies a separate architecture milestone.
+- **Status:** Open, non-blocking by design after Version 7.1.
 
 No blocking issues are currently known.
 

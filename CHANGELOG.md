@@ -2,6 +2,30 @@
 
 All notable changes to this project are documented in this file.
 
+## [7.1.0] - 2026-08-22
+
+### Added
+
+- Central production site configuration for the Vercel origin, site name, default title, and factual description.
+- Canonical metadata for Home, About, Projects, Blog, and all Markdown Blog articles.
+- Dynamic `sitemap.xml` containing the four core routes and every article returned by the existing Blog loader.
+- Public `robots.txt` policy with production sitemap discovery.
+- Basic Open Graph and Twitter text metadata, with article metadata sourced from Markdown frontmatter.
+
+### Changed
+
+- Standardized public-page metadata with the native Next.js Metadata API and a shared title template.
+- Updated the package version to 7.1.0 without adding dependencies or changing visible application behavior.
+
+### Verified
+
+- Confirmed the production build generates all existing routes plus `/sitemap.xml` and `/robots.txt`.
+- Confirmed representative titles, descriptions, canonical URLs, Open Graph URLs, article metadata, sitemap entries, and crawler rules through a local production server.
+
+### Pending Deployment
+
+- Production verification of the new SEO endpoints after the Version 7.1 commit reaches GitHub `main` and Vercel completes its automatic deployment.
+
 ## [7.0.0] - 2026-08-22
 
 ### Added
