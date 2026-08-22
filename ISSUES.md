@@ -77,6 +77,20 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Open
 
+### First Vercel deployment requires account authorization
+
+- **Observed:** The Vercel new-project page is available, but the current browser session is not signed in and offers `Login` / `Continue with GitHub` before repository import.
+- **Impact:** The repository is deployment-ready, but no Vercel project, deployment, or production URL can be truthfully recorded yet.
+- **Planned resolution:** Sign in to Vercel, authorize access to `lu-yangqi/leo-website`, import it with the detected Next.js defaults, deploy, and run the documented production checks.
+- **Status:** Open, blocking completion of Version 7.0 and requiring user interaction.
+
+### Version 7.0 specification file is empty
+
+- **Observed:** `docs/v7.0.md` exists locally as an untracked zero-byte file.
+- **Impact:** The repository contains no file-based Version 7.0 specification beyond the deployment constraints supplied in the task request.
+- **Planned resolution:** Restore the intended specification text if the file was meant to contain additional requirements; otherwise remove or replace the empty file in a later documentation cleanup.
+- **Status:** Open, non-blocking for the explicitly supplied deployment-readiness scope.
+
 ### Project showcase has limited content
 
 - **Observed:** The showcase now contains the Leo Personal Website and Single-Cycle RISC-V CPU, but project variety remains limited. Neither has a live demo, and the CPU source is intentionally local and unpublished.
@@ -98,7 +112,7 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Evaluate locale routes or another server-readable locale strategy alongside canonical and `hreflang` work during the Version 7 production SEO phase.
 - **Status:** Open, non-blocking by design for Version 6.2.
 
-No blocking issues are currently known.
+Vercel authentication is the only current blocker to completing Version 7.0.
 
 ## Maintenance Rule
 

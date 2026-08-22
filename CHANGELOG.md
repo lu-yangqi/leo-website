@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased] - Version 7.0 Deployment Readiness
+
+### Added
+
+- Documented the minimal GitHub → Vercel import and deployment handoff.
+- Documented the required post-deployment route, bilingual, contact, responsive, and 404 checks.
+
+### Verified
+
+- Confirmed the existing Next.js project builds successfully without deployment-specific application changes.
+- Confirmed that no environment variables, extra dependencies, `vercel.json`, custom output directory, or custom build command are required.
+- Confirmed that the GitHub `main` branch was reachable and synchronized before the local readiness documentation changes.
+
+### Pending
+
+- Vercel login, GitHub authorization, first public deployment, production URL verification, and the final `7.0.0` release marker.
+
 ## [6.2.0] - 2026-08-22
 
 ### Added

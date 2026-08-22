@@ -6,6 +6,10 @@ Last updated: 2026-08-22
 
 Version 6.2.0 — Maintainable English / Chinese foundation for the core website (package version 6.2.0).
 
+Version 7.0 deployment readiness is complete locally. The first public Vercel
+deployment is pending Vercel login and GitHub authorization; no production URL
+has been recorded.
+
 ## Technology Stack
 
 - Next.js App Router
@@ -84,6 +88,7 @@ Version 6.2.0 — Maintainable English / Chinese foundation for the core website
 
 ## Current Limitations
 
+- The site is not yet publicly deployed; Vercel account login and GitHub repository authorization require user interaction.
 - The project showcase currently contains two projects, so overall variety remains limited.
 - Project detail pages, filtering, and category views are not implemented.
 - Neither project has a live demo because the website is not deployed and the CPU source remains local.
@@ -95,6 +100,9 @@ Version 6.2.0 — Maintainable English / Chinese foundation for the core website
 
 ## Validation
 
+- The Version 7.0 readiness audit confirmed that the project uses the supported zero-config Next.js deployment path, has no required environment variables, and does not need `vercel.json`.
+- GitHub remote `origin` points to `https://github.com/lu-yangqi/leo-website.git`; local `main` matched `origin/main` before the deployment-readiness documentation changes.
+- `npm run build` passes on 2026-08-22 with Next.js 16.3.1 and generates all five public route groups plus four statically generated blog article paths.
 - `npm run build` passes for Version 6.2 and generates Home, About, Projects, Blog, and all four blog-detail routes successfully.
 - English-to-Chinese and Chinese-to-English switching updates core content, Navbar, Footer, contact UI, page title, description, and `<html lang>` without external translation requests.
 - The selected language remains consistent across Home, About, Projects, and Blog navigation and is restored after a full reload.
@@ -138,13 +146,16 @@ Version 6.2.0 — Maintainable English / Chinese foundation for the core website
 
 ## Next Planned Work
 
+- Commit and push the Version 7.0 readiness documentation.
+- Sign in to Vercel, authorize the GitHub repository, and complete the first production deployment.
+- Verify the real production URL against the Home, About, Projects, Blog, article, bilingual, contact, responsive, and 404 checks before marking Version 7.0 complete.
 - Add more real projects and categories
 - Add optional live demo links when deployments are available
 - Add project detail pages in a future version
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Version 7 deployment, discoverability, and production metadata
+- Production discoverability and advanced SEO remain outside the Version 7.0 first-deployment scope.
 
 ## Maintenance Rule
 
