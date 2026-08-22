@@ -1,16 +1,17 @@
 ---
 title: CS231n Learning Notes
-description: Notes and experiments while learning Stanford CS231n.
-date: 2026-08-26
+description: A planned space for notes from a future study of Stanford CS231n.
+date: 2026-08-21
 category: Computer Vision
 tags: CS231n, Computer Vision, CNN
 ---
 
 ## About this note
 
-This article will organize notes and experiments from studying Stanford CS231n.
+This article is reserved for notes from a future study of Stanford CS231n. The
+course has not been formally started yet.
 
-## Topics
+## Planned topics
 
 - Image Classification
 - KNN
@@ -19,4 +20,5 @@ This article will organize notes and experiments from studying Stanford CS231n.
 
 ### Current scope
 
-The detailed explanations and experiments are still being prepared.
+The detailed explanations, assignments, and independent implementations have
+not been started.

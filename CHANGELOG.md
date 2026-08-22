@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented in this file.
 
+## [6.0.0] - 2026-08-22
+
+### Added
+
+- Complete About page with authentic identity, bio, and education content.
+- Research Interests and Technical Interests with clear experience-level wording.
+- Structured Skills, Currently Learning, and Learning Background sections.
+- Transparent Selected Work summaries for the personal website and RISC-V CPU course project.
+- Compact Contact section with GitHub, Gmail web compose, and email copying.
+- Centralized typed profile data in `data/profile.ts`.
+- Reusable `ContactLinks` component shared by the Home and About pages.
+
+### Changed
+
+- Replaced the About placeholder with a responsive, semantic personal profile.
+- Updated Home, Projects, Blog, and root metadata wording to match the current student profile accurately.
+- Corrected the CS231n article to describe the course as planned and not started.
+- Removed the university email identifier from public contact links for privacy.
+- Replaced the historical V0.1/V0.2 task README with a current project overview.
+- Updated the package version to 6.0.0.
+
 ## [5.2.0] - 2026-08-22
 
 ### Added

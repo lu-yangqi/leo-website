@@ -4,7 +4,7 @@ import { getBlogPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Blog | Leo Yangqi",
-  description: "Technical notes and research writing by Leo Yangqi.",
+  description: "Technical and learning notes by Leo Yangqi.",
 };
 
 export default function BlogPage() {
@@ -19,7 +19,8 @@ export default function BlogPage() {
         Blog
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
-        Notes about AI, computer science, research, security, and engineering.
+        Notes about artificial intelligence, computer science, security, and
+        engineering topics I am learning.
       </p>
 
       <section className="mt-12" aria-label="Blog posts">

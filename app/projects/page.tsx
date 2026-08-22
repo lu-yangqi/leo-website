@@ -4,7 +4,7 @@ import { projects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Projects | Leo Yangqi",
-  description: "AI, computer vision, LLM, and cyber security projects by Leo Yangqi.",
+  description: "Personal and course projects by Leo Yangqi.",
 };
 
 export default function ProjectsPage() {
@@ -17,8 +17,8 @@ export default function ProjectsPage() {
         Projects
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-400">
-        Selected work across artificial intelligence, computer vision, systems,
-        security, and personal tools.
+        Personal and course projects built while learning software engineering,
+        computer systems, and artificial intelligence.
       </p>
 
       <section className="mt-12" aria-label="Project showcase">

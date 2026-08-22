@@ -39,6 +39,13 @@ This document records development problems, decisions, and unresolved limitation
 - **Resolution:** Added fenced-code syntax highlighting, typed tags, improved Markdown typography and metadata presentation, and Back to Blog navigation.
 - **Status:** Resolved in Version 5.2.
 
+### About page details are incomplete
+
+- **Observed:** The About route contained only a short identity placeholder and promised future education, skills, and research-experience content.
+- **Impact:** Visitors could not understand the current academic background, interests, learning status, or authentic project responsibilities.
+- **Resolution:** Replaced the placeholder with a data-driven profile covering education, carefully scoped research and technical interests, established skills, current learning, structured course status, selected work, and primary contacts. Unsupported experience sections were omitted.
+- **Status:** Resolved in Version 6.0.
+
 ## Open
 
 ### Project showcase has limited content
@@ -54,6 +61,13 @@ This document records development problems, decisions, and unresolved limitation
 - **Impact:** The core reading experience is complete, but discovery will become less convenient if the number or length of articles grows substantially.
 - **Planned resolution:** Add these features only when real content volume justifies the added complexity; keep the current Git-based static architecture.
 - **Status:** Open, non-blocking by design for Version 5.2.
+
+### Profile content is English-first
+
+- **Observed:** Version 6.0 includes the Chinese name and school name, but the profile content and navigation do not yet have full Chinese translations or a language switch.
+- **Impact:** The profile is usable in English, but the planned bilingual experience is incomplete.
+- **Planned resolution:** Design a maintainable English/Chinese content and language-switch architecture in a future version without duplicating profile facts.
+- **Status:** Open, non-blocking by design for Version 6.0.
 
 No blocking issues are currently known.
 

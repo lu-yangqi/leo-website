@@ -4,7 +4,7 @@ Last updated: 2026-08-22
 
 ## Current Version
 
-Version 5.2 — Enhanced technical article reading experience (package version 5.2.0).
+Version 6.0 — Authentic, data-driven personal profile (package version 6.0.0).
 
 ## Technology Stack
 
@@ -21,7 +21,7 @@ Version 5.2 — Enhanced technical article reading experience (package version 5
 | `/projects` | Complete | Data-driven project showcase |
 | `/blog` | Complete | Markdown-driven blog index |
 | `/blog/[slug]` | Complete | Statically generated Markdown article pages |
-| `/about` | Placeholder | Personal background, skills, and research experience |
+| `/about` | Complete | Authentic profile, education, interests, skills, learning, work, and contact |
 
 ## Completed Features
 
@@ -53,6 +53,17 @@ Version 5.2 — Enhanced technical article reading experience (package version 5
 - Improved scoped Markdown typography and accessible article-link focus styles
 - Horizontally scrollable code blocks that preserve indentation and page width
 - Clear Back to Blog navigation on every article detail page
+- Complete responsive About page with public, formal, and Chinese names
+- Education details for the Zhejiang University Artificial Intelligence undergraduate program
+- Research Interests clearly framed as possible future directions
+- Separate technical interests and introductory cybersecurity learning context
+- Structured established skills separated from technologies currently being learned
+- Completed Andrew Ng Machine Learning Specialization and Planned CS231n statuses
+- Transparent selected-work summaries for the personal website and RISC-V CPU course project
+- Centralized typed profile data in `data/profile.ts`
+- Reusable Gmail web-compose and email-copy contact component shared by Home and About
+- Privacy-focused primary contact set limited to GitHub and personal email
+- Factual Home, Projects, Blog, and CS231n public wording aligned with the current student profile
 
 ## Current Limitations
 
@@ -62,11 +73,11 @@ Version 5.2 — Enhanced technical article reading experience (package version 5
 - The metadata parser intentionally supports only simple single-line frontmatter fields.
 - Tag and category filtering are not implemented; displayed tags are intentionally non-interactive.
 - Search, table of contents, and previous/next article navigation are not implemented.
-- About page details are incomplete.
+- The About page is currently English-first; a full bilingual content architecture is not implemented.
 
 ## Validation
 
-- `npm run build` passes for Version 5.2 with the four known blog article routes listed as SSG output.
+- `npm run build` passes for Version 6.0, including the static About page and all four blog article routes as SSG output.
 - Navbar navigation works across Home, Projects, Blog, and About, with exactly one correct active link on each route.
 - Active links expose `aria-current="page"` for assistive technology.
 - Shared Navbar and Footer render on every tested page.
@@ -87,6 +98,12 @@ Version 5.2 — Enhanced technical article reading experience (package version 5
 - The Python, Bash, and text test blocks preserve their declared language classes; Python and Bash produce highlighted tokens.
 - Back to Blog returns to `/blog`, Blog stays active on article routes, and the invalid-slug 404 regression still passes.
 - At 1280px, the article and code blocks have no page-level horizontal overflow; narrow-screen safety is preserved by wrapping tags and titles while code blocks scroll internally.
+- The About page renders the expected identity, education period, research and technical interests, skills, learning states, selected work, and primary contacts.
+- Content regression checks found no claims of CS229 study, active/completed CS231n study, formal research, internships, professional experience, or advanced PyTorch expertise.
+- Andrew Ng Machine Learning Specialization is marked Completed; Stanford CS231n is explicitly marked Planned and not started.
+- GitHub and Gmail web-compose targets are correct, email copying displays confirmation, and the university-email identifier is no longer exposed publicly.
+- At 1280px and an approximately 390px test frame, the About page has no horizontal overflow; navigation, names, tags, cards, and contact controls stay within the viewport.
+- Home, Projects, Blog, and representative blog-detail routes retain correct active navigation, footers, and overflow behavior after Version 6.0.
 
 ## Next Planned Work
 
@@ -96,7 +113,9 @@ Version 5.2 — Enhanced technical article reading experience (package version 5
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Expanded About and resume content
+- Version 6.1 homepage integration with selected profile, learning, project, and blog previews
+- Version 6.2 bilingual content foundation
+- Version 7 deployment, discoverability, and production metadata
 
 ## Maintenance Rule
 

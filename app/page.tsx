@@ -1,54 +1,13 @@
-"use client";
-
-import { useState } from "react";
+import ContactLinks from "@/components/ContactLinks";
+import { profile } from "@/data/profile";
 
 const interests = [
-  "AI",
-  "Computer Vision",
-  "LLM",
-  "Cyber Security",
+  "Artificial Intelligence",
+  "Machine Learning",
+  "AI Systems",
+  "Computer Systems",
+  "Software Engineering",
 ];
-
-const profileLinks = [
-  {
-    label: "GitHub",
-    href: "https://github.com/lu-yangqi",
-    external: true,
-  },
-  {
-    label: "Gmail",
-    href: "https://mail.google.com/mail/?view=cm&fs=1&to=luyangqi20060901%40gmail.com",
-    external: true,
-    email: "luyangqi20060901@gmail.com",
-  },
-  {
-    label: "ZJU Email",
-    href: "https://mail.google.com/mail/?view=cm&fs=1&to=3250103580%40zju.edu.cn",
-    external: true,
-    email: "3250103580@zju.edu.cn",
-  },
-];
-
-function CopyEmailButton({ email, label }: { email: string; label: string }) {
-  const [copied, setCopied] = useState(false);
-
-  async function copyEmail() {
-    await navigator.clipboard.writeText(email);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 2000);
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={copyEmail}
-      aria-label={`Copy ${label} address`}
-      className="rounded-lg border border-white/10 px-3 py-3 text-xs font-medium text-slate-400 transition-colors hover:border-white/25 hover:bg-white/5 hover:text-slate-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
-    >
-      {copied ? "Copied!" : "Copy"}
-    </button>
-  );
-}
 
 export default function Home() {
   return (
@@ -77,9 +36,9 @@ export default function Home() {
         </div>
 
         <p className="mt-8 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">
-          I&apos;m interested in AI research, engineering, and computer science,
-          with a focus on building intelligent systems that can perceive,
-          reason, and solve real-world problems.
+          I&apos;m building foundations in machine learning, computer systems,
+          and software engineering while exploring efficient machine learning
+          and AI systems as possible future directions.
         </p>
 
         <ul
@@ -96,27 +55,8 @@ export default function Home() {
           ))}
         </ul>
 
-        <div className="mt-10 flex flex-wrap gap-4" aria-label="Profile links">
-          {profileLinks.map((link, index) => (
-            <div key={link.label} className="flex items-center gap-2">
-              <a
-                href={link.href}
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noreferrer" : undefined}
-                className={
-                  index === 0
-                    ? "rounded-lg bg-slate-100 px-5 py-3 text-sm font-medium text-slate-950 transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
-                    : "rounded-lg border border-white/15 px-5 py-3 text-sm font-medium text-slate-100 transition-colors hover:border-white/30 hover:bg-white/5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
-                }
-              >
-                {link.label}
-              </a>
-
-              {link.email ? (
-                <CopyEmailButton email={link.email} label={link.label} />
-              ) : null}
-            </div>
-          ))}
+        <div className="mt-10">
+          <ContactLinks links={profile.contact.homepage} />
         </div>
       </section>
     </main>
