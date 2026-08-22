@@ -4,11 +4,12 @@ Last updated: 2026-08-22
 
 ## Current Version
 
-Version 6.2.0 — Maintainable English / Chinese foundation for the core website (package version 6.2.0).
+Version 7.0.0 — First public Vercel deployment completed and production-verified.
 
-Version 7.0 deployment readiness is complete locally. The first public Vercel
-deployment is pending Vercel login and GitHub authorization; no production URL
-has been recorded.
+Production URL: [https://leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
+
+Hosting: Vercel. Deployment source: the GitHub `main` branch using Vercel's
+standard Next.js integration.
 
 ## Technology Stack
 
@@ -29,6 +30,7 @@ has been recorded.
 
 ## Completed Features
 
+- Public HTTPS production deployment through the zero-config GitHub → Vercel workflow
 - English-default `EN | 中文` language switch in the shared Navbar
 - Persistent language selection across core-page navigation and reloads using browser storage
 - Typed centralized interface translations in `data/i18n.ts`
@@ -88,18 +90,25 @@ has been recorded.
 
 ## Current Limitations
 
-- The site is not yet publicly deployed; Vercel account login and GitHub repository authorization require user interaction.
 - The project showcase currently contains two projects, so overall variety remains limited.
 - Project detail pages, filtering, and category views are not implemented.
-- Neither project has a live demo because the website is not deployed and the CPU source remains local.
+- The personal website is publicly deployed, but the RISC-V CPU source remains local and has no live demo.
 - The metadata parser intentionally supports only simple single-line frontmatter fields.
 - Tag and category filtering are not implemented; displayed tags are intentionally non-interactive.
 - Search, table of contents, and previous/next article navigation are not implemented.
-- Shared routes serve English static HTML and restore a persisted Chinese choice after hydration; dedicated locale URLs, `hreflang`, and Chinese static HTML are deferred to production SEO work.
+- Shared routes serve English static HTML and restore a persisted Chinese choice after hydration; dedicated locale URLs, `hreflang`, and Chinese static HTML are deferred to Version 7.1 SEO work.
 - All current blog articles are English-language samples; the validated Chinese article path is ready but has no published Chinese sample yet.
 
 ## Validation
 
+- The public Vercel deployment at `https://leo-website-lilac.vercel.app` is reachable over HTTPS and serves the expected production homepage.
+- Production checks passed for `/`, `/about`, `/projects`, `/blog`, `/blog/personal-website-codex`, and an unknown blog slug returning the 404 page.
+- Production language switching updates content, metadata, `aria-pressed`, `<html lang>`, contact labels, and persists Chinese across core pages.
+- Production About content preserves the education period, completed Andrew Ng specialization, planned/not-started CS231n status, early PyTorch wording, future-direction framing, and project transparency.
+- Production Projects renders both project cards; the website repository link is valid in the UI and the CPU card has no fabricated repository or demo link.
+- Production Blog renders four original-language article cards; the representative article preserves English article language while localizing interface text and retains Markdown, tags, and syntax highlighting.
+- The production homepage has no horizontal overflow at 1280px or 390px; the mobile Navbar, language control, and sections remain inside the viewport.
+- GitHub, personal Gmail compose, and ZJU Gmail compose destinations are present on the production site.
 - The Version 7.0 readiness audit confirmed that the project uses the supported zero-config Next.js deployment path, has no required environment variables, and does not need `vercel.json`.
 - GitHub remote `origin` points to `https://github.com/lu-yangqi/leo-website.git`; local `main` matched `origin/main` before the deployment-readiness documentation changes.
 - `npm run build` passes on 2026-08-22 with Next.js 16.3.1 and generates all five public route groups plus four statically generated blog article paths.
@@ -146,9 +155,6 @@ has been recorded.
 
 ## Next Planned Work
 
-- Commit and push the Version 7.0 readiness documentation.
-- Sign in to Vercel, authorize the GitHub repository, and complete the first production deployment.
-- Verify the real production URL against the Home, About, Projects, Blog, article, bilingual, contact, responsive, and 404 checks before marking Version 7.0 complete.
 - Add more real projects and categories
 - Add optional live demo links when deployments are available
 - Add project detail pages in a future version

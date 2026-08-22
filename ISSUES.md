@@ -67,6 +67,20 @@ This document records development problems, decisions, and unresolved limitation
 - **Resolution:** Added a scoped head observer that keeps every streamed title and description node aligned with the active language while retaining English static metadata as the default.
 - **Status:** Resolved in Version 6.2.
 
+### First Vercel deployment required account authorization
+
+- **Observed:** The initial Vercel new-project page required account login and GitHub authorization before repository import.
+- **Impact:** Production deployment and URL verification could not continue without user interaction.
+- **Resolution:** The repository was authorized and deployed through the standard GitHub → Vercel workflow. The production site is available at `https://leo-website-lilac.vercel.app` and passed the Version 7.0 production checks.
+- **Status:** Resolved in Version 7.0.
+
+### Version 7.0 specification file was initially empty
+
+- **Observed:** `docs/v7.0.md` was initially saved as a zero-byte file, so only the deployment constraints from the task request were available.
+- **Impact:** The first deployment audit could not compare the repository against the complete file-based acceptance criteria.
+- **Resolution:** Restored the intended specification, re-audited the repository and production deployment, and synchronized the Version 7.0 documentation.
+- **Status:** Resolved in Version 7.0.
+
 ## Intentional Decisions
 
 ### Blog posts keep their original writing language
@@ -77,23 +91,9 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Open
 
-### First Vercel deployment requires account authorization
-
-- **Observed:** The Vercel new-project page is available, but the current browser session is not signed in and offers `Login` / `Continue with GitHub` before repository import.
-- **Impact:** The repository is deployment-ready, but no Vercel project, deployment, or production URL can be truthfully recorded yet.
-- **Planned resolution:** Sign in to Vercel, authorize access to `lu-yangqi/leo-website`, import it with the detected Next.js defaults, deploy, and run the documented production checks.
-- **Status:** Open, blocking completion of Version 7.0 and requiring user interaction.
-
-### Version 7.0 specification file is empty
-
-- **Observed:** `docs/v7.0.md` exists locally as an untracked zero-byte file.
-- **Impact:** The repository contains no file-based Version 7.0 specification beyond the deployment constraints supplied in the task request.
-- **Planned resolution:** Restore the intended specification text if the file was meant to contain additional requirements; otherwise remove or replace the empty file in a later documentation cleanup.
-- **Status:** Open, non-blocking for the explicitly supplied deployment-readiness scope.
-
 ### Project showcase has limited content
 
-- **Observed:** The showcase now contains the Leo Personal Website and Single-Cycle RISC-V CPU, but project variety remains limited. Neither has a live demo, and the CPU source is intentionally local and unpublished.
+- **Observed:** The showcase now contains the deployed Leo Personal Website and Single-Cycle RISC-V CPU, but project variety remains limited. The CPU source is intentionally local and unpublished.
 - **Impact:** The shared multi-project layout is verified, but there are no project detail pages and only one project currently has a public repository.
 - **Planned resolution:** Add further real projects only as they become ready for public presentation; add detail pages or demo links when supporting content and deployments exist.
 - **Status:** Open, non-blocking.
@@ -109,10 +109,10 @@ This document records development problems, decisions, and unresolved limitation
 
 - **Observed:** Version 6.2 preserves stable shared routes and restores a persisted Chinese selection after hydration, while the static HTML and initial metadata remain English.
 - **Impact:** A hard refresh may show a brief English state before Chinese is restored, and search engines do not yet receive dedicated Chinese URLs, static Chinese HTML, or `hreflang` links.
-- **Planned resolution:** Evaluate locale routes or another server-readable locale strategy alongside canonical and `hreflang` work during the Version 7 production SEO phase.
+- **Planned resolution:** Evaluate locale routes or another server-readable locale strategy alongside canonical and `hreflang` work in Version 7.1.
 - **Status:** Open, non-blocking by design for Version 6.2.
 
-Vercel authentication is the only current blocker to completing Version 7.0.
+No blocking issues are currently known.
 
 ## Maintenance Rule
 

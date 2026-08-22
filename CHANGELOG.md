@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented in this file.
 
-## [Unreleased] - Version 7.0 Deployment Readiness
+## [7.0.0] - 2026-08-22
 
 ### Added
 
@@ -15,9 +15,14 @@ All notable changes to this project are documented in this file.
 - Confirmed that no environment variables, extra dependencies, `vercel.json`, custom output directory, or custom build command are required.
 - Confirmed that the GitHub `main` branch was reachable and synchronized before the local readiness documentation changes.
 
-### Pending
+### Deployed
 
-- Vercel login, GitHub authorization, first public deployment, production URL verification, and the final `7.0.0` release marker.
+- Published the first production deployment through Vercel at `https://leo-website-lilac.vercel.app`.
+- Verified Home, About, Projects, Blog, a representative article, bilingual switching, contact destinations, 404 behavior, and responsive homepage layout on the production domain.
+
+### Changed
+
+- Marked the documentation release as Version 7.0.0 without changing application code or adding dependencies.
 
 ## [6.2.0] - 2026-08-22
 

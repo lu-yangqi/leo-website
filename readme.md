@@ -10,8 +10,10 @@ experience.
 
 ## Current Version
 
-Version 6.2.0 includes:
+Version 7.0.0 includes:
 
+- A verified public Vercel deployment at
+  [leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 - A persistent English / Chinese language switch for the core website
 - Centralized typed interface translations and bilingual profile content
 - A content-driven homepage with profile, project, learning, and latest-note previews
@@ -20,6 +22,13 @@ Version 6.2.0 includes:
 - A complete About page with education, interests, skills, learning status,
   selected work, and contact information
 - Centralized typed profile and project data without duplicated factual records
+
+## Live Website
+
+Production: [leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
+
+The site is hosted on Vercel. Deployments are triggered from the GitHub
+`main` branch through Vercel's standard Next.js integration.
 
 ## Technology Stack
 
@@ -48,23 +57,13 @@ npm run build
 
 ## Deployment
 
-The project is ready for the standard GitHub → Vercel workflow and does not
-require `vercel.json`, environment variables, or a custom build command.
+Pushes to `main` use the standard GitHub → Vercel workflow. The project does
+not require `vercel.json`, environment variables, a custom build command, or a
+custom output directory.
 
-1. Commit and push the ready branch to the GitHub repository.
-2. In Vercel, choose **Add New → Project** and continue with GitHub.
-3. Authorize access to `lu-yangqi/leo-website` if Vercel requests it.
-4. Import the repository and keep the detected Next.js defaults:
-   - Framework Preset: Next.js
-   - Root Directory: repository root
-   - Build Command: `npm run build` / Next.js default
-   - Output Directory: Next.js default
-   - Environment Variables: none currently required
-5. Deploy, then verify `/`, `/about`, `/projects`, `/blog`, a blog article,
-   bilingual switching, contact actions, and mobile layout on the real URL.
-
-Version 7.0 is not considered complete until a real Vercel deployment exists
-and its production URL has passed these checks.
+Version 7.0 was deployed through the zero-config GitHub → Vercel workflow and
+the production URL passed the core route, bilingual, contact, article, 404,
+and responsive homepage checks on 2026-08-22.
 
 ## Content Structure
 
