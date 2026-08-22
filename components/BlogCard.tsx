@@ -40,6 +40,20 @@ export default function BlogCard({ post }: BlogCardProps) {
 
       <p className="mt-4 leading-7 text-slate-400">{post.description}</p>
 
+      <ul
+        className="mt-5 flex flex-wrap gap-2"
+        aria-label={`Tags for ${post.title}`}
+      >
+        {post.tags.map((tag) => (
+          <li
+            key={tag}
+            className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-slate-400"
+          >
+            {tag}
+          </li>
+        ))}
+      </ul>
+
       <div className="mt-auto pt-6">
         <Link
           href={`/blog/${post.slug}`}

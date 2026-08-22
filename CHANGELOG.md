@@ -2,6 +2,23 @@
 
 All notable changes to this project are documented in this file.
 
+## [5.2.0] - 2026-08-22
+
+### Added
+
+- Blog post tags on index cards and article headers.
+- Syntax highlighting for fenced code blocks with the full lowlight language registry.
+- Back to Blog navigation on article detail pages.
+- Short Python and Bash examples for validating technical code rendering.
+- `rehype-highlight` and `lowlight` dependencies for Markdown code highlighting and explicit language registration.
+
+### Changed
+
+- Extended blog metadata validation and parsing to convert comma-separated tags into `string[]` values.
+- Improved Markdown heading, paragraph, list, link, inline-code, code-block, blockquote, horizontal-rule, and table styles.
+- Refined article metadata presentation and responsive tag wrapping.
+- Updated the package version to 5.2.0.
+
 ## [5.1.0] - 2026-08-22
 
 ### Added

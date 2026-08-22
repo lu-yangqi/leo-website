@@ -32,6 +32,13 @@ This document records development problems, decisions, and unresolved limitation
 - **Resolution:** Added statically generated `/blog/[slug]` routes, post retrieval by slug, Markdown body rendering, BlogCard links, and invalid-slug 404 handling.
 - **Status:** Resolved in Version 5.1.
 
+### Article reading features remain intentionally limited
+
+- **Observed:** Version 5.1 rendered standard Markdown but had no syntax highlighting or tags, and its article metadata and typography were basic.
+- **Impact:** Technical posts were readable but code and article context were harder to scan.
+- **Resolution:** Added fenced-code syntax highlighting, typed tags, improved Markdown typography and metadata presentation, and Back to Blog navigation.
+- **Status:** Resolved in Version 5.2.
+
 ## Open
 
 ### Project showcase has limited content
@@ -41,12 +48,12 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Add real AI, computer vision, LLM, security, and research projects as they become ready; add demo links after deployment.
 - **Status:** Open, non-blocking.
 
-### Article reading features remain intentionally limited
+### Advanced blog discovery and navigation are not implemented
 
-- **Observed:** Articles render standard Markdown, but syntax highlighting, tags, table of contents, search, and previous/next navigation are not implemented. Frontmatter remains limited to the four required single-line fields.
-- **Impact:** Articles are readable, but the experience is intentionally basic and complex YAML metadata is unsupported.
-- **Planned resolution:** Improve reading features incrementally in Version 5.2 and later, expanding metadata parsing only when required.
-- **Status:** Open, non-blocking by design for Version 5.1.
+- **Observed:** Tags are displayed but are not interactive; search, filtering, table of contents, and previous/next article navigation are not implemented. Frontmatter remains intentionally limited to simple single-line fields.
+- **Impact:** The core reading experience is complete, but discovery will become less convenient if the number or length of articles grows substantially.
+- **Planned resolution:** Add these features only when real content volume justifies the added complexity; keep the current Git-based static architecture.
+- **Status:** Open, non-blocking by design for Version 5.2.
 
 No blocking issues are currently known.
 

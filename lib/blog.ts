@@ -7,6 +7,7 @@ export type BlogPostSummary = {
   description: string;
   date: string;
   category: string;
+  tags: string[];
 };
 
 export type BlogPost = BlogPostSummary & {
@@ -14,7 +15,13 @@ export type BlogPost = BlogPostSummary & {
 };
 
 const blogDirectory = path.join(process.cwd(), "content", "blog");
-const requiredFields = ["title", "description", "date", "category"] as const;
+const requiredFields = [
+  "title",
+  "description",
+  "date",
+  "category",
+  "tags",
+] as const;
 
 function getBlogFileNames() {
   return readdirSync(blogDirectory).filter((fileName) =>
@@ -61,6 +68,10 @@ function parseBlogPost(fileName: string, fileContent: string): BlogPost {
     description: metadata.description,
     date: metadata.date,
     category: metadata.category,
+    tags: metadata.tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean),
     content: fileContent.slice(frontmatter[0].length).trim(),
   };
 }
