@@ -1,6 +1,10 @@
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 
+const blogLanguages = ["en", "zh"] as const;
+
+export type BlogLanguage = (typeof blogLanguages)[number];
+
 export type BlogPostSummary = {
   slug: string;
   title: string;
@@ -8,6 +12,7 @@ export type BlogPostSummary = {
   date: string;
   category: string;
   tags: string[];
+  lang: BlogLanguage;
 };
 
 export type BlogPost = BlogPostSummary & {
@@ -21,7 +26,12 @@ const requiredFields = [
   "date",
   "category",
   "tags",
+  "lang",
 ] as const;
+
+function isBlogLanguage(value: string): value is BlogLanguage {
+  return blogLanguages.some((language) => language === value);
+}
 
 function getBlogFileNames() {
   return readdirSync(blogDirectory).filter((fileName) =>
@@ -62,6 +72,12 @@ function parseBlogPost(fileName: string, fileContent: string): BlogPost {
     }
   }
 
+  if (!isBlogLanguage(metadata.lang)) {
+    throw new Error(
+      `Invalid lang in blog post: ${fileName}. Expected one of: ${blogLanguages.join(", ")}`,
+    );
+  }
+
   return {
     slug: fileName.replace(/\.md$/, ""),
     title: metadata.title,
@@ -72,6 +88,7 @@ function parseBlogPost(fileName: string, fileContent: string): BlogPost {
       .split(",")
       .map((tag) => tag.trim())
       .filter(Boolean),
+    lang: metadata.lang,
     content: fileContent.slice(frontmatter[0].length).trim(),
   };
 }

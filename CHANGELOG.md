@@ -2,6 +2,37 @@
 
 All notable changes to this project are documented in this file.
 
+## [6.2.0] - 2026-08-22
+
+### Added
+
+- English / Chinese language switch in the shared Navbar with persistent browser storage.
+- Typed centralized UI translations and reusable localization helpers.
+- Reviewed bilingual presentation fields for profile, education, interests, skills, learning, projects, and contact UI.
+- Localized Home, About, Projects, Navbar, Footer, shared CTAs, page metadata, and generic Blog interface text.
+- Validated `lang: en | zh` frontmatter for content-driven Markdown articles.
+- Article and card language attributes for preserving each post's original writing language.
+
+### Changed
+
+- Kept profile and project facts in single typed records while localizing only presentation text.
+- Updated project cards to localize content and preserve full About-page transparency and responsibility details.
+- Updated language-aware page titles, descriptions, date formatting, copy feedback, and accessibility labels.
+- Updated the package version to 6.2.0 without adding dependencies.
+
+### Fixed
+
+- Prevented streamed App Router metadata from reverting the selected client language.
+- Preserved the ZJU Gmail compose link and localized one-click copy feedback through the bilingual refactor.
+
+## [6.1.1] - 2026-08-22
+
+### Changed
+
+- Restored the confirmed Zhejiang University email as a secondary public contact after GitHub and personal email.
+- Reused the existing Gmail web-compose and accessible one-click copy behavior for the university address.
+- Updated the package version to 6.1.1.
+
 ## [6.1.0] - 2026-08-22
 
 ### Added

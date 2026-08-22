@@ -4,7 +4,7 @@ Last updated: 2026-08-22
 
 ## Current Version
 
-Version 6.1 — Content-driven personal homepage (package version 6.1.0).
+Version 6.2.0 — Maintainable English / Chinese foundation for the core website (package version 6.2.0).
 
 ## Technology Stack
 
@@ -25,6 +25,15 @@ Version 6.1 — Content-driven personal homepage (package version 6.1.0).
 
 ## Completed Features
 
+- English-default `EN | 中文` language switch in the shared Navbar
+- Persistent language selection across core-page navigation and reloads using browser storage
+- Typed centralized interface translations in `data/i18n.ts`
+- Localized Navbar, Footer, Home, About, Projects, shared CTAs, contact labels, copy feedback, and core-page metadata
+- Bilingual profile and project presentation fields backed by one factual record per profile item or project
+- Synchronized document language using `lang="en"` and `lang="zh-CN"`
+- Accessible native language buttons with a group label and explicit `aria-pressed` state
+- Original-language blog policy with validated `lang: en | zh` frontmatter
+- Localized blog interface, date formatting, article navigation, and tag accessibility text without translating article content
 - Responsive personal homepage
 - GitHub and browser-based Gmail contact links
 - One-click email address copying
@@ -62,7 +71,7 @@ Version 6.1 — Content-driven personal homepage (package version 6.1.0).
 - Transparent selected-work summaries for the personal website and RISC-V CPU course project
 - Centralized typed profile data in `data/profile.ts`
 - Reusable Gmail web-compose and email-copy contact component shared by Home and About
-- Privacy-focused primary contact set limited to GitHub and personal email
+- Ordered public contact set with GitHub, personal email, and secondary ZJU email
 - Factual Home, Projects, Blog, and CS231n public wording aligned with the current student profile
 - Expanded homepage with Hero, About, Research Interests, Selected Projects, Currently Learning, Latest Notes, and Contact sections
 - Homepage aggregation of profile facts from `data/profile.ts`, projects from `data/projects.ts`, and sorted posts from `lib/blog.ts`
@@ -81,11 +90,20 @@ Version 6.1 — Content-driven personal homepage (package version 6.1.0).
 - The metadata parser intentionally supports only simple single-line frontmatter fields.
 - Tag and category filtering are not implemented; displayed tags are intentionally non-interactive.
 - Search, table of contents, and previous/next article navigation are not implemented.
-- The About page is currently English-first; a full bilingual content architecture is not implemented.
+- Shared routes serve English static HTML and restore a persisted Chinese choice after hydration; dedicated locale URLs, `hreflang`, and Chinese static HTML are deferred to production SEO work.
+- All current blog articles are English-language samples; the validated Chinese article path is ready but has no published Chinese sample yet.
 
 ## Validation
 
-- `npm run build` passes for Version 6.1, including the expanded static homepage, About, Projects, and all four blog article routes as SSG output.
+- `npm run build` passes for Version 6.2 and generates Home, About, Projects, Blog, and all four blog-detail routes successfully.
+- English-to-Chinese and Chinese-to-English switching updates core content, Navbar, Footer, contact UI, page title, description, and `<html lang>` without external translation requests.
+- The selected language remains consistent across Home, About, Projects, and Blog navigation and is restored after a full reload.
+- English and Chinese states expose the correct `aria-pressed` value; Navbar active links continue to expose `aria-current="page"`.
+- Home, About, Projects, Blog, and a representative article have no page-level horizontal overflow at 1280px or 390px; the language control stays inside the viewport.
+- The confirmed GitHub, personal Gmail, and ZJU email destinations remain present; ZJU email copying produces localized accessible success feedback.
+- Profile regression checks preserve the completed Andrew Ng specialization, planned/not-started CS231n status, early PyTorch wording, and future-direction framing for research interests.
+- Project regression checks preserve the website repository, Codex transparency, CPU test result, local-only CPU source, no hardware-board claim, and absence of fake CPU links.
+- Blog titles, descriptions, tags, and Markdown bodies remain in their stored article language; Markdown rendering, syntax highlighting, Back to Blog, static generation, and invalid-slug 404 behavior remain intact.
 - Navbar navigation works across Home, Projects, Blog, and About, with exactly one correct active link on each route.
 - Active links expose `aria-current="page"` for assistive technology.
 - Shared Navbar and Footer render on every tested page.
@@ -109,7 +127,7 @@ Version 6.1 — Content-driven personal homepage (package version 6.1.0).
 - The About page renders the expected identity, education period, research and technical interests, skills, learning states, selected work, and primary contacts.
 - Content regression checks found no claims of CS229 study, active/completed CS231n study, formal research, internships, professional experience, or advanced PyTorch expertise.
 - Andrew Ng Machine Learning Specialization is marked Completed; Stanford CS231n is explicitly marked Planned and not started.
-- GitHub and Gmail web-compose targets are correct, email copying displays confirmation, and the university-email identifier is no longer exposed publicly.
+- GitHub and both Gmail web-compose targets are correct; personal and ZJU email copying display accessible confirmation.
 - At 1280px and an approximately 390px test frame, the About page has no horizontal overflow; navigation, names, tags, cards, and contact controls stay within the viewport.
 - Home, Projects, Blog, and representative blog-detail routes retain correct active navigation, footers, and overflow behavior after Version 6.1.
 - The homepage displays two profile-derived About paragraphs, two research interests, two featured projects, three current learning areas, two learning-status cards, and the latest three sorted blog posts.
@@ -126,7 +144,6 @@ Version 6.1 — Content-driven personal homepage (package version 6.1.0).
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Version 6.2 bilingual content foundation
 - Version 7 deployment, discoverability, and production metadata
 
 ## Maintenance Rule

@@ -46,6 +46,35 @@ This document records development problems, decisions, and unresolved limitation
 - **Resolution:** Replaced the placeholder with a data-driven profile covering education, carefully scoped research and technical interests, established skills, current learning, structured course status, selected work, and primary contacts. Unsupported experience sections were omitted.
 - **Status:** Resolved in Version 6.0.
 
+### University email was omitted from profile contacts
+
+- **Observed:** Version 6.0 conservatively removed the university email from public contact actions.
+- **Impact:** Visitors could use the personal email but did not have the requested university contact option.
+- **Resolution:** Restored the confirmed ZJU email as a secondary contact after explicit publication preference, using Gmail web compose and the shared accessible copy interaction.
+- **Status:** Resolved in Version 6.1.1.
+
+### Profile content was English-first
+
+- **Observed:** Version 6.1 included the Chinese name and school name, but core profile content and navigation had no complete Chinese presentation or language switch.
+- **Impact:** The website was usable internationally in English but lacked the planned Chinese experience.
+- **Resolution:** Added a typed centralized English / Chinese translation layer, bilingual profile and project presentation fields, and a persistent language switch for Navbar, Footer, Home, About, Projects, and shared interface text without duplicating factual entities.
+- **Status:** Resolved in Version 6.2.
+
+### Streamed metadata could revert to English
+
+- **Observed:** With the shared-route client language state, Next.js could stream page metadata after hydration and overwrite a Chinese title or description with the English server default.
+- **Impact:** Visible content and document language could be Chinese while metadata remained English.
+- **Resolution:** Added a scoped head observer that keeps every streamed title and description node aligned with the active language while retaining English static metadata as the default.
+- **Status:** Resolved in Version 6.2.
+
+## Intentional Decisions
+
+### Blog posts keep their original writing language
+
+- Each Markdown article declares `lang: en` or `lang: zh`.
+- Article titles, descriptions, categories, tags, and bodies are not automatically translated and do not require paired copies.
+- Only generic Blog interface text and date formatting follow the selected website language.
+
 ## Open
 
 ### Project showcase has limited content
@@ -62,12 +91,12 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Add these features only when real content volume justifies the added complexity; keep the current Git-based static architecture.
 - **Status:** Open, non-blocking by design for Version 5.2.
 
-### Profile content is English-first
+### Locale-specific static SEO is not implemented
 
-- **Observed:** Version 6.0 includes the Chinese name and school name, but the profile content and navigation do not yet have full Chinese translations or a language switch.
-- **Impact:** The profile is usable in English, but the planned bilingual experience is incomplete.
-- **Planned resolution:** Design a maintainable English/Chinese content and language-switch architecture in a future version without duplicating profile facts.
-- **Status:** Open, non-blocking by design for Version 6.0.
+- **Observed:** Version 6.2 preserves stable shared routes and restores a persisted Chinese selection after hydration, while the static HTML and initial metadata remain English.
+- **Impact:** A hard refresh may show a brief English state before Chinese is restored, and search engines do not yet receive dedicated Chinese URLs, static Chinese HTML, or `hreflang` links.
+- **Planned resolution:** Evaluate locale routes or another server-readable locale strategy alongside canonical and `hreflang` work during the Version 7 production SEO phase.
+- **Status:** Open, non-blocking by design for Version 6.2.
 
 No blocking issues are currently known.
 

@@ -4,6 +4,7 @@ description: A planned space for notes from a future study of Stanford CS231n.
 date: 2026-08-21
 category: Computer Vision
 tags: CS231n, Computer Vision, CNN
+lang: en
 ---
 
 ## About this note

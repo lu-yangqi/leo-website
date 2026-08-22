@@ -10,14 +10,16 @@ experience.
 
 ## Current Version
 
-Version 6.1 includes:
+Version 6.2.0 includes:
 
+- A persistent English / Chinese language switch for the core website
+- Centralized typed interface translations and bilingual profile content
 - A content-driven homepage with profile, project, learning, and latest-note previews
 - A data-driven two-project showcase
 - A Markdown blog with tags and syntax-highlighted code blocks
 - A complete About page with education, interests, skills, learning status,
   selected work, and contact information
-- Centralized typed profile data for maintainable personal content
+- Centralized typed profile and project data without duplicated factual records
 
 ## Technology Stack
 
@@ -54,8 +56,10 @@ content/blog/    Markdown blog posts
 docs/            Version requirements and planning documents
 ```
 
-Personal profile facts are maintained in `data/profile.ts`. Blog posts remain a
-simple Git-based workflow: edit Markdown, review locally, commit, and push.
+Personal profile facts are maintained in `data/profile.ts`; shared interface
+translations live in `data/i18n.ts`. Blog posts remain a simple Git-based
+workflow: edit Markdown, review locally, commit, and push. Each article keeps
+its original writing language and does not require a translated pair.
 
 ## Project Documentation
 

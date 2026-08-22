@@ -1,12 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { useLanguage } from "@/components/LanguageProvider";
 import type { BlogPostSummary } from "@/lib/blog";
 
 type BlogCardProps = {
   post: BlogPostSummary;
 };
 
-function formatDate(date: string) {
-  return new Intl.DateTimeFormat("en", {
+function formatDate(date: string, locale: string) {
+  return new Intl.DateTimeFormat(locale, {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -15,8 +18,15 @@ function formatDate(date: string) {
 }
 
 export default function BlogCard({ post }: BlogCardProps) {
+  const { locale, translations } = useLanguage();
+  const interfaceLanguage = locale === "zh" ? "zh-CN" : "en";
+  const postLanguage = post.lang === "zh" ? "zh-CN" : "en";
+
   return (
-    <article className="flex h-full flex-col rounded-xl border border-white/10 bg-white/[0.03] p-6 sm:p-7">
+    <article
+      lang={postLanguage}
+      className="flex h-full flex-col rounded-xl border border-white/10 bg-white/[0.03] p-6 sm:p-7"
+    >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
         <p className="font-medium tracking-[0.14em] text-cyan-300 uppercase">
           {post.category}
@@ -24,8 +34,12 @@ export default function BlogCard({ post }: BlogCardProps) {
         <span className="text-slate-700" aria-hidden="true">
           / 
         </span>
-        <time dateTime={post.date} className="text-slate-500">
-          {formatDate(post.date)}
+        <time
+          dateTime={post.date}
+          lang={interfaceLanguage}
+          className="text-slate-500"
+        >
+          {formatDate(post.date, translations.blog.dateLocale)}
         </time>
       </div>
 
@@ -41,12 +55,14 @@ export default function BlogCard({ post }: BlogCardProps) {
       <p className="mt-4 leading-7 text-slate-400">{post.description}</p>
 
       <ul
+        lang={interfaceLanguage}
         className="mt-5 flex flex-wrap gap-2"
-        aria-label={`Tags for ${post.title}`}
+        aria-label={translations.blog.tagsFor(post.title)}
       >
         {post.tags.map((tag) => (
           <li
             key={tag}
+            lang={postLanguage}
             className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs text-slate-400"
           >
             {tag}
@@ -57,9 +73,10 @@ export default function BlogCard({ post }: BlogCardProps) {
       <div className="mt-auto pt-6">
         <Link
           href={`/blog/${post.slug}`}
+          lang={interfaceLanguage}
           className="text-sm font-medium text-slate-200 transition-colors hover:text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
         >
-          Read article <span aria-hidden="true">→</span>
+          {translations.blog.readArticle} <span aria-hidden="true">→</span>
         </Link>
       </div>
     </article>
