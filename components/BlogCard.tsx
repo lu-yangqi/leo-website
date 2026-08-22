@@ -1,7 +1,8 @@
-import type { BlogPost } from "@/lib/blog";
+import Link from "next/link";
+import type { BlogPostSummary } from "@/lib/blog";
 
 type BlogCardProps = {
-  post: BlogPost;
+  post: BlogPostSummary;
 };
 
 function formatDate(date: string) {
@@ -29,10 +30,24 @@ export default function BlogCard({ post }: BlogCardProps) {
       </div>
 
       <h2 className="mt-4 text-xl font-semibold tracking-tight text-white sm:text-2xl">
-        {post.title}
+        <Link
+          href={`/blog/${post.slug}`}
+          className="transition-colors hover:text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
+        >
+          {post.title}
+        </Link>
       </h2>
 
       <p className="mt-4 leading-7 text-slate-400">{post.description}</p>
+
+      <div className="mt-auto pt-6">
+        <Link
+          href={`/blog/${post.slug}`}
+          className="text-sm font-medium text-slate-200 transition-colors hover:text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
+        >
+          Read article <span aria-hidden="true">→</span>
+        </Link>
+      </div>
     </article>
   );
 }

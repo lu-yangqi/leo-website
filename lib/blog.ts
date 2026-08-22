@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 
-export type BlogPost = {
+export type BlogPostSummary = {
   slug: string;
   title: string;
   description: string;
@@ -9,11 +9,21 @@ export type BlogPost = {
   category: string;
 };
 
+export type BlogPost = BlogPostSummary & {
+  content: string;
+};
+
 const blogDirectory = path.join(process.cwd(), "content", "blog");
 const requiredFields = ["title", "description", "date", "category"] as const;
 
-function parseMetadata(fileName: string, content: string): BlogPost {
-  const frontmatter = content.match(
+function getBlogFileNames() {
+  return readdirSync(blogDirectory).filter((fileName) =>
+    fileName.endsWith(".md"),
+  );
+}
+
+function parseBlogPost(fileName: string, fileContent: string): BlogPost {
+  const frontmatter = fileContent.match(
     /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/,
   );
 
@@ -51,19 +61,38 @@ function parseMetadata(fileName: string, content: string): BlogPost {
     description: metadata.description,
     date: metadata.date,
     category: metadata.category,
+    content: fileContent.slice(frontmatter[0].length).trim(),
   };
 }
 
-export function getBlogPosts(): BlogPost[] {
-  return readdirSync(blogDirectory)
-    .filter((fileName) => fileName.endsWith(".md"))
+function readBlogPost(fileName: string) {
+  const fileContent = readFileSync(path.join(blogDirectory, fileName), "utf8");
+  return parseBlogPost(fileName, fileContent);
+}
+
+export function getBlogPosts(): BlogPostSummary[] {
+  return getBlogFileNames()
     .map((fileName) => {
-      const content = readFileSync(path.join(blogDirectory, fileName), "utf8");
-      return parseMetadata(fileName, content);
+      const { content, ...summary } = readBlogPost(fileName);
+      return summary;
     })
     .sort(
       (firstPost, secondPost) =>
         secondPost.date.localeCompare(firstPost.date) ||
         firstPost.title.localeCompare(secondPost.title),
     );
+}
+
+export function getBlogPost(slug: string): BlogPost | null {
+  const fileName = `${slug}.md`;
+
+  if (!getBlogFileNames().includes(fileName)) {
+    return null;
+  }
+
+  return readBlogPost(fileName);
+}
+
+export function getBlogSlugs(): string[] {
+  return getBlogFileNames().map((fileName) => fileName.replace(/\.md$/, ""));
 }
