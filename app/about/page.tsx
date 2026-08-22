@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ContactLinks from "@/components/ContactLinks";
 import { profile } from "@/data/profile";
+import { featuredProjects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "About | Leo Yangqi",
@@ -301,7 +302,7 @@ export default function AboutPage() {
           Selected Work
         </h2>
         <div className="mt-6 grid gap-5 md:grid-cols-2">
-          {profile.selectedWork.map((work) => (
+          {featuredProjects.map((work) => (
             <article
               key={work.title}
               className="flex flex-col rounded-xl border border-white/10 bg-white/[0.03] p-6"
@@ -327,22 +328,26 @@ export default function AboutPage() {
                   </li>
                 ))}
               </ul>
-              {"note" in work ? (
-                <p className="mt-4 text-sm leading-6 text-slate-400">
-                  {work.note}
+              {work.result ? (
+                <p className="mt-4 text-sm leading-6 text-slate-300">
+                  <span className="font-medium text-slate-100">Result:</span>{" "}
+                  {work.result}
                 </p>
               ) : null}
-              {"href" in work ? (
-                <Link
-                  href={work.href}
-                  className="mt-auto pt-6 text-sm font-medium text-slate-200 transition-colors hover:text-cyan-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
-                >
-                  View Projects <span aria-hidden="true">→</span>
-                </Link>
+              {work.availability ? (
+                <p className="mt-4 text-sm leading-6 text-slate-400">
+                  {work.availability}
+                </p>
               ) : null}
             </article>
           ))}
         </div>
+        <Link
+          href="/projects"
+          className="mt-7 inline-flex text-sm font-medium text-slate-200 transition-colors hover:text-cyan-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
+        >
+          View all projects <span aria-hidden="true">→</span>
+        </Link>
       </section>
 
       <section

@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [6.1.0] - 2026-08-22
+
+### Added
+
+- Homepage About and Research Interests previews sourced from centralized profile data.
+- Homepage Selected Projects with shared featured-project selection.
+- Single-Cycle RISC-V CPU entry in the central project data source.
+- Homepage Currently Learning, Learning Milestone, and Next Up sections.
+- Homepage Latest Notes list derived from the existing sorted blog loader.
+- Homepage CTAs for About, Projects, Blog, article details, and primary contact actions.
+- Project period, result, transparency, availability, and responsibility fields.
+
+### Changed
+
+- Upgraded the homepage from a Hero-focused introduction into a content-driven personal portal.
+- Refactored About selected work to consume the same project data as Home and Projects.
+- Extended ProjectCard with compact presentation and configurable semantic heading levels.
+- Updated the Projects page to display both the personal website and RISC-V CPU course project.
+- Updated the homepage metadata and package version to 6.1.0.
+
 ## [6.0.0] - 2026-08-22
 
 ### Added

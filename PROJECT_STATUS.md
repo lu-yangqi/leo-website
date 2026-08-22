@@ -4,7 +4,7 @@ Last updated: 2026-08-22
 
 ## Current Version
 
-Version 6.0 — Authentic, data-driven personal profile (package version 6.0.0).
+Version 6.1 — Content-driven personal homepage (package version 6.1.0).
 
 ## Technology Stack
 
@@ -17,7 +17,7 @@ Version 6.0 — Authentic, data-driven personal profile (package version 6.0.0).
 
 | Route | Status | Purpose |
 | --- | --- | --- |
-| `/` | Complete | Personal homepage and contact links |
+| `/` | Complete | Content-driven portal to profile, projects, learning, notes, and contact |
 | `/projects` | Complete | Data-driven project showcase |
 | `/blog` | Complete | Markdown-driven blog index |
 | `/blog/[slug]` | Complete | Statically generated Markdown article pages |
@@ -64,12 +64,20 @@ Version 6.0 — Authentic, data-driven personal profile (package version 6.0.0).
 - Reusable Gmail web-compose and email-copy contact component shared by Home and About
 - Privacy-focused primary contact set limited to GitHub and personal email
 - Factual Home, Projects, Blog, and CS231n public wording aligned with the current student profile
+- Expanded homepage with Hero, About, Research Interests, Selected Projects, Currently Learning, Latest Notes, and Contact sections
+- Homepage aggregation of profile facts from `data/profile.ts`, projects from `data/projects.ts`, and sorted posts from `lib/blog.ts`
+- Compact About and research-interest previews with clear links to the complete profile
+- Featured-project selection shared by Home, Projects, and About
+- Second central project entry for the confirmed Single-Cycle RISC-V CPU course project
+- Learning milestone and Next Up presentation for the completed Andrew Ng specialization and planned CS231n study
+- Latest three Markdown posts derived from the existing blog loader and linked to article routes
+- Shared project period, result, transparency, availability, and responsibility data without About-page duplication
 
 ## Current Limitations
 
-- The project showcase currently contains one project.
+- The project showcase currently contains two projects, so overall variety remains limited.
 - Project detail pages, filtering, and category views are not implemented.
-- The first project has no live demo because the website is not deployed yet.
+- Neither project has a live demo because the website is not deployed and the CPU source remains local.
 - The metadata parser intentionally supports only simple single-line frontmatter fields.
 - Tag and category filtering are not implemented; displayed tags are intentionally non-interactive.
 - Search, table of contents, and previous/next article navigation are not implemented.
@@ -77,11 +85,11 @@ Version 6.0 — Authentic, data-driven personal profile (package version 6.0.0).
 
 ## Validation
 
-- `npm run build` passes for Version 6.0, including the static About page and all four blog article routes as SSG output.
+- `npm run build` passes for Version 6.1, including the expanded static homepage, About, Projects, and all four blog article routes as SSG output.
 - Navbar navigation works across Home, Projects, Blog, and About, with exactly one correct active link on each route.
 - Active links expose `aria-current="page"` for assistive technology.
 - Shared Navbar and Footer render on every tested page.
-- The Projects page renders one ProjectCard from `data/projects.ts` with the expected repository link and six technology tags.
+- The Projects page renders two ProjectCards from `data/projects.ts`; the website retains its repository link and the CPU has no repository or demo link.
 - No browser console warnings or errors were found on the Projects page.
 - The ProjectCard and GitHub link remain visible without horizontal overflow at 1280px and 390px viewport widths.
 - The Blog page loads four Markdown metadata files and renders four BlogCard components with the expected titles, categories, descriptions, and dates.
@@ -103,7 +111,12 @@ Version 6.0 — Authentic, data-driven personal profile (package version 6.0.0).
 - Andrew Ng Machine Learning Specialization is marked Completed; Stanford CS231n is explicitly marked Planned and not started.
 - GitHub and Gmail web-compose targets are correct, email copying displays confirmation, and the university-email identifier is no longer exposed publicly.
 - At 1280px and an approximately 390px test frame, the About page has no horizontal overflow; navigation, names, tags, cards, and contact controls stay within the viewport.
-- Home, Projects, Blog, and representative blog-detail routes retain correct active navigation, footers, and overflow behavior after Version 6.0.
+- Home, Projects, Blog, and representative blog-detail routes retain correct active navigation, footers, and overflow behavior after Version 6.1.
+- The homepage displays two profile-derived About paragraphs, two research interests, two featured projects, three current learning areas, two learning-status cards, and the latest three sorted blog posts.
+- Homepage CTAs target `/about`, `/projects`, `/blog`, and actual `/blog/[slug]` routes; contact actions continue to use the shared accessible component.
+- The RISC-V CPU result, Codex-assisted implementation, local-only source, and no-hardware-deployment status appear on the Projects and About pages without fake links.
+- At 1280px and an approximately 390px test frame, the expanded homepage has no horizontal overflow; project, research, learning, and note cards remain within the viewport and stack correctly.
+- About, Blog, representative article pages, syntax highlighting, tags, Back to Blog, active navigation, and invalid-slug 404 handling pass regression testing for Version 6.1.
 
 ## Next Planned Work
 
@@ -113,7 +126,6 @@ Version 6.0 — Authentic, data-driven personal profile (package version 6.0.0).
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Version 6.1 homepage integration with selected profile, learning, project, and blog previews
 - Version 6.2 bilingual content foundation
 - Version 7 deployment, discoverability, and production metadata
 

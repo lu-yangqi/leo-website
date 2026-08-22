@@ -50,9 +50,9 @@ This document records development problems, decisions, and unresolved limitation
 
 ### Project showcase has limited content
 
-- **Observed:** The showcase currently contains only the Leo Personal Website project, and no live demo link is available because the website is not deployed.
-- **Impact:** The reusable framework works, but it does not yet demonstrate multiple-project layouts or optional demo links.
-- **Planned resolution:** Add real AI, computer vision, LLM, security, and research projects as they become ready; add demo links after deployment.
+- **Observed:** The showcase now contains the Leo Personal Website and Single-Cycle RISC-V CPU, but project variety remains limited. Neither has a live demo, and the CPU source is intentionally local and unpublished.
+- **Impact:** The shared multi-project layout is verified, but there are no project detail pages and only one project currently has a public repository.
+- **Planned resolution:** Add further real projects only as they become ready for public presentation; add detail pages or demo links when supporting content and deployments exist.
 - **Status:** Open, non-blocking.
 
 ### Advanced blog discovery and navigation are not implemented

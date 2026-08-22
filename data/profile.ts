@@ -28,8 +28,11 @@ export const profile = {
     chinese: "鲁杨琦",
   },
   identity: "AI Student",
+  heroHeadline: "AI Undergraduate Student",
   headline: "Undergraduate Student in Artificial Intelligence",
   university: "Zhejiang University",
+  heroSummary:
+    "Building foundations in machine learning, computer systems, and software engineering while exploring Efficient Machine Learning and AI Systems as possible future directions.",
   bio: [
     "Leo Yangqi is an undergraduate student in Artificial Intelligence at Zhejiang University.",
     "He is building foundations in machine learning, computer systems, and software engineering while exploring Efficient Machine Learning and AI Systems as possible future research directions.",
@@ -145,41 +148,6 @@ export const profile = {
       status: "Planned",
       description:
         "Next up; not formally started, with no assignments or independent implementations completed yet.",
-    },
-  ],
-  selectedWork: [
-    {
-      title: "Leo Personal Website",
-      type: "Independent Personal Project",
-      period: "2026.08 – Present",
-      description:
-        "A long-term personal technical website built while learning modern web development, Git / GitHub workflows, and AI-assisted software development.",
-      transparency:
-        "Codex generates a large portion of the concrete implementation code.",
-      responsibilities: [
-        "Website structure and roadmap planning",
-        "Requirement design and task specifications",
-        "Local testing and result review",
-        "Revision requests and Git / GitHub management",
-        "UI direction and Markdown content maintenance",
-      ],
-      href: "/projects",
-    },
-    {
-      title: "Single-Cycle RISC-V CPU",
-      type: "Computer Systems Course Project",
-      period: "2026",
-      description:
-        "An RV64 single-cycle CPU datapath implemented in SystemVerilog for a computer systems course project.",
-      transparency: "Individual course project with Codex-assisted implementation.",
-      responsibilities: [
-        "RV64 integer arithmetic and word operations",
-        "Memory access",
-        "Conditional branches and jumps",
-        "U-type instructions",
-        "Successfully ran the required course test programs",
-      ],
-      note: "The source is preserved locally and is not publicly released; no hardware-board deployment is claimed.",
     },
   ],
   contact: {

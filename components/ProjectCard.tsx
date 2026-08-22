@@ -2,18 +2,34 @@ import type { Project } from "@/data/projects";
 
 type ProjectCardProps = {
   project: Project;
+  headingLevel?: "h2" | "h3";
+  compact?: boolean;
 };
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  headingLevel = "h2",
+  compact = false,
+}: ProjectCardProps) {
+  const Heading = headingLevel;
+
   return (
     <article className="flex h-full flex-col rounded-xl border border-white/10 bg-white/[0.03] p-6 sm:p-7">
-      <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
-        {project.category}
-      </p>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
+        <p className="font-medium tracking-[0.16em] text-cyan-300 uppercase">
+          {project.category}
+        </p>
+        <span className="text-slate-600" aria-hidden="true">
+          /
+        </span>
+        <p className="text-slate-400">{project.period}</p>
+      </div>
 
-      <h2 className="mt-4 text-2xl font-semibold tracking-tight text-white">
+      <Heading className="mt-4 text-2xl font-semibold tracking-tight text-white">
         {project.title}
-      </h2>
+      </Heading>
+
+      <p className="mt-2 text-sm text-slate-400">{project.type}</p>
 
       <p className="mt-4 leading-7 text-slate-400">{project.description}</p>
 
@@ -30,6 +46,20 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </li>
         ))}
       </ul>
+
+      {project.result ? (
+        <p className="mt-5 text-sm leading-6 text-slate-300">
+          <span className="font-medium text-slate-100">Result:</span>{" "}
+          {project.result}
+        </p>
+      ) : null}
+
+      {!compact ? (
+        <div className="mt-5 space-y-2 text-sm leading-6 text-slate-400">
+          <p>{project.transparency}</p>
+          {project.availability ? <p>{project.availability}</p> : null}
+        </div>
+      ) : null}
 
       {project.github || project.demo ? (
         <div className="mt-auto flex flex-wrap gap-5 pt-8 text-sm font-medium">

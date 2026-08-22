@@ -10,10 +10,10 @@ experience.
 
 ## Current Version
 
-Version 6.0 includes:
+Version 6.1 includes:
 
-- A responsive homepage with primary public contact links
-- A data-driven project showcase
+- A content-driven homepage with profile, project, learning, and latest-note previews
+- A data-driven two-project showcase
 - A Markdown blog with tags and syntax-highlighted code blocks
 - A complete About page with education, interests, skills, learning status,
   selected work, and contact information
