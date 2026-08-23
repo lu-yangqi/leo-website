@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import Navbar from "@/components/Navbar";
-import { siteConfig } from "@/lib/site";
+import { getAbsoluteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
+
+const shareImageUrl = getAbsoluteUrl(siteConfig.shareImage.path);
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -19,11 +21,20 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     type: "website",
     locale: "en_US",
+    images: [
+      {
+        url: shareImageUrl,
+        width: siteConfig.shareImage.width,
+        height: siteConfig.shareImage.height,
+        alt: siteConfig.shareImage.alt,
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
+    images: [shareImageUrl],
   },
 };
 

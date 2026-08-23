@@ -10,11 +10,12 @@ experience.
 
 ## Current Version
 
-Version 7.1.0 includes:
+Version 7.2.0 includes:
 
 - A verified public Vercel deployment at
   [leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 - Centralized production metadata, canonical URLs, sitemap discovery, and a public crawler policy
+- A custom `LY` site icon, Apple touch icon, and shared Open Graph preview image
 - A persistent English / Chinese language switch for the core website
 - Centralized typed interface translations and bilingual profile content
 - A content-driven homepage with profile, project, learning, and latest-note previews
@@ -40,6 +41,13 @@ The site is hosted on Vercel. Deployments are triggered from the GitHub
 English static HTML remains the canonical search representation. Chinese is a
 user-selectable shared-route presentation; no locale routes or fake
 `hreflang` entries are generated.
+
+## Site Identity
+
+The browser icon, Apple touch icon, and 1200×630 sharing preview use a simple
+`LY` mark and the same factual AI student identity as the website metadata.
+Static pages and Blog articles reuse the shared image while keeping their own
+titles, descriptions, canonical URLs, and article language.
 
 ## Technology Stack
 

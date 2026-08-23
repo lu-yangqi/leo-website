@@ -1,13 +1,13 @@
 # Project Status
 
-Last updated: 2026-08-22
+Last updated: 2026-08-23
 
 ## Current Version
 
-Version 7.1.0 — SEO and search-engine discoverability foundation implemented and production-build verified.
+Version 7.2.0 — Site identity and sharing-image foundation implemented and production-build verified.
 
-The Version 7.1 code is ready for the next GitHub `main` → Vercel deployment.
-Public verification of the new SEO endpoints remains pending that deployment.
+The Version 7.2 code is ready for the next GitHub `main` → Vercel deployment.
+Public verification of the new icons and sharing image remains pending that deployment.
 
 Production URL: [https://leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 
@@ -41,6 +41,10 @@ standard Next.js integration.
 - Dynamic sitemap generated from fixed public routes and the existing Markdown Blog loader
 - Public crawler policy that allows indexing and advertises the production sitemap
 - Article canonical and social metadata derived from each post's existing Markdown frontmatter
+- Custom `LY` SVG browser favicon and main site icon using the Next.js metadata-file convention
+- Matching 180×180 Apple touch icon generated with the built-in `ImageResponse` API
+- Shared 1200×630 Open Graph image with factual student identity and technical-interest text
+- Large-card Open Graph and Twitter image metadata shared by Home, inner pages, and Blog articles
 - English-default `EN | 中文` language switch in the shared Navbar
 - Persistent language selection across core-page navigation and reloads using browser storage
 - Typed centralized interface translations in `data/i18n.ts`
@@ -111,6 +115,13 @@ standard Next.js integration.
 
 ## Validation
 
+- The Version 7.2 production build generates `/icon.svg`, `/apple-icon`, and `/opengraph-image` alongside every existing route.
+- Local production responses return the custom SVG icon, Apple PNG, and Open Graph PNG with correct content types and no 404 errors.
+- Home, About, and `/blog/personal-website-codex` each expose one production-origin `og:image`, one `twitter:image`, and `summary_large_image` card metadata.
+- The representative article retains its frontmatter title, description, canonical URL, and `article` Open Graph type while using the shared image.
+- The rendered 1200×630 share image and 180×180 Apple icon were visually inspected for accurate text, hierarchy, contrast, and legibility.
+- No page component, stylesheet, bilingual state, profile data, project data, or Blog content was changed in Version 7.2.
+- The deployed Version 7.1 `sitemap.xml` and `robots.txt` were confirmed publicly available on 2026-08-23 before Version 7.2 work began.
 - The Version 7.1 production build generates `/sitemap.xml` and `/robots.txt` alongside all existing public routes and four statically generated Blog articles.
 - Local production-server checks confirm correct titles, descriptions, canonical URLs, Open Graph URLs, and types for Home, About, Projects, Blog, and `/blog/personal-website-codex`.
 - The generated sitemap contains Home, About, Projects, Blog, and every article returned by `getBlogPosts()`; article `lastModified` values come from existing frontmatter dates.
@@ -176,8 +187,8 @@ standard Next.js integration.
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Deploy Version 7.1 through the existing GitHub `main` → Vercel workflow and verify the production sitemap, robots policy, and representative metadata.
-- Consider Search Console submission manually only after the Version 7.1 production deployment is verified.
+- Deploy Version 7.2 through the existing GitHub `main` → Vercel workflow and verify production icon and share-image URLs plus representative page metadata.
+- Consider Search Console submission manually as a separate external step.
 
 ## Maintenance Rule
 

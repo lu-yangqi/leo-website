@@ -30,6 +30,7 @@ export async function generateMetadata({
 
   const articlePath = `/blog/${post.slug}`;
   const articleTitle = `${post.title} | ${siteConfig.name}`;
+  const shareImageUrl = getAbsoluteUrl(siteConfig.shareImage.path);
 
   return {
     title: post.title,
@@ -45,11 +46,20 @@ export async function generateMetadata({
       type: "article",
       locale: post.lang === "zh" ? "zh_CN" : "en_US",
       publishedTime: post.date,
+      images: [
+        {
+          url: shareImageUrl,
+          width: siteConfig.shareImage.width,
+          height: siteConfig.shareImage.height,
+          alt: siteConfig.shareImage.alt,
+        },
+      ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: articleTitle,
       description: post.description,
+      images: [shareImageUrl],
     },
   };
 }

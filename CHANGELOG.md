@@ -2,6 +2,30 @@
 
 All notable changes to this project are documented in this file.
 
+## [7.2.0] - 2026-08-23
+
+### Added
+
+- Custom `LY` SVG favicon and main site icon using the native Next.js metadata-file convention.
+- Matching 180×180 Apple touch icon generated with the built-in `ImageResponse` API.
+- Shared 1200×630 Open Graph image with Leo Yangqi's factual student identity and technical interests.
+- Large-image Open Graph and Twitter metadata for Home, inner pages, and Blog articles.
+
+### Changed
+
+- Extended the centralized Version 7.1 metadata architecture with one reusable production share-image definition.
+- Updated the package version to 7.2.0 without adding dependencies or changing the visible website UI.
+
+### Verified
+
+- Confirmed the production build generates the icon, Apple icon, and share-image routes without affecting existing pages, sitemap, or robots routes.
+- Confirmed Home, About, and a representative Blog article expose valid production-origin image metadata while preserving their own titles, descriptions, canonical URLs, and Open Graph types.
+- Visually checked the generated 1200×630 share image and 180×180 Apple icon.
+
+### Pending Deployment
+
+- Production verification of the new Version 7.2 icon and share-image assets after the commit reaches GitHub `main` and Vercel deploys it.
+
 ## [7.1.0] - 2026-08-22
 
 ### Added
@@ -22,9 +46,10 @@ All notable changes to this project are documented in this file.
 - Confirmed the production build generates all existing routes plus `/sitemap.xml` and `/robots.txt`.
 - Confirmed representative titles, descriptions, canonical URLs, Open Graph URLs, article metadata, sitemap entries, and crawler rules through a local production server.
 
-### Pending Deployment
+### Deployed
 
-- Production verification of the new SEO endpoints after the Version 7.1 commit reaches GitHub `main` and Vercel completes its automatic deployment.
+- Confirmed the public production `sitemap.xml` lists the core routes and all four Blog articles.
+- Confirmed the public production `robots.txt` allows crawling and advertises the production sitemap.
 
 ## [7.0.0] - 2026-08-22
 

@@ -6,6 +6,14 @@ export const siteConfig = {
   title: "Leo Yangqi | AI Student at Zhejiang University",
   description:
     "Personal website of Leo Yangqi, an Artificial Intelligence undergraduate at Zhejiang University exploring machine learning, AI systems, computer systems, and software engineering.",
+  shareImage: {
+    path: "/opengraph-image",
+    width: 1200,
+    height: 630,
+    alt: "Leo Yangqi — AI Student at Zhejiang University",
+    identity: "AI Student · Zhejiang University",
+    interests: "AI · Machine Learning · Systems",
+  },
 } as const;
 
 export function getAbsoluteUrl(pathname: string) {
@@ -26,6 +34,7 @@ export function createPageMetadata({
   const resolvedTitle = title
     ? `${title} | ${siteConfig.name}`
     : siteConfig.title;
+  const shareImageUrl = getAbsoluteUrl(siteConfig.shareImage.path);
 
   return {
     title: title ?? { absolute: siteConfig.title },
@@ -40,11 +49,20 @@ export function createPageMetadata({
       siteName: siteConfig.name,
       type: "website",
       locale: "en_US",
+      images: [
+        {
+          url: shareImageUrl,
+          width: siteConfig.shareImage.width,
+          height: siteConfig.shareImage.height,
+          alt: siteConfig.shareImage.alt,
+        },
+      ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: resolvedTitle,
       description,
+      images: [shareImageUrl],
     },
   };
 }

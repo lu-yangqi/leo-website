@@ -1,6 +1,6 @@
 # Issues Log
 
-Last updated: 2026-08-22
+Last updated: 2026-08-23
 
 This document records development problems, decisions, and unresolved limitations.
 
