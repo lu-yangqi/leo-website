@@ -105,10 +105,10 @@ export type TranslationDictionary = {
   };
   cinematic: {
     skipIntro: string;
-    portraitPlaceholder: string;
+    portraitAlt: string;
     signatureLabel: string;
     scrollHint: string;
-    assetsPending: string;
+    staticHint: string;
   };
   about: {
     eyebrow: string;
@@ -264,10 +264,10 @@ export const translations = {
     },
     cinematic: {
       skipIntro: "Skip intro",
-      portraitPlaceholder: "Portrait to come",
+      portraitAlt: "Leo Yangqi standing beside a lake, wearing a hat and denim vest",
       signatureLabel: "Leo handwritten signature",
       scrollHint: "Scroll to bring the portrait into focus",
-      assetsPending: "Portrait reserved for a future update.",
+      staticHint: "Continue below to explore my work and notes.",
     },
     about: {
       eyebrow: "About",
@@ -424,10 +424,10 @@ export const translations = {
     },
     cinematic: {
       skipIntro: "跳过开场",
-      portraitPlaceholder: "照片预留位置",
+      portraitAlt: "Leo Yangqi 戴着帽子、身穿牛仔马甲，站在湖边",
       signatureLabel: "Leo 手写签名",
       scrollHint: "向下滚动，让画面聚焦于中央",
-      assetsPending: "照片将在后续版本补充。",
+      staticHint: "继续向下，浏览我的项目与笔记。",
     },
     about: {
       eyebrow: "关于",

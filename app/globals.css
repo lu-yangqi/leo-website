@@ -787,51 +787,21 @@ a, button {
   justify-self: center;
 }
 
-.hero-portrait, .portrait-placeholder {
+.hero-portrait, .leo-portrait {
   width: 100%;
   height: 100%;
 }
 
-.portrait-placeholder {
+.leo-portrait {
   position: relative;
-  display: grid;
-  place-items: center;
+  overflow: hidden;
   border: 1px solid var(--rule);
   background: var(--surface);
-  color: var(--accent);
 }
 
-.portrait-placeholder svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.4;
-}
-
-.portrait-placeholder p {
-  position: relative;
-  padding: 0.6rem 0.9rem;
-  background: var(--canvas);
-  color: var(--muted);
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
-}
-
-.portrait-index, .portrait-ratio {
-  position: absolute;
-  left: 1.4rem;
-  font-family: var(--font-label);
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-}
-
-.portrait-index {
-  top: 1.4rem;
-}
-
-.portrait-ratio {
-  bottom: 1.4rem;
+.leo-portrait-image {
+  object-fit: cover;
+  object-position: center;
 }
 
 .hero-signature {

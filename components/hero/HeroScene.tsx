@@ -1,7 +1,7 @@
 import { LocalizedText } from "@/components/LanguageProvider";
 import { translationPair } from "@/data/i18n";
 import { profile } from "@/data/profile";
-import PortraitPlaceholder from "./PortraitPlaceholder";
+import LeoPortrait from "./LeoPortrait";
 import LeoSignature from "./LeoSignature";
 
 export default function HeroScene() {
@@ -34,7 +34,7 @@ export default function HeroScene() {
         </div>
 
         <div className="hero-portrait-anchor" data-portrait-anchor>
-          <div className="hero-portrait"><PortraitPlaceholder /></div>
+          <div className="hero-portrait"><LeoPortrait /></div>
         </div>
 
         <div className="hero-signature">
@@ -54,7 +54,7 @@ export default function HeroScene() {
           <span aria-hidden="true">↓</span>
         </p>
         <p className="hero-static-hint">
-          <LocalizedText value={translationPair("cinematic", "assetsPending")} />
+          <LocalizedText value={translationPair("cinematic", "staticHint")} />
         </p>
         <span className="hero-sequence-label" aria-hidden="true">01 — 02 — 03</span>
         <div className="hero-scene-progress" aria-hidden="true" />

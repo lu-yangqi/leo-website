@@ -6,6 +6,12 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Resolved
 
+### Hero portrait remained a placeholder
+
+- **Observed:** Version 8.1.1 had the supplied Leo signature but still displayed placeholder artwork and missing-portrait guidance.
+- **Resolution:** Integrated the supplied 1440×1920 JPG through Next.js Image in the existing 3:4 motion frame, added bilingual alt text, and removed obsolete placeholder artwork and wording.
+- **Status:** Implemented in Version 8.1.2; local image optimization, server output, and component tests pass. Browser visual/interaction acceptance remains open separately.
+
 ### Desktop no-JavaScript cinematic fallback hid the signature
 
 - **Observed:** Source review of the initial Version 8.1 implementation found that the no-JavaScript override removed only the long track, leaving the signature's desktop opacity at zero.
@@ -89,6 +95,13 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Intentional Decisions
 
+### Version 8.1.2 adds the portrait without changing motion
+
+- Preserve the supplied JPG unchanged at `public/images/hero/leo-portrait.jpg`. It already matches the frame's 3:4 ratio; use centered object-fit cropping rather than editing the source or adding effects.
+- Use the existing Next.js Image optimizer, preload, and responsive sizes. Keep the reserved aspect-ratio anchor and all parent motion wrappers; image loading does not start, reset, or alter the timeline.
+- Use the existing language context only to localize image alt text. Replace the static missing-asset notice while preserving the static layout and all controller, signature, reduced-motion, and no-JavaScript behavior.
+- No new dependencies, remote image host, or image configuration are required. The actual browser crop/scroll experience and runtime CLS remain acceptance checks, not claims implied by a successful build.
+
 ### Version 8.1.1 preserves the supplied filled-outline signature
 
 - Use the actual supplied filename, `public/signatures/leo-signature-traced.svg`, unchanged; do not redraw the handwriting or convert its outline into invented pen strokes.
@@ -131,18 +144,18 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Open
 
-### Version 8.0 / 8.1 / 8.1.1 browser acceptance is pending
+### Version 8.x browser acceptance is pending
 
 - **Observed:** The browser permission check denied a local test tab during Version 8.0 validation. The user later reported no noticeable motion. Renewed local-browser permission was requested during Version 8.1 but has not been granted; browser automation was not retried.
-- **Impact:** Version 8.1.1 build, TypeScript, 14 simulated/source motion tests, and local HTTP checks pass, but actual playback, external SVG-mask rendering, appearance/overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. The prior motion report is not considered resolved by the new implementation alone.
-- **Planned resolution:** Manually review at desktop and mobile widths (including 320px and 390px), inspect partial and complete signature reveal, switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, disable JavaScript, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
-- **Status:** Open; Version 8.1.1 playback, visual/interaction acceptance, and public verification remain pending.
+- **Impact:** Version 8.1.2 build, TypeScript, 16 simulated/source motion and portrait tests, and local HTTP/image-optimization checks pass, but actual portrait framing, playback, external SVG-mask rendering, appearance/overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. The prior motion report is not considered resolved by the new implementation alone.
+- **Planned resolution:** Manually review at desktop and mobile widths (including 320px and 390px), inspect portrait framing and partial/complete signature reveal, switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, disable JavaScript, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
+- **Status:** Open; Version 8.1.2 playback, visual/interaction acceptance, and public verification remain pending.
 
-### Final portrait remains unavailable; pen-stroke-order animation is deferred
+### Pen-stroke-order signature animation is deferred
 
-- **Observed:** Version 8.1.1 integrates the supplied Leo signature, replacing the former SVG guide. The portrait remains a labeled placeholder. The signature asset is a filled trace, not ordered pen-stroke paths.
-- **Planned resolution:** Integrate a user-supplied portrait inside its isolated component, keeping the motion wrapper and stable dimensions. Only pursue true pen-stroke choreography in a separate task with suitable stroke data; do not regenerate the approved handwriting.
-- **Status:** Open, non-blocking for the requested Version 8.1.1 signature integration.
+- **Observed:** Both the portrait and signature are integrated as of Version 8.1.2. The signature asset is still a filled trace, not ordered pen-stroke paths, so its progressive reveal remains a spatial wipe.
+- **Planned resolution:** Only pursue true pen-stroke choreography in a separate task with suitable stroke data; do not regenerate the approved handwriting.
+- **Status:** Open, non-blocking for the requested Version 8.1.2 portrait integration.
 
 ### Project showcase has limited content
 
@@ -165,7 +178,7 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Evaluate locale routes or another server-readable locale strategy only if Chinese search discoverability justifies a separate architecture milestone.
 - **Status:** Open, non-blocking by design after Version 7.1.
 
-No production-build blockers are currently known. Version 8.1.1 visual/interaction
+No production-build blockers are currently known. Version 8.1.2 visual/interaction
 acceptance remains open and must not be inferred from older-version checks.
 
 ## Maintenance Rule

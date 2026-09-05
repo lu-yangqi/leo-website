@@ -236,3 +236,63 @@ test('unmount cancels queued work and removes listeners, observers and inline st
   assert.equal(env.changes.size, 0);
   assert.ok(env.observers.every(observer => observer.targets.size === 0));
 });
+
+test('portrait uses the supplied optimized image with preloading and English/Chinese alt text', () => {
+  const dictionaries = {};
+  const dictionarySource = fs.readFileSync(path.join(__dirname, '../data/i18n.ts'), 'utf8');
+  vm.runInNewContext(ts.transpileModule(dictionarySource, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017 },
+  }).outputText, {
+    exports: dictionaries,
+    require: name => {
+      if (name === '@/lib/site') return { siteConfig: {} };
+      throw new Error(`Unexpected dependency ${name}`);
+    },
+  });
+  const portraitSource = fs.readFileSync(path.join(__dirname, '../components/hero/LeoPortrait.tsx'), 'utf8');
+  const portrait = ts.transpileModule(portraitSource, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2017, jsx: ts.JsxEmit.ReactJSX },
+  }).outputText;
+  for (const locale of ['en', 'zh']) {
+    const exports = {};
+    vm.runInNewContext(portrait, {
+      exports,
+      require: name => {
+        if (name === 'next/image') return { default: 'NextImage' };
+        if (name === './motion') return moduleExports;
+        if (name === '@/components/LanguageProvider') return { useLanguage: () => ({ translations: dictionaries.translations[locale] }) };
+        if (name === 'react/jsx-runtime') return { jsx: (type, props) => ({ type, props }) };
+        throw new Error(`Unexpected dependency ${name}`);
+      },
+    });
+    const wrapper = exports.default();
+    assert.equal(wrapper.props.className, 'leo-portrait');
+    const image = wrapper.props.children;
+    assert.equal(image.type, 'NextImage');
+    assert.equal(image.props.src, '/images/hero/leo-portrait.jpg');
+    assert.equal(image.props.alt, dictionaries.translations[locale].cinematic.portraitAlt);
+    assert.ok(image.props.alt.length > 10);
+    assert.equal(image.props.fill, true);
+    assert.equal(image.props.preload, true);
+    assert.equal(image.props.unoptimized, undefined);
+    assert.equal(image.props.onLoad, undefined, 'Image loading must not drive the motion timeline');
+    assert.ok(image.props.sizes.startsWith(CINEMATIC_MEDIA));
+    assert.ok(image.props.sizes.endsWith('240px, 280px'));
+  }
+  assert.notEqual(dictionaries.translations.en.cinematic.portraitAlt, dictionaries.translations.zh.cinematic.portraitAlt);
+});
+
+test('portrait retains the reserved 3:4 motion anchor and uses centered responsive cropping', () => {
+  const css = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
+  assert.match(css.match(/\.hero-portrait-anchor\s*\{([^}]+)\}/)[1], /aspect-ratio: 3 \/ 4/);
+  const frame = css.match(/\.leo-portrait\s*\{([^}]+)\}/g).join('');
+  assert.match(frame, /position: relative/);
+  assert.match(frame, /overflow: hidden/);
+  const image = css.match(/\.leo-portrait-image\s*\{([^}]+)\}/)[1];
+  assert.match(image, /object-fit: cover/);
+  assert.match(image, /object-position: center/);
+  const scene = fs.readFileSync(path.join(__dirname, '../components/hero/HeroScene.tsx'), 'utf8');
+  assert.ok(scene.includes('className="hero-portrait-anchor" data-portrait-anchor'));
+  assert.ok(scene.includes('<div className="hero-portrait"><LeoPortrait /></div>'));
+  assert.ok(!scene.includes('PortraitPlaceholder') && !css.includes('.portrait-placeholder'));
+});

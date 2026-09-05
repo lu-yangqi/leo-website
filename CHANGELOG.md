@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented in this file.
 
+## [8.1.2] - 2026-09-05
+
+### Changed
+
+- Replaced `PortraitPlaceholder` with an isolated `LeoPortrait` component using the supplied `public/images/hero/leo-portrait.jpg`, without altering the photo.
+- Added Next.js optimized image sources, first-screen preload, responsive sizes, and centered object-fit cropping inside the existing reserved 3:4 frame.
+- Added English/Chinese portrait alt descriptions through the existing language context; replaced missing-asset guidance with a localized invitation to continue to the content.
+- Removed placeholder artwork/styles and updated package/lockfile versions to 8.1.2. Preserved the Hero controller, signature component/reveal, timing, track length, static fallback, routes, SEO, and data architecture; no dependencies or image configuration added.
+
+### Verified
+
+- Production build, standalone TypeScript, whitespace checks, and 16 motion/portrait tests pass.
+- Confirmed controller/timing/signature files are unchanged from `ddf6b45`; the portrait is already 3:4 and retains its original bytes.
+- Local production HTML includes the preloaded image, optimized srcset/sizes, descriptive alt text, and no-JavaScript layout. JPEG and optimized WebP requests pass, including 384px and 640px variants.
+- Eight content routes, canonical/social metadata, representative article highlighting, invalid-slug 404, sitemap, robots, identity endpoints, signature, and contact destinations pass local HTTP checks.
+
+### Pending Acceptance and Deployment
+
+- Actual browser portrait framing, scroll playback, mobile/reduced-motion/no-JavaScript appearance, interactions, and runtime layout stability still need acceptance.
+- Version 8.1.2 has not been committed, pushed, or publicly verified by this task.
+
 ## [8.1.1] - 2026-09-05
 
 ### Changed
@@ -22,7 +43,7 @@ All notable changes to this project are documented in this file.
 ### Pending Acceptance and Deployment
 
 - Real browser mask rendering, partial-reveal playback, mobile/reduced-motion/no-JavaScript appearance, interactions, and runtime performance remain unverified.
-- Version 8.1.1 has not been committed, pushed, or publicly verified by this task. The portrait remains a placeholder; true pen-stroke-order animation is outside this filled-outline integration.
+- Version 8.1.1 was subsequently committed as `ddf6b45`, confirmed at the start of Version 8.1.2 work. Public verification remains unconfirmed. The portrait was a placeholder in this version and is integrated in Version 8.1.2; true pen-stroke-order animation remains deferred.
 
 ## [8.1.0] - 2026-09-05
 
