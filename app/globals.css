@@ -888,8 +888,8 @@ a, button {
 
 @media screen and (min-width: 900px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
   .cinematic-hero {
-    /* Match HERO_SCROLL_SCALE: extend only the signature's part of the track. */
-    height: calc(100svh + 160svh * 1.072 - 88px);
+    /* Match HERO_SCROLL_SCALE: allow the portrait hold and sequential handoff. */
+    height: calc(100svh + 160svh * 1.332 - 88px);
   }
   .hero-scene {
     position: sticky;

@@ -28,13 +28,46 @@ test('progress clamps safely and starts with the full portrait', () => {
 test('portrait reaches the center before fading into the signature', () => {
   const centered = getHeroFrame(HERO_TIMELINE.center[1]);
   assert.equal(centered.center, 1);
-  assert.ok(Math.abs(centered.portraitScale - 0.34) < 1e-10);
+  assert.equal(HERO_TIMELINE.finalPortraitScale, 0.58);
+  assert.ok(Math.abs(centered.portraitScale - HERO_TIMELINE.finalPortraitScale) < 1e-10);
   assert.equal(centered.portraitOpacity, 1);
   assert.equal(centered.signatureOpacity, 0);
   assert.equal(centered.introOpacity, 0);
-  const crossfade = getHeroFrame(0.6 / HERO_SCROLL_SCALE);
-  assert.ok(crossfade.portraitOpacity > 0 && crossfade.portraitOpacity < 1);
-  assert.ok(crossfade.signatureOpacity > 0 && crossfade.signatureOpacity < 1);
+});
+
+test('portrait holds fully visible at the larger center scale before fading', () => {
+  const start = HERO_TIMELINE.center[1];
+  const end = HERO_TIMELINE.portraitFade[0];
+  assert.ok(Math.abs((end - start) * HERO_SCROLL_SCALE - 0.12) < 1e-10);
+  for (let step = 0; step <= 20; step++) {
+    const frame = getHeroFrame(start + (end - start) * step / 20);
+    assert.equal(frame.center, 1);
+    assert.ok(Math.abs(frame.portraitScale - HERO_TIMELINE.finalPortraitScale) < 1e-10);
+    assert.equal(frame.portraitOpacity, 1);
+    assert.equal(frame.signatureOpacity, 0);
+    assert.equal(frame.signatureDraw, 0);
+  }
+});
+
+test('portrait fades smoothly at center before the signature becomes visible', () => {
+  const [start, end] = HERO_TIMELINE.portraitFade;
+  assert.equal(HERO_TIMELINE.signatureReveal[0], end);
+  const midpoint = getHeroFrame((start + end) / 2);
+  assert.ok(Math.abs(midpoint.portraitOpacity - 0.5) < 1e-10);
+  for (let step = 0; step <= 1000; step++) {
+    const progress = step / 1000;
+    const frame = getHeroFrame(progress);
+    if (frame.portraitOpacity > 0) {
+      assert.equal(frame.signatureOpacity, 0);
+      assert.equal(frame.signatureDraw, 0);
+    }
+    if (progress >= HERO_TIMELINE.center[1]) {
+      assert.equal(frame.center, 1);
+      assert.ok(Math.abs(frame.portraitScale - HERO_TIMELINE.finalPortraitScale) < 1e-10);
+    }
+    if (frame.signatureOpacity > 0) assert.equal(frame.portraitOpacity, 0);
+  }
+  assert.equal(getHeroFrame(end).portraitOpacity, 0);
 });
 
 test('final signature is fully visible and holds before the scene exits', () => {
@@ -79,17 +112,19 @@ test('real signature reveal continues progressively after the opacity fade finis
   assert.equal(getHeroFrame(HERO_TIMELINE.signatureDraw[1]).signatureDraw, 1);
 });
 
-test('signature draw gains exactly 20% scroll distance without moving its start or shortening the hold', () => {
+test('later signature handoff preserves drawing distance, fade duration, lead-in, and final hold', () => {
   const [start, end] = HERO_TIMELINE.signatureDraw;
-  assert.ok(Math.abs(start * HERO_SCROLL_SCALE - 0.62) < 1e-10);
+  const [fadeStart, fadeEnd] = HERO_TIMELINE.signatureReveal;
+  assert.ok(Math.abs(start * HERO_SCROLL_SCALE - 0.88) < 1e-10);
+  assert.ok(Math.abs((fadeEnd - fadeStart) * HERO_SCROLL_SCALE - 0.20) < 1e-10);
+  assert.ok(Math.abs((start - fadeStart) * HERO_SCROLL_SCALE - 0.08) < 1e-10);
   assert.ok(Math.abs((end - start) * HERO_SCROLL_SCALE / (0.98 - 0.62) - 1.2) < 1e-10);
   assert.ok(Math.abs((1 - end) * HERO_SCROLL_SCALE - 0.02) < 1e-10);
 });
 
-test('portrait and opacity intervals retain their original physical scroll positions', () => {
+test('opening portrait movement and intro fade retain their original scroll positions', () => {
   const intervals = {
     center: [0.08, 0.48], introFade: [0.06, 0.32],
-    portraitFade: [0.48, 0.64], signatureReveal: [0.54, 0.74],
   };
   for (const [name, expected] of Object.entries(intervals)) {
     HERO_TIMELINE[name].forEach((value, index) => {
@@ -192,6 +227,7 @@ test('controller coalesces scroll events and has no self-scheduling idle loop', 
   assert.equal(env.frames.size, 0);
   assert.ok(Math.abs(Number(env.styles.get('--hero-progress')) - 0.5 / HERO_SCROLL_SCALE) < 1e-10);
   assert.equal(env.styles.get('--portrait-x'), '-300px');
+  assert.ok(Math.abs(Number(env.styles.get('--portrait-scale')) - HERO_TIMELINE.finalPortraitScale) < 1e-10);
   env.cleanup();
 });
 

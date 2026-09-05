@@ -2,6 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## [8.1.3] - 2026-09-05
+
+### Changed
+
+- Increased the configurable `HERO_TIMELINE.finalPortraitScale` from 0.34 to an initial 0.48, then to 0.58 for a user-requested larger preview. The latest tuning increases centered width and height by about 20.8% without changing timing, static sizes, or the controller.
+- Added a full-opacity center hold from reference progress 0.48–0.60, followed by a smooth portrait fade over 0.60–0.80.
+- Shifted signature opacity to 0.80–1.00 and ink reveal to 0.88–1.312, so the portrait is fully gone before the signature appears. Preserved signature reveal duration, lead-in, and final hold.
+- Set `HERO_SCROLL_SCALE` and the matching desktop CSS height factor to 1.332, reserving space for the refined sequence without rewriting the controller or CSS-variable animation system.
+- Updated package/lockfile versions to 8.1.3. Portrait/signature components, assets, static fallback, routes, SEO, i18n, and content models remain unchanged; no dependencies added.
+
+### Verified
+
+- Production build, standalone TypeScript, whitespace checks, and 18 motion/portrait tests pass, including center hold, non-overlapping portrait/signature states, reversibility, and retained signature pacing.
+- Local production checks pass for all eight content pages, metadata, representative article highlighting, 404 handling, sitemap, robots, assets, optimized portrait, and updated track CSS.
+
+### Pending Acceptance and Deployment
+
+- The 0.58 center scale and new timing await full-screen/windowed desktop, mobile, reduced-motion, no-JavaScript, and real reverse-scroll visual acceptance. No browser playback or performance measurements were performed.
+- Version 8.1.3 has not been committed, pushed, or publicly verified by this task.
+
 ## [8.1.2] - 2026-09-05
 
 ### Changed
@@ -21,7 +41,7 @@ All notable changes to this project are documented in this file.
 ### Pending Acceptance and Deployment
 
 - Actual browser portrait framing, scroll playback, mobile/reduced-motion/no-JavaScript appearance, interactions, and runtime layout stability still need acceptance.
-- Version 8.1.2 has not been committed, pushed, or publicly verified by this task.
+- Version 8.1.2 was subsequently committed as `56a6e85`, confirmed at the start of Version 8.1.3 work. Public verification remains unconfirmed.
 
 ## [8.1.1] - 2026-09-05
 

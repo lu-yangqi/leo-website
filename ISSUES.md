@@ -95,6 +95,15 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Intentional Decisions
 
+### Version 8.1.3 preserves portrait identity before handing over to the signature
+
+- **Feedback:** Visual testing reported that the centered portrait was too small and faded before it established a recognizable identity.
+- **Adjustment:** Set the existing configurable center scale initially to 0.48, then increase it to 0.58 for a user-requested larger preview. Hold at full opacity from reference progress 0.48–0.60, fade at center from 0.60–0.80, and start signature opacity only after the portrait has fully disappeared. This size-only follow-up leaves timing and static sizes unchanged; no lateral repositioning or simultaneous animated visibility is introduced.
+- **Diagnosis:** The source and locally served bundle consumed `finalPortraitScale = 0.48` correctly; no conflicting scale override was found. Scaling is relative to the viewport-constrained portrait frame, not the screen. The exact cause of the user's perceived unchanged size was not established; the viewing environment was unconfirmed.
+- **Pacing:** Shift the signature sequence later while retaining its opacity duration, ink lead-in, 69.12svh drawing distance, and 3.2svh final hold. Extend the existing desktop track factor to 1.332; do not replace the controller, components, timeline architecture, or CSS-variable system.
+- **Scope:** Static mobile/reduced-motion/no-JavaScript layouts continue to show both identity assets as before. Routes, SEO, i18n, and content models are untouched.
+- **Status:** Implemented and covered by timeline/controller tests; subjective scale and transition quality still require browser acceptance. The current 0.58 remains a tuning value, not a claim of final visual approval.
+
 ### Version 8.1.2 adds the portrait without changing motion
 
 - Preserve the supplied JPG unchanged at `public/images/hero/leo-portrait.jpg`. It already matches the frame's 3:4 ratio; use centered object-fit cropping rather than editing the source or adding effects.
@@ -147,9 +156,9 @@ This document records development problems, decisions, and unresolved limitation
 ### Version 8.x browser acceptance is pending
 
 - **Observed:** The browser permission check denied a local test tab during Version 8.0 validation. The user later reported no noticeable motion. Renewed local-browser permission was requested during Version 8.1 but has not been granted; browser automation was not retried.
-- **Impact:** Version 8.1.2 build, TypeScript, 16 simulated/source motion and portrait tests, and local HTTP/image-optimization checks pass, but actual portrait framing, playback, external SVG-mask rendering, appearance/overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. The prior motion report is not considered resolved by the new implementation alone.
-- **Planned resolution:** Manually review at desktop and mobile widths (including 320px and 390px), inspect portrait framing and partial/complete signature reveal, switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, disable JavaScript, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
-- **Status:** Open; Version 8.1.2 playback, visual/interaction acceptance, and public verification remain pending.
+- **Impact:** Version 8.1.3 build, TypeScript, 18 simulated/source motion and portrait tests, and local HTTP/image-optimization checks pass, but actual center-scale/hold appearance, playback, external SVG-mask rendering, overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. User-reported visual feedback informed the timing change; the new implementation alone is not final visual acceptance.
+- **Planned resolution:** Review full-screen and windowed desktop plus mobile widths (including 320px and 390px), confirm portrait recognition and a clear center hold, inspect forward/reverse fade-to-signature transitions, switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, disable JavaScript, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
+- **Status:** Open; Version 8.1.3 playback, visual/interaction acceptance, and public verification remain pending.
 
 ### Pen-stroke-order signature animation is deferred
 
@@ -178,7 +187,7 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Evaluate locale routes or another server-readable locale strategy only if Chinese search discoverability justifies a separate architecture milestone.
 - **Status:** Open, non-blocking by design after Version 7.1.
 
-No production-build blockers are currently known. Version 8.1.2 visual/interaction
+No production-build blockers are currently known. Version 8.1.3 visual/interaction
 acceptance remains open and must not be inferred from older-version checks.
 
 ## Maintenance Rule

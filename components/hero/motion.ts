@@ -2,19 +2,21 @@
 export const CINEMATIC_MEDIA =
   "(min-width: 900px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
 
-// On the original 160svh track, the ink spans 0.432 (= 0.36 * 1.2).
-// Add that extra 0.072 to the track, preserving the 0.62 start and 0.02 final hold.
+// Coordinates use the original 160svh track. Add a centered portrait hold,
+// then shift the signature sequence later without shortening its 0.432 draw
+// distance, 0.08 opacity-to-ink lead-in, or 0.02 final hold.
 // Keep this scale aligned with the cinematic height in globals.css.
-export const HERO_SCROLL_SCALE = 1.072;
+export const HERO_SCROLL_SCALE = 1.332;
 
 export const HERO_TIMELINE = {
   // Normalize to the longer track so earlier stages keep their scroll positions.
   center: [0.08 / HERO_SCROLL_SCALE, 0.48 / HERO_SCROLL_SCALE],
   introFade: [0.06 / HERO_SCROLL_SCALE, 0.32 / HERO_SCROLL_SCALE],
-  portraitFade: [0.48 / HERO_SCROLL_SCALE, 0.64 / HERO_SCROLL_SCALE],
-  signatureReveal: [0.54 / HERO_SCROLL_SCALE, 0.74 / HERO_SCROLL_SCALE],
-  signatureDraw: [0.62 / HERO_SCROLL_SCALE, 1.052 / HERO_SCROLL_SCALE],
-  finalPortraitScale: 0.34,
+  // Fully visible at center between the center endpoint (0.48) and fade start.
+  portraitFade: [0.60 / HERO_SCROLL_SCALE, 0.80 / HERO_SCROLL_SCALE],
+  signatureReveal: [0.80 / HERO_SCROLL_SCALE, 1.00 / HERO_SCROLL_SCALE],
+  signatureDraw: [0.88 / HERO_SCROLL_SCALE, 1.312 / HERO_SCROLL_SCALE],
+  finalPortraitScale: 0.58,
 } as const;
 
 export function clampProgress(value: number) {
