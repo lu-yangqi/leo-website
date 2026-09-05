@@ -106,7 +106,7 @@ export type TranslationDictionary = {
   cinematic: {
     skipIntro: string;
     portraitPlaceholder: string;
-    signaturePlaceholder: string;
+    signatureLabel: string;
     scrollHint: string;
     assetsPending: string;
   };
@@ -265,9 +265,9 @@ export const translations = {
     cinematic: {
       skipIntro: "Skip intro",
       portraitPlaceholder: "Portrait to come",
-      signaturePlaceholder: "Signature to come",
+      signatureLabel: "Leo handwritten signature",
       scrollHint: "Scroll to bring the portrait into focus",
-      assetsPending: "Portrait and signature reserved for a future update.",
+      assetsPending: "Portrait reserved for a future update.",
     },
     about: {
       eyebrow: "About",
@@ -425,9 +425,9 @@ export const translations = {
     cinematic: {
       skipIntro: "跳过开场",
       portraitPlaceholder: "照片预留位置",
-      signaturePlaceholder: "签名预留位置",
+      signatureLabel: "Leo 手写签名",
       scrollHint: "向下滚动，让画面聚焦于中央",
-      assetsPending: "照片与签名将在后续版本补充。",
+      assetsPending: "照片将在后续版本补充。",
     },
     about: {
       eyebrow: "关于",

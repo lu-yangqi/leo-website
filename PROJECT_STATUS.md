@@ -4,9 +4,9 @@ Last updated: 2026-09-05
 
 ## Current Version
 
-Version 8.1.0 — Scroll-linked Hero cinematic foundation implemented with replaceable portrait and signature placeholders; build, TypeScript, motion tests, and local response checks pass.
+Version 8.1.1 — The supplied Leo SVG signature replaces the Hero signature placeholder with a progressive reveal driven by the unchanged Version 8.1 motion controller; build, TypeScript, motion tests, and local response checks pass.
 
-Version 8.0 is recorded in local commit `f567204`. Version 8.1 remains local;
+Version 8.1 is recorded in local commit `5f59740`. Version 8.1.1 remains local;
 no commit, push, or public deployment was performed in this task. Browser
 visual/interaction acceptance and post-deployment verification remain pending.
 
@@ -37,12 +37,15 @@ standard Next.js integration.
 ## Completed Features
 
 - Editorial layout with the restored Version 7.2 midnight-navy dual-gradient background, white/cool-slate text, cyan accents, serif/sans-serif typography, fine rules, and shared layout widths
-- Scroll-linked homepage Hero: large portrait placeholder → centered 34%-scale portrait → signature placeholder → natural transition into homepage content
-- Separate Hero controller, server-rendered scene, 3:4 portrait slot, and currentColor SVG-compatible signature slot under `components/hero/`
+- Scroll-linked homepage Hero: large portrait placeholder → centered 34%-scale portrait → progressive Leo signature reveal → natural transition into homepage content
+- Separate Hero controller, server-rendered scene, 3:4 portrait slot, and isolated `LeoSignature` component under `components/hero/`
+- Original `public/signatures/leo-signature-traced.svg` preserved byte-for-byte; an alpha mask supplies currentColor ink and left-to-right clipping consumes the existing `--signature-draw` progress
+- Signature reveal extended a further 20% after feedback: drawing distance grows from 57.6svh to 69.12svh, while the desktop scroll track grows from 160svh to 171.52svh. Normalized timeline intervals preserve the original portrait/crossfade scroll positions, signature start, and 3.2svh complete-signature hold
+- Signature dimensions reserve the original SVG aspect ratio; static mobile, reduced-motion, and no-JavaScript modes show the complete signature
 - Reversible, clamped timing stages driven by CSS variables; event-coalesced requestAnimationFrame updates without React state changes or a continuous idle loop
 - Desktop cinematic mode at viewport widths of at least 900px and heights of at least 700px with motion enabled; static narrow/short-screen and reduced-motion presentations
 - Explicit no-JavaScript static layout, reserved desktop scroll-track space, restored-scroll initialization, resize handling, and lifecycle cleanup
-- Bilingual skip-intro and placeholder text; Projects/About links, technical interests, and both email contacts remain outside fading layers
+- Bilingual skip-intro, portrait-placeholder text, and accessible signature label; Projects/About links, technical interests, and both email contacts remain outside fading layers
 - Original LY Navbar/icon branding preserved; obsolete decorative Hero monogram component and orbit CSS removed
 - Six numbered homepage sections with distinct profile, research, project, learning, note, and contact presentations
 - Consistent Navbar, Footer, About, Projects, Blog index, and article presentation without changing their content models
@@ -118,9 +121,9 @@ standard Next.js integration.
 
 ## Current Limitations
 
-- Version 8.1 desktop/mobile visual quality, real bilingual/contact interactions, keyboard navigation, reduced-motion behavior, and runtime performance still require browser acceptance. Previous browser permission was declined and renewed permission was requested but not granted during this task; no browser automation was retried.
-- Version 8.1 has not been committed, pushed, or verified on the public deployment in this task.
-- Portrait and signature are intentionally labeled placeholders. A real portrait, final Leo signature paths, and final signature-specific stroke choreography remain future work; the current SVG guide demonstrates only the reserved draw phase.
+- Version 8.1.1 desktop/mobile visual quality, real bilingual/contact interactions, keyboard navigation, reduced-motion behavior, external SVG-mask rendering, and runtime performance still require browser acceptance. Previous browser permission was declined and renewed permission was requested during Version 8.1 but not granted; no browser automation was retried.
+- Version 8.1.1 has not been committed, pushed, or verified on the public deployment in this task.
+- The portrait remains a labeled placeholder. The supplied Leo signature is integrated, but its filled outline contains no pen-stroke order: the implemented reveal is a spatial wipe, not true handwriting choreography. Portrait integration and any future stroke-order animation remain separate work.
 - Native reading-progress enhancement outside the Hero is omitted in unsupported browsers.
 - The project showcase currently contains two projects, so overall variety remains limited.
 - Project detail pages, filtering, and category views are not implemented.
@@ -132,6 +135,16 @@ standard Next.js integration.
 - All current blog articles are English-language samples; the validated Chinese article path is ready but has no published Chinese sample yet.
 
 ## Validation
+
+### Version 8.1.1 — 2026-09-05
+
+- `npm run build` passes with the same 15 generated outputs; standalone TypeScript and `git diff --check` pass.
+- `npm run test:hero` passes 14 tests, including exactly 20% additional signature drawing distance, unchanged portrait/crossfade positions and final-hold distance, completion before scene exit, matching SVG/CSS proportions, accessible labeling, and unclipped static-mode source checks. These are simulated/source tests, not browser playback tests.
+- The original SVG hash and `CinematicHero.tsx` remain unchanged. Earlier tuning extended the drawing endpoint from 88% through 96% to 98%. The latest adjustment extends the desktop track by 7.2% and normalizes timeline intervals to give just the drawing phase 20% more distance, without rewriting the controller or reducing the final hold.
+- Local production responses return 200 for all eight content pages and the external signature SVG; the SVG has the correct content type and exactly matches the supplied file bytes. An unknown Blog slug returns 404.
+- Home server HTML includes the real signature's accessible label and no-JavaScript layout, one H1, and the confirmed contact destinations. All content routes retain titles, descriptions, canonical/social metadata; the representative article retains syntax highlighting.
+- Served CSS includes the external alpha mask and progress-driven clipping. Sitemap still contains eight URLs; robots and the three identity endpoints respond successfully.
+- The supplied SVG silhouette was visually inspected by rasterizing the asset only. No browser screenshots, scroll playback, actual mobile/reduced-motion/no-JavaScript rendering, or runtime performance measurements were performed; these remain pending along with public deployment verification.
 
 ### Version 8.1 — 2026-09-05
 
@@ -231,9 +244,9 @@ standard Next.js integration.
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Review Version 8.1 at 1280×800 or larger: scroll down through all stages, reverse scroll, reload mid-scene, resize, and test navigation back to Home. Test narrow/short windows, reduced motion, JavaScript disabled, keyboard skip, English/Chinese, and both email-copy actions.
-- Integrate the real portrait and final signature in their isolated placeholder components when assets are supplied, preserving the motion wrappers and dimensions.
-- After acceptance, commit and push Version 8.1 through GitHub `main` → Vercel; recheck core functionality and the cinematic scene on the production URL.
+- Review Version 8.1.1 at 1280×800 or larger: inspect partial signature reveal at approximately 30%, 70%, and 100% of its drawing phase, reverse scroll, reload mid-scene, resize, and test navigation back to Home. Test narrow/short windows, reduced motion, JavaScript disabled, keyboard skip, English/Chinese, and both email-copy actions.
+- Integrate the real portrait in its isolated component when supplied, preserving the motion wrapper and dimensions. Treat any true pen-stroke-order animation as a separate future task.
+- After acceptance, commit and push Version 8.1.1 through GitHub `main` → Vercel; recheck core functionality and the cinematic scene on the production URL.
 - Consider Search Console submission manually as a separate external step.
 
 ## Maintenance Rule

@@ -2,7 +2,7 @@ import { LocalizedText } from "@/components/LanguageProvider";
 import { translationPair } from "@/data/i18n";
 import { profile } from "@/data/profile";
 import PortraitPlaceholder from "./PortraitPlaceholder";
-import SignaturePlaceholder from "./SignaturePlaceholder";
+import LeoSignature from "./LeoSignature";
 
 export default function HeroScene() {
   const [firstName, ...remainingName] = profile.names.public.split(" ");
@@ -38,7 +38,7 @@ export default function HeroScene() {
         </div>
 
         <div className="hero-signature">
-          <SignaturePlaceholder />
+          <LeoSignature />
           <p className="hero-signature-name">
             {profile.names.formal} <span aria-hidden="true">/</span> {profile.names.chinese}
           </p>

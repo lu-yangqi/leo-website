@@ -2,6 +2,28 @@
 
 All notable changes to this project are documented in this file.
 
+## [8.1.1] - 2026-09-05
+
+### Changed
+
+- Replaced `SignaturePlaceholder` with an isolated, accessible `LeoSignature` component using the supplied `public/signatures/leo-signature-traced.svg` without modifying the asset.
+- Rendered the filled SVG outline as currentColor ink through an alpha mask, with a left-to-right partial reveal driven by the existing `--signature-draw` variable.
+- Slowed the signature reveal after feedback: first extended its interval from 62%–88% through 62%–96% to 62%–98%; then increased its drawing distance by another 20% (57.6svh → 69.12svh). Extended the desktop scroll track to 171.52svh and normalized intervals so portrait/crossfade positions, the signature start, and its 3.2svh final hold remain unchanged.
+- Reserved the original signature aspect ratio; kept the complete signature visible in static mobile, reduced-motion, and no-JavaScript modes.
+- Updated English/Chinese signature labels and the remaining portrait-placeholder notice.
+- Updated package and lockfile versions to 8.1.1; no dependency, controller, route, SEO, or content-model changes. Signature timing and desktop track length were tuned after feedback.
+
+### Verified
+
+- Production build, standalone TypeScript, whitespace checks, and 14 timeline/controller/signature tests pass.
+- Confirmed the original SVG bytes and Version 8.1 controller are unchanged; inspected the SVG silhouette independently of the webpage. Updated motion tests verify exactly 20% more drawing distance, preserved earlier-stage positions, and the unchanged complete-signature hold before scene exit.
+- Local production checks pass for eight content routes, invalid-slug 404, metadata, representative article highlighting, sitemap, robots, identity endpoints, generated signature CSS, and the exact SVG response bytes/content type.
+
+### Pending Acceptance and Deployment
+
+- Real browser mask rendering, partial-reveal playback, mobile/reduced-motion/no-JavaScript appearance, interactions, and runtime performance remain unverified.
+- Version 8.1.1 has not been committed, pushed, or publicly verified by this task. The portrait remains a placeholder; true pen-stroke-order animation is outside this filled-outline integration.
+
 ## [8.1.0] - 2026-09-05
 
 ### Added
@@ -31,7 +53,7 @@ All notable changes to this project are documented in this file.
 ### Pending Acceptance and Deployment
 
 - Real browser playback, responsive appearance, reduced-motion/no-JavaScript rendering, keyboard and bilingual/contact interaction, and runtime performance still need acceptance. Simulated controller tests do not replace those checks.
-- Version 8.1 has not been committed, pushed, or deployed by this task. Final portrait and signature integration are intentionally deferred.
+- Version 8.1 was subsequently committed as `5f59740`, confirmed at the start of Version 8.1.1 work. Public/browser verification remains unconfirmed. Personal assets were deferred in this version; signature integration follows in Version 8.1.1.
 
 ## [8.0.0] - 2026-09-05
 

@@ -12,7 +12,7 @@ const compiled = ts.transpileModule(source, {
 }).outputText;
 const moduleExports = {};
 vm.runInNewContext(compiled, { exports: moduleExports });
-const { getHeroFrame, clampProgress, HERO_TIMELINE, CINEMATIC_MEDIA } = moduleExports;
+const { getHeroFrame, clampProgress, HERO_TIMELINE, HERO_SCROLL_SCALE, CINEMATIC_MEDIA } = moduleExports;
 
 test('progress clamps safely and starts with the full portrait', () => {
   assert.equal(clampProgress(-1), 0);
@@ -32,7 +32,7 @@ test('portrait reaches the center before fading into the signature', () => {
   assert.equal(centered.portraitOpacity, 1);
   assert.equal(centered.signatureOpacity, 0);
   assert.equal(centered.introOpacity, 0);
-  const crossfade = getHeroFrame(0.6);
+  const crossfade = getHeroFrame(0.6 / HERO_SCROLL_SCALE);
   assert.ok(crossfade.portraitOpacity > 0 && crossfade.portraitOpacity < 1);
   assert.ok(crossfade.signatureOpacity > 0 && crossfade.signatureOpacity < 1);
 });
@@ -44,7 +44,8 @@ test('final signature is fully visible and holds before the scene exits', () => 
   assert.equal(frame.signatureOpacity, 1);
   assert.equal(frame.signatureScale, 1);
   assert.equal(frame.signatureDraw, 1);
-  assert.equal(getHeroFrame(0.9).signatureDraw, 1);
+  assert.equal(getHeroFrame(HERO_TIMELINE.signatureDraw[1]).signatureDraw, 1);
+  assert.equal(getHeroFrame(0.99).signatureDraw, 1);
 });
 
 test('all frames remain bounded and reversible without accumulating state', () => {
@@ -65,8 +66,59 @@ test('all frames remain bounded and reversible without accumulating state', () =
 test('CSS and JS share the same desktop and reduced-motion eligibility', () => {
   const css = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
   assert.ok(css.includes(`@media screen and ${CINEMATIC_MEDIA}`));
-  assert.ok(css.includes('height: calc(260svh - 88px)'));
-  assert.ok(css.includes('stroke-dashoffset: calc(1 - var(--signature-draw, 0))'));
+  assert.ok(css.includes(`height: calc(100svh + 160svh * ${HERO_SCROLL_SCALE} - 88px)`));
+  assert.ok(css.includes('clip-path: inset(0 calc((1 - var(--signature-draw, 0)) * 100%) 0 0)'));
+});
+
+test('real signature reveal continues progressively after the opacity fade finishes', () => {
+  assert.equal(getHeroFrame(HERO_TIMELINE.signatureDraw[0]).signatureDraw, 0);
+  const midpoint = getHeroFrame((HERO_TIMELINE.signatureDraw[0] + HERO_TIMELINE.signatureDraw[1]) / 2);
+  assert.equal(midpoint.signatureOpacity, 1);
+  assert.ok(Math.abs(midpoint.signatureDraw - 0.5) < 1e-10);
+  assert.ok(getHeroFrame(0.98 / HERO_SCROLL_SCALE).signatureDraw < 1, 'Ink is still revealing at the previous scroll completion point');
+  assert.equal(getHeroFrame(HERO_TIMELINE.signatureDraw[1]).signatureDraw, 1);
+});
+
+test('signature draw gains exactly 20% scroll distance without moving its start or shortening the hold', () => {
+  const [start, end] = HERO_TIMELINE.signatureDraw;
+  assert.ok(Math.abs(start * HERO_SCROLL_SCALE - 0.62) < 1e-10);
+  assert.ok(Math.abs((end - start) * HERO_SCROLL_SCALE / (0.98 - 0.62) - 1.2) < 1e-10);
+  assert.ok(Math.abs((1 - end) * HERO_SCROLL_SCALE - 0.02) < 1e-10);
+});
+
+test('portrait and opacity intervals retain their original physical scroll positions', () => {
+  const intervals = {
+    center: [0.08, 0.48], introFade: [0.06, 0.32],
+    portraitFade: [0.48, 0.64], signatureReveal: [0.54, 0.74],
+  };
+  for (const [name, expected] of Object.entries(intervals)) {
+    HERO_TIMELINE[name].forEach((value, index) => {
+      assert.ok(Math.abs(value * HERO_SCROLL_SCALE - expected[index]) < 1e-10, `${name}[${index}]`);
+    });
+  }
+});
+
+test('signature mask uses the provided asset at its original aspect ratio', () => {
+  const css = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
+  const svg = fs.readFileSync(path.join(__dirname, '../public/signatures/leo-signature-traced.svg'), 'utf8');
+  const viewBox = svg.match(/viewBox="([^"]+)"/)[1].split(/\s+/).map(Number);
+  assert.ok(css.includes(`aspect-ratio: ${viewBox[2]} / ${viewBox[3]}`));
+  assert.ok(css.includes('mask-image: url("/signatures/leo-signature-traced.svg")'));
+  assert.ok(css.includes('mask-mode: alpha'));
+  assert.ok(css.includes('mask-size: contain'));
+  assert.ok(svg.includes('<path') && !svg.includes('<image'));
+});
+
+test('signature clipping is opt-in to the motion-enabled desktop scene', () => {
+  const css = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
+  const baseRule = css.match(/\.leo-signature-ink\s*\{([^}]+)\}/)[1];
+  assert.ok(!baseRule.includes('clip-path'), 'Static, reduced-motion and no-JS signature stays complete');
+  const desktop = css.indexOf(`@media screen and ${CINEMATIC_MEDIA}`);
+  const activeRule = css.indexOf('.cinematic-hero[data-hero-motion="active"] .leo-signature-ink');
+  assert.ok(desktop >= 0 && activeRule > desktop);
+  const component = fs.readFileSync(path.join(__dirname, '../components/hero/LeoSignature.tsx'), 'utf8');
+  assert.ok(component.includes('aria-labelledby="leo-signature-label"'));
+  assert.ok(component.includes('translationPair("cinematic", "signatureLabel")'));
 });
 
 function controllerHarness(initiallyEnabled = true, initialScroll = 0) {
@@ -85,7 +137,7 @@ function controllerHarness(initiallyEnabled = true, initialScroll = 0) {
     dataset: {},
     style: { setProperty: (key, value) => styles.set(key, value), removeProperty: key => styles.delete(key) },
     querySelector: selector => ({ '[data-hero-scene]': scene, '[data-hero-body]': body, '[data-portrait-anchor]': anchor })[selector],
-    getBoundingClientRect: () => ({ top: 88 - window.scrollY, height: 1992 }),
+    getBoundingClientRect: () => ({ top: 88 - window.scrollY, height: 712 + 1280 * HERO_SCROLL_SCALE }),
   };
   const media = {
     matches: initiallyEnabled,
@@ -138,13 +190,13 @@ test('controller coalesces scroll events and has no self-scheduling idle loop', 
   assert.equal(env.frames.size, 1);
   env.flush();
   assert.equal(env.frames.size, 0);
-  assert.equal(env.styles.get('--hero-progress'), '0.5');
+  assert.ok(Math.abs(Number(env.styles.get('--hero-progress')) - 0.5 / HERO_SCROLL_SCALE) < 1e-10);
   assert.equal(env.styles.get('--portrait-x'), '-300px');
   env.cleanup();
 });
 
 test('controller initializes from restored scroll and remeasures on resize', () => {
-  const env = controllerHarness(true, 1280);
+  const env = controllerHarness(true, 1280 * HERO_SCROLL_SCALE);
   assert.equal(env.styles.get('--signature-opacity'), '1');
   env.moveBody(200);
   env.events.get('resize')();

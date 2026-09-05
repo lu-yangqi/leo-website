@@ -89,12 +89,20 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Intentional Decisions
 
+### Version 8.1.1 preserves the supplied filled-outline signature
+
+- Use the actual supplied filename, `public/signatures/leo-signature-traced.svg`, unchanged; do not redraw the handwriting or convert its outline into invented pen strokes.
+- The SVG's black fill supplies alpha, while CSS paints inherited currentColor ink for the existing dark palette. Reserve its original aspect ratio to avoid stretching or layout shifts when the asset loads.
+- Use the existing `--signature-draw` progress for a left-to-right clip, including partial states after the opacity fade. Keep the Version 8.1 controller and static fallback architecture unchanged.
+- Initial feedback extended the drawing interval to 62%–98%, leaving little room before scene exit. For the subsequent request for another 20%, increase drawing distance from 57.6svh to 69.12svh and total desktop track distance from 160svh to 171.52svh. Normalize the existing intervals to preserve portrait/crossfade scroll positions, the signature start, and the 3.2svh final hold rather than allowing the draw to end beyond the track. Playback remains scroll-linked, not a fixed-duration timer.
+- This is a spatial reveal, not stroke-order handwriting animation. Mobile/reduced-motion/no-JavaScript modes expose the complete signature; real browser rendering still needs acceptance.
+
 ### Version 8.1 builds the cinematic sequence before personal assets
 
 - Keep a clearly labeled, replaceable 3:4 portrait and SVG-compatible signature slot; do not invent a photograph or final personal signature.
 - Use a sticky desktop scene and reversible CSS-variable timeline. requestAnimationFrame is event-coalesced, not a continuous loop; no React state is updated during scrolling.
 - Reserve the desktop track before hydration and provide a no-JavaScript static override. Narrow/short screens and reduced-motion preferences receive a static scene without scroll pinning.
-- Preserve original profile facts, homepage content, bilingual state, SEO, LY Navbar/icons, and the user-selected Version 7.2 palette. Final signature paths remain future asset work.
+- Preserve original profile facts, homepage content, bilingual state, SEO, LY Navbar/icons, and the user-selected Version 7.2 palette. This was the placeholder foundation; the supplied signature is integrated in Version 8.1.1.
 
 ### Version 7.2 colors are retained within the Version 8.0 layout
 
@@ -123,18 +131,18 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Open
 
-### Version 8.0 / 8.1 browser acceptance is pending
+### Version 8.0 / 8.1 / 8.1.1 browser acceptance is pending
 
 - **Observed:** The browser permission check denied a local test tab during Version 8.0 validation. The user later reported no noticeable motion. Renewed local-browser permission was requested during Version 8.1 but has not been granted; browser automation was not retried.
-- **Impact:** Version 8.1 build, TypeScript, nine simulated motion tests, and local HTTP checks pass, but actual playback, appearance/overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. The prior motion report is not considered resolved by the new implementation alone.
-- **Planned resolution:** Manually review at desktop and mobile widths (including 320px and 390px), switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
-- **Status:** Open; Version 8.1 playback, visual/interaction acceptance, and public verification remain pending.
+- **Impact:** Version 8.1.1 build, TypeScript, 14 simulated/source motion tests, and local HTTP checks pass, but actual playback, external SVG-mask rendering, appearance/overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. The prior motion report is not considered resolved by the new implementation alone.
+- **Planned resolution:** Manually review at desktop and mobile widths (including 320px and 390px), inspect partial and complete signature reveal, switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, disable JavaScript, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
+- **Status:** Open; Version 8.1.1 playback, visual/interaction acceptance, and public verification remain pending.
 
-### Final portrait and signature assets are intentionally absent
+### Final portrait remains unavailable; pen-stroke-order animation is deferred
 
-- **Observed:** Version 8.1 contains only clearly labeled portrait/signature placeholders and an SVG guide for the reserved drawing phase.
-- **Planned resolution:** Integrate user-supplied final assets inside the isolated components, keeping their motion wrappers and stable dimensions; tune actual stroke timing when the signature paths exist.
-- **Status:** Open, non-blocking for the requested Version 8.1 motion foundation.
+- **Observed:** Version 8.1.1 integrates the supplied Leo signature, replacing the former SVG guide. The portrait remains a labeled placeholder. The signature asset is a filled trace, not ordered pen-stroke paths.
+- **Planned resolution:** Integrate a user-supplied portrait inside its isolated component, keeping the motion wrapper and stable dimensions. Only pursue true pen-stroke choreography in a separate task with suitable stroke data; do not regenerate the approved handwriting.
+- **Status:** Open, non-blocking for the requested Version 8.1.1 signature integration.
 
 ### Project showcase has limited content
 
@@ -157,7 +165,7 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Evaluate locale routes or another server-readable locale strategy only if Chinese search discoverability justifies a separate architecture milestone.
 - **Status:** Open, non-blocking by design after Version 7.1.
 
-No production-build blockers are currently known. Version 8.1 visual/interaction
+No production-build blockers are currently known. Version 8.1.1 visual/interaction
 acceptance remains open and must not be inferred from older-version checks.
 
 ## Maintenance Rule
