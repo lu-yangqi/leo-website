@@ -4,11 +4,11 @@ Last updated: 2026-09-05
 
 ## Current Version
 
-Version 8.1.3 — Refined the Hero with a configurable 0.58 portrait center scale, a visible center hold, and a sequential portrait fade → signature reveal; the existing controller, components, CSS-variable system, and static layouts are preserved. Build, TypeScript, motion/portrait tests, and local response checks pass.
+Version 8.1.3 — Refined the Hero with a configurable 0.58 portrait center scale, a visible center hold, and a sequential portrait fade → signature reveal. The latest tuning shortens the whole scroll track to 90% while preserving stage proportions, the controller, components, CSS-variable system, and static layouts. Build, TypeScript, motion/portrait tests, and local response checks pass.
 
-Version 8.1.2 is recorded in local commit `56a6e85`. Version 8.1.3 remains local;
-no commit, push, or public deployment was performed in this task. Browser
-visual/interaction acceptance and post-deployment verification remain pending.
+Version 8.1.3's larger-portrait baseline is recorded in local commit `9a41f90`.
+The subsequent 90%-distance tuning remains uncommitted; this task did not push or
+deploy it. Browser visual/interaction acceptance and public verification remain pending.
 
 Production URL: [https://leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 
@@ -42,7 +42,7 @@ standard Next.js integration.
 - Original 1440×1920 JPG at `public/images/hero/leo-portrait.jpg` preserved unchanged; Next.js Image supplies responsive optimized sources and first-screen preloading in the existing reserved 3:4 frame
 - Centered object-fit cropping with no new image effects; portrait alt text follows the existing English/Chinese language context, and static guidance no longer promises missing assets
 - Original `public/signatures/leo-signature-traced.svg` preserved byte-for-byte; an alpha mask supplies currentColor ink and left-to-right clipping consumes the existing `--signature-draw` progress
-- Preserved the previously extended 69.12svh signature drawing distance, 12.8svh opacity-to-ink lead-in, and 3.2svh final hold; the desktop track now spans 213.12svh to accommodate the portrait hold and non-overlapping handoff without accelerating the signature
+- Shortened the complete desktop track from 213.12svh to 191.808svh (90%) after feedback about excessive scrolling; every stage retains its proportion, with a 62.208svh signature draw, 11.52svh opacity-to-ink lead-in, and 2.88svh final hold
 - Signature dimensions reserve the original SVG aspect ratio; static mobile, reduced-motion, and no-JavaScript modes show the complete signature
 - Reversible, clamped timing stages driven by CSS variables; event-coalesced requestAnimationFrame updates without React state changes or a continuous idle loop
 - Desktop cinematic mode at viewport widths of at least 900px and heights of at least 700px with motion enabled; static narrow/short-screen and reduced-motion presentations
@@ -124,7 +124,7 @@ standard Next.js integration.
 ## Current Limitations
 
 - Version 8.1.3 desktop/mobile presentation and the subjective 0.58 center-scale/hold feel still require browser acceptance, alongside real bilingual/contact interactions, keyboard navigation, reduced-motion behavior, external SVG-mask rendering, and runtime performance. Previous browser permission was declined and renewed permission was requested during Version 8.1 but not granted; no browser automation was retried.
-- Version 8.1.3 has not been committed, pushed, or verified on the public deployment in this task.
+- The latest 90%-distance tuning is uncommitted and has not been pushed or verified on the public deployment in this task; the preceding larger-portrait baseline is committed as `9a41f90`.
 - Both supplied identity assets are integrated. The signature's filled outline contains no pen-stroke order: its reveal remains a spatial wipe, not true handwriting choreography. Advanced portrait effects and stroke-order animation remain separate future work.
 - Native reading-progress enhancement outside the Hero is omitted in unsupported browsers.
 - The project showcase currently contains two projects, so overall variety remains limited.
@@ -141,7 +141,7 @@ standard Next.js integration.
 ### Version 8.1.3 — 2026-09-05
 
 - `npm run build` passes with the same 15 generated outputs; standalone TypeScript and `git diff --check` pass.
-- `npm run test:hero` passes 18 tests, including the 0.58 scale and its controller CSS-variable output, full-opacity center hold, smooth centered fade, no portrait/signature overlap across 1,001 sampled frames, reverse-scroll determinism, preserved signature pacing, and existing controller/static-mode/portrait checks. These are simulated/source tests, not browser acceptance.
+- `npm run test:hero` passes 19 tests, including the 0.58 scale and its controller CSS-variable output, full-opacity center hold, smooth centered fade, no portrait/signature overlap across 1,001 sampled frames, unchanged stage proportions, and the same forward/reverse controller output at 90% of the previous scroll distance. Existing controller/static-mode/portrait checks also pass. These are simulated/source tests, not browser acceptance.
 - `CinematicHero.tsx`, `HeroScene.tsx`, `LeoPortrait.tsx`, `LeoSignature.tsx`, assets, routes, SEO, i18n, and content models have no changes from `56a6e85`. Only timeline configuration and the matching desktop track height change application behavior.
 - Local HTTP checks pass for eight content pages with metadata, a representative highlighted article, an unknown-slug 404, eight sitemap entries, robots, identity assets, the portrait and its optimized WebP response. Home retains static/no-JavaScript markup and contact destinations; served CSS contains the updated track height.
 - Full-screen/windowed appearance, real reverse scrolling, mobile/reduced-motion/no-JavaScript rendering, and perceived transition quality remain browser acceptance work. No production deployment or runtime performance measurements were performed.
@@ -153,17 +153,20 @@ raised from the initial 0.48 after the user requested a larger preview: about
 20.8% more centered width and height, with all timing and static sizes unchanged.
 This is a visual tuning candidate, not final browser acceptance. Timeline
 coordinates below use the existing 160svh reference distance; divide them by
-`HERO_SCROLL_SCALE = 1.332` for normalized controller progress. These are scroll
-intervals, not seconds. The complete desktop track is 213.12svh.
+`HERO_SCROLL_SCALE = 1.332` for normalized controller progress. The cinematic CSS
+setting `--hero-scroll-distance-ratio: 0.9` then shortens physical scroll distances
+uniformly: the complete track is now 191.808svh instead of 213.12svh. The sticky
+scene height, normalized timeline, 0.58 center scale, and static layouts remain
+unchanged. These are scroll intervals, not seconds.
 
 | Stage | Reference interval | Scroll distance |
 | --- | --- | --- |
-| Shrink and center | 0.08–0.48 | 64svh |
-| Full-opacity portrait hold | 0.48–0.60 | 19.2svh |
-| Portrait fade-out at center | 0.60–0.80 | 32svh |
-| Signature opacity reveal | 0.80–1.00 | 32svh |
-| Signature ink reveal | 0.88–1.312 | 69.12svh |
-| Complete-signature hold | 1.312–1.332 | 3.2svh |
+| Shrink and center | 0.08–0.48 | 57.6svh |
+| Full-opacity portrait hold | 0.48–0.60 | 17.28svh |
+| Portrait fade-out at center | 0.60–0.80 | 28.8svh |
+| Signature opacity reveal | 0.80–1.00 | 28.8svh |
+| Signature ink reveal | 0.88–1.312 | 62.208svh |
+| Complete-signature hold | 1.312–1.332 | 2.88svh |
 
 The intro-text fade remains 0.06–0.32. The portrait is fully gone before any
 signature opacity is introduced in cinematic mode. Static modes intentionally
@@ -287,7 +290,7 @@ retain the existing simultaneous portrait/signature layout without this timeline
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Review Version 8.1.3 at full-screen and windowed desktop sizes: confirm the 0.58 portrait remains recognizable, holds clearly, and fades before the signature starts. Reverse scroll, reload mid-scene, resize, and test navigation back to Home. Test mobile/narrow/short windows, reduced motion, JavaScript disabled, keyboard skip, English/Chinese, and both email-copy actions.
+- Review Version 8.1.3 at full-screen and windowed desktop sizes: confirm the 90%-distance track feels less prolonged while the 0.58 portrait remains recognizable, holds clearly, and fades before the signature starts. Reverse scroll, reload mid-scene, resize, and test navigation back to Home. Test mobile/narrow/short windows, reduced motion, JavaScript disabled, keyboard skip, English/Chinese, and both email-copy actions.
 - Treat advanced portrait effects and true pen-stroke-order animation as separate future tasks; both supplied identity assets are now integrated.
 - After acceptance, commit and push Version 8.1.3 through GitHub `main` → Vercel; recheck core functionality, image optimization, and the cinematic scene on the production URL.
 - Consider Search Console submission manually as a separate external step.

@@ -2,14 +2,14 @@
 export const CINEMATIC_MEDIA =
   "(min-width: 900px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
 
-// Coordinates use the original 160svh track. Add a centered portrait hold,
-// then shift the signature sequence later without shortening its 0.432 draw
-// distance, 0.08 opacity-to-ink lead-in, or 0.02 final hold.
-// Keep this scale aligned with the cinematic height in globals.css.
+// Reference coordinates retain the centered hold and sequential signature handoff.
+// Normalize them independently of the physical scroll distance: globals.css applies
+// --hero-scroll-distance-ratio to the whole track without changing stage proportions.
+// Keep this normalization scale aligned with the cinematic height in globals.css.
 export const HERO_SCROLL_SCALE = 1.332;
 
 export const HERO_TIMELINE = {
-  // Normalize to the longer track so earlier stages keep their scroll positions.
+  // Preserve stage proportions when the CSS scroll-distance ratio changes.
   center: [0.08 / HERO_SCROLL_SCALE, 0.48 / HERO_SCROLL_SCALE],
   introFade: [0.06 / HERO_SCROLL_SCALE, 0.32 / HERO_SCROLL_SCALE],
   // Fully visible at center between the center endpoint (0.48) and fade start.

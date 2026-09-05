@@ -10,17 +10,18 @@ All notable changes to this project are documented in this file.
 - Added a full-opacity center hold from reference progress 0.48–0.60, followed by a smooth portrait fade over 0.60–0.80.
 - Shifted signature opacity to 0.80–1.00 and ink reveal to 0.88–1.312, so the portrait is fully gone before the signature appears. Preserved signature reveal duration, lead-in, and final hold.
 - Set `HERO_SCROLL_SCALE` and the matching desktop CSS height factor to 1.332, reserving space for the refined sequence without rewriting the controller or CSS-variable animation system.
+- After further scrolling feedback, set the cinematic CSS `--hero-scroll-distance-ratio` to 0.9: shorten the complete track from 213.12svh to 191.808svh. All stage distances decrease by 10%; normalized proportions, the 0.58 center scale, controller, sticky scene height, and static modes stay unchanged.
 - Updated package/lockfile versions to 8.1.3. Portrait/signature components, assets, static fallback, routes, SEO, i18n, and content models remain unchanged; no dependencies added.
 
 ### Verified
 
-- Production build, standalone TypeScript, whitespace checks, and 18 motion/portrait tests pass, including center hold, non-overlapping portrait/signature states, reversibility, and retained signature pacing.
+- Production build, standalone TypeScript, whitespace checks, and 19 motion/portrait tests pass, including center hold, non-overlapping portrait/signature states, unchanged stage proportions, and equivalent forward/reverse controller output over 90% of the previous distance.
 - Local production checks pass for all eight content pages, metadata, representative article highlighting, 404 handling, sitemap, robots, assets, optimized portrait, and updated track CSS.
 
 ### Pending Acceptance and Deployment
 
 - The 0.58 center scale and new timing await full-screen/windowed desktop, mobile, reduced-motion, no-JavaScript, and real reverse-scroll visual acceptance. No browser playback or performance measurements were performed.
-- Version 8.1.3 has not been committed, pushed, or publicly verified by this task.
+- The larger-portrait Version 8.1.3 baseline was subsequently committed as `9a41f90`. The latest 90%-distance tuning remains uncommitted and has not been pushed or publicly verified by this task.
 
 ## [8.1.2] - 2026-09-05
 

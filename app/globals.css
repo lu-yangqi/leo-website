@@ -888,8 +888,9 @@ a, button {
 
 @media screen and (min-width: 900px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
   .cinematic-hero {
-    /* Match HERO_SCROLL_SCALE: allow the portrait hold and sequential handoff. */
-    height: calc(100svh + 160svh * 1.332 - 88px);
+    /* Match HERO_SCROLL_SCALE; shorten only the scroll track, not the sticky scene. */
+    --hero-scroll-distance-ratio: 0.9;
+    height: calc(100svh + 160svh * 1.332 * var(--hero-scroll-distance-ratio) - 88px);
   }
   .hero-scene {
     position: sticky;

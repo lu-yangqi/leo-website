@@ -14,6 +14,7 @@ Version 8.1.3 includes:
 
 - A scroll-linked cinematic Hero with the supplied portrait, optimized image loading, and the Leo SVG signature progressively revealed by the existing motion controller
 - A larger 0.58-scale centered portrait hold, followed by a smooth fade-out before the signature takes over
+- A 10% shorter Hero scroll track with the same stage proportions and motion sequence
 - An editorial visual system retaining the Version 7.2 navy background, cool-slate text, cyan accents, expressive typography, and functional `LY` branding
 - Responsive page styling, lightweight entrance and scroll-reveal effects, and reduced-motion support
 - A verified public Vercel deployment at
@@ -36,7 +37,7 @@ Production: [leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 The site is hosted on Vercel. Deployments are triggered from the GitHub
 `main` branch through Vercel's standard Next.js integration.
 
-Version 8.1.3 is implemented locally and has passed build, TypeScript, 18 motion/portrait
+Version 8.1.3's latest scroll-distance tuning is implemented locally and has passed build, TypeScript, 19 motion/portrait
 tests, and local production-response and image-optimization checks. Browser visual/interaction acceptance
 and public deployment verification remain pending; the live URL above is not
 evidence that Version 8.1.3 has been deployed.
@@ -81,13 +82,14 @@ reserving the original aspect ratio without modifying its paths. The existing
 `--signature-draw` progress clips the ink from left to right; this is a spatial
 reveal, not pen-stroke-order animation. Parent wrappers still own movement and
 opacity. `HERO_TIMELINE.finalPortraitScale` in `components/hero/motion.ts` sets
-the center scale to `0.58` (a visual tuning candidate increased from `0.48`, with
-timing and static sizes unchanged). The portrait holds fully visible for 19.2svh of scroll,
-then fades at center over 32svh; only afterward does the signature appear.
-The signature sequence starts later but retains its existing slow 69.12svh ink
-reveal, opacity lead-in, and final hold. The desktop track grows to 213.12svh;
-the existing timeline normalizes these intervals without changing the controller
-or static modes. See `PROJECT_STATUS.md` for exact timing values.
+the center scale to `0.58` (a visual tuning candidate increased from `0.48`).
+The latest pacing adjustment sets `--hero-scroll-distance-ratio: 0.9` in the
+cinematic CSS, reducing the whole track from 213.12svh to 191.808svh without
+changing the normalized timeline, portrait size, controller, or static modes.
+The portrait holds fully visible for 17.28svh of scroll, then fades at center over
+28.8svh; only afterward does the signature appear. Its 62.208svh ink reveal,
+opacity lead-in, and final hold retain their relative proportions: every stage
+needs 10% less scrolling. See `PROJECT_STATUS.md` for exact timing values.
 
 The portrait asset is `public/images/hero/leo-portrait.jpg` (1440×1920).
 `components/hero/LeoPortrait.tsx` uses Next.js Image with preloading and responsive

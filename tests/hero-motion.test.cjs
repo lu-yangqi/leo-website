@@ -13,6 +13,8 @@ const compiled = ts.transpileModule(source, {
 const moduleExports = {};
 vm.runInNewContext(compiled, { exports: moduleExports });
 const { getHeroFrame, clampProgress, HERO_TIMELINE, HERO_SCROLL_SCALE, CINEMATIC_MEDIA } = moduleExports;
+const heroCss = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
+const scrollDistanceRatio = Number(heroCss.match(/--hero-scroll-distance-ratio:\s*([\d.]+)/)[1]);
 
 test('progress clamps safely and starts with the full portrait', () => {
   assert.equal(clampProgress(-1), 0);
@@ -99,7 +101,7 @@ test('all frames remain bounded and reversible without accumulating state', () =
 test('CSS and JS share the same desktop and reduced-motion eligibility', () => {
   const css = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
   assert.ok(css.includes(`@media screen and ${CINEMATIC_MEDIA}`));
-  assert.ok(css.includes(`height: calc(100svh + 160svh * ${HERO_SCROLL_SCALE} - 88px)`));
+  assert.ok(css.includes(`height: calc(100svh + 160svh * ${HERO_SCROLL_SCALE} * var(--hero-scroll-distance-ratio) - 88px)`));
   assert.ok(css.includes('clip-path: inset(0 calc((1 - var(--signature-draw, 0)) * 100%) 0 0)'));
 });
 
@@ -112,7 +114,7 @@ test('real signature reveal continues progressively after the opacity fade finis
   assert.equal(getHeroFrame(HERO_TIMELINE.signatureDraw[1]).signatureDraw, 1);
 });
 
-test('later signature handoff preserves drawing distance, fade duration, lead-in, and final hold', () => {
+test('later signature handoff preserves reference drawing, fade, lead-in, and final-hold proportions', () => {
   const [start, end] = HERO_TIMELINE.signatureDraw;
   const [fadeStart, fadeEnd] = HERO_TIMELINE.signatureReveal;
   assert.ok(Math.abs(start * HERO_SCROLL_SCALE - 0.88) < 1e-10);
@@ -122,9 +124,11 @@ test('later signature handoff preserves drawing distance, fade duration, lead-in
   assert.ok(Math.abs((1 - end) * HERO_SCROLL_SCALE - 0.02) < 1e-10);
 });
 
-test('opening portrait movement and intro fade retain their original scroll positions', () => {
+test('all stages retain their reference positions on the proportionally shortened track', () => {
   const intervals = {
     center: [0.08, 0.48], introFade: [0.06, 0.32],
+    portraitFade: [0.60, 0.80], signatureReveal: [0.80, 1.00],
+    signatureDraw: [0.88, 1.312],
   };
   for (const [name, expected] of Object.entries(intervals)) {
     HERO_TIMELINE[name].forEach((value, index) => {
@@ -172,7 +176,7 @@ function controllerHarness(initiallyEnabled = true, initialScroll = 0) {
     dataset: {},
     style: { setProperty: (key, value) => styles.set(key, value), removeProperty: key => styles.delete(key) },
     querySelector: selector => ({ '[data-hero-scene]': scene, '[data-hero-body]': body, '[data-portrait-anchor]': anchor })[selector],
-    getBoundingClientRect: () => ({ top: 88 - window.scrollY, height: 712 + 1280 * HERO_SCROLL_SCALE }),
+    getBoundingClientRect: () => ({ top: 88 - window.scrollY, height: 712 + 1280 * HERO_SCROLL_SCALE * scrollDistanceRatio }),
   };
   const media = {
     matches: initiallyEnabled,
@@ -220,7 +224,7 @@ test('controller coalesces scroll events and has no self-scheduling idle loop', 
   const env = controllerHarness();
   assert.equal(env.styles.get('--hero-progress'), '0');
   assert.equal(env.frames.size, 0);
-  env.window.scrollY = 640;
+  env.window.scrollY = 640 * scrollDistanceRatio;
   for (let i = 0; i < 20; i++) env.events.get('scroll')();
   assert.equal(env.frames.size, 1);
   env.flush();
@@ -231,8 +235,33 @@ test('controller coalesces scroll events and has no self-scheduling idle loop', 
   env.cleanup();
 });
 
+test('controller completes the same forward and reverse sequence with 90% of the scroll distance', () => {
+  assert.equal(scrollDistanceRatio, 0.9);
+  const env = controllerHarness();
+  const previousDistance = 1280 * HERO_SCROLL_SCALE;
+  const currentDistance = env.root.getBoundingClientRect().height - 712;
+  assert.ok(Math.abs(currentDistance / previousDistance - 0.9) < 1e-10);
+  const properties = {
+    '--hero-progress': 'progress', '--portrait-scale': 'portraitScale',
+    '--portrait-opacity': 'portraitOpacity', '--intro-opacity': 'introOpacity',
+    '--signature-opacity': 'signatureOpacity', '--signature-scale': 'signatureScale',
+    '--signature-draw': 'signatureDraw',
+  };
+  for (let step = 0; step <= 40; step++) {
+    const progress = (step <= 20 ? step : 40 - step) / 20;
+    env.window.scrollY = previousDistance * 0.9 * progress;
+    env.events.get('scroll')();
+    env.flush();
+    const expected = getHeroFrame(progress);
+    for (const [property, key] of Object.entries(properties)) {
+      assert.ok(Math.abs(Number(env.styles.get(property)) - expected[key]) < 1e-10, property);
+    }
+  }
+  env.cleanup();
+});
+
 test('controller initializes from restored scroll and remeasures on resize', () => {
-  const env = controllerHarness(true, 1280 * HERO_SCROLL_SCALE);
+  const env = controllerHarness(true, 1280 * HERO_SCROLL_SCALE * scrollDistanceRatio);
   assert.equal(env.styles.get('--signature-opacity'), '1');
   env.moveBody(200);
   env.events.get('resize')();
