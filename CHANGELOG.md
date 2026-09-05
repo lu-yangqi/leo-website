@@ -2,6 +2,37 @@
 
 All notable changes to this project are documented in this file.
 
+## [8.1.0] - 2026-09-05
+
+### Added
+
+- Sticky, reversible Hero sequence: portrait placeholder → scaled center focus → signature placeholder → homepage content.
+- Separate cinematic controller, server-rendered scene, replaceable portrait/signature components, and pure timing functions.
+- Reserved SVG stroke-drawing phase using currentColor and CSS variables; no final photo or signature asset required.
+- Bilingual skip-intro, placeholder labels, scroll instructions, and static-mode guidance.
+- Nine zero-new-dependency motion tests, available through `npm run test:hero`.
+
+### Changed
+
+- Replaced the decorative Hero LY panel with the cinematic scene; retained LY Navbar/icon branding and the preferred Version 7.2 background and palette.
+- Moved existing Projects/About actions, interests, and contact links immediately after the cinematic track so interactive controls never fade out.
+- Limited cinematic behavior to motion-enabled desktop viewports of at least 900×700; kept static layouts for narrow/short screens and reduced motion.
+- Updated package and lockfile versions to 8.1.0 without changing dependency versions, routes, SEO, bilingual architecture, or content data.
+
+### Fixed
+
+- Corrected the no-JavaScript fallback found during source review so signature content and the SVG guide remain visible in the static layout.
+
+### Verified
+
+- Production build, standalone TypeScript, whitespace checks, and nine timeline/controller tests pass.
+- Local HTTP regression checks pass for all eight content routes, invalid-slug 404, canonical/social metadata, Markdown/highlighting, sitemap, robots, identity endpoints, and static assets.
+
+### Pending Acceptance and Deployment
+
+- Real browser playback, responsive appearance, reduced-motion/no-JavaScript rendering, keyboard and bilingual/contact interaction, and runtime performance still need acceptance. Simulated controller tests do not replace those checks.
+- Version 8.1 has not been committed, pushed, or deployed by this task. Final portrait and signature integration are intentionally deferred.
+
 ## [8.0.0] - 2026-09-05
 
 ### Added
@@ -27,7 +58,7 @@ All notable changes to this project are documented in this file.
 ### Pending Acceptance and Deployment
 
 - Browser automation was denied by the permission check. Desktop/mobile visual review, real language/copy interactions, keyboard and reduced-motion checks, and runtime performance measurements remain manual acceptance work.
-- Version 8.0 has not been committed, pushed, or publicly verified in this task. The existing GitHub `main` → Vercel workflow is unchanged.
+- Version 8.0 was subsequently committed as `f567204`, confirmed at the start of Version 8.1 work. Public/browser verification remains unconfirmed; the existing GitHub `main` → Vercel workflow is unchanged.
 
 ## [7.2.0] - 2026-08-23
 

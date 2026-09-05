@@ -4,11 +4,11 @@ Last updated: 2026-09-05
 
 ## Current Version
 
-Version 8.0.0 — Editorial visual redesign and lightweight motion implemented; production build and local response checks pass.
+Version 8.1.0 — Scroll-linked Hero cinematic foundation implemented with replaceable portrait and signature placeholders; build, TypeScript, motion tests, and local response checks pass.
 
-Version 8.0 remains local. Browser visual/interaction acceptance and verification
-after a GitHub `main` → Vercel deployment are pending. No Version 8.0 commit,
-push, or public deployment was performed in this task.
+Version 8.0 is recorded in local commit `f567204`. Version 8.1 remains local;
+no commit, push, or public deployment was performed in this task. Browser
+visual/interaction acceptance and post-deployment verification remain pending.
 
 Production URL: [https://leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 
@@ -37,11 +37,16 @@ standard Next.js integration.
 ## Completed Features
 
 - Editorial layout with the restored Version 7.2 midnight-navy dual-gradient background, white/cool-slate text, cyan accents, serif/sans-serif typography, fine rules, and shared layout widths
-- Redesigned two-column homepage Hero with a decorative geometric `LY` mark, authentic profile identity, and prominent Projects/About links
-- Refined the Hero after size feedback: a compact, vertically centered identity panel (maximum 360px) and centered monogram (72% width, capped at 240px), retaining the existing 100px mobile graphic column
+- Scroll-linked homepage Hero: large portrait placeholder → centered 34%-scale portrait → signature placeholder → natural transition into homepage content
+- Separate Hero controller, server-rendered scene, 3:4 portrait slot, and currentColor SVG-compatible signature slot under `components/hero/`
+- Reversible, clamped timing stages driven by CSS variables; event-coalesced requestAnimationFrame updates without React state changes or a continuous idle loop
+- Desktop cinematic mode at viewport widths of at least 900px and heights of at least 700px with motion enabled; static narrow/short-screen and reduced-motion presentations
+- Explicit no-JavaScript static layout, reserved desktop scroll-track space, restored-scroll initialization, resize handling, and lifecycle cleanup
+- Bilingual skip-intro and placeholder text; Projects/About links, technical interests, and both email contacts remain outside fading layers
+- Original LY Navbar/icon branding preserved; obsolete decorative Hero monogram component and orbit CSS removed
 - Six numbered homepage sections with distinct profile, research, project, learning, note, and contact presentations
 - Consistent Navbar, Footer, About, Projects, Blog index, and article presentation without changing their content models
-- Lightweight CSS entrance and hover effects, once-only SVG motion, and IntersectionObserver scroll reveals
+- Existing inner-page CSS entrance and hover effects and IntersectionObserver scroll reveals retained without adding more effects below the Hero
 - Progressive CSS reading-progress line in supporting browsers; native scrolling retained
 - Reduced-motion support, visible server-rendered content without JavaScript, reveal cleanup on route changes, and a translated keyboard skip link
 - Public HTTPS production deployment through the zero-config GitHub → Vercel workflow
@@ -113,9 +118,10 @@ standard Next.js integration.
 
 ## Current Limitations
 
-- Version 8.0 desktop/mobile visual quality, real bilingual/contact interactions, keyboard navigation, reduced-motion behavior, and runtime performance still require manual browser acceptance; browser automation permission was declined in this session.
-- Version 8.0 has not been committed, pushed, or verified on the public deployment in this task.
-- Advanced signature animation, portrait storytelling, and complex scroll choreography remain deferred; native scroll-progress enhancement is omitted in unsupported browsers.
+- Version 8.1 desktop/mobile visual quality, real bilingual/contact interactions, keyboard navigation, reduced-motion behavior, and runtime performance still require browser acceptance. Previous browser permission was declined and renewed permission was requested but not granted during this task; no browser automation was retried.
+- Version 8.1 has not been committed, pushed, or verified on the public deployment in this task.
+- Portrait and signature are intentionally labeled placeholders. A real portrait, final Leo signature paths, and final signature-specific stroke choreography remain future work; the current SVG guide demonstrates only the reserved draw phase.
+- Native reading-progress enhancement outside the Hero is omitted in unsupported browsers.
 - The project showcase currently contains two projects, so overall variety remains limited.
 - Project detail pages, filtering, and category views are not implemented.
 - The personal website is publicly deployed, but the RISC-V CPU source remains local and has no live demo.
@@ -126,6 +132,17 @@ standard Next.js integration.
 - All current blog articles are English-language samples; the validated Chinese article path is ready but has no published Chinese sample yet.
 
 ## Validation
+
+### Version 8.1 — 2026-09-05
+
+- Baseline and updated `npm run build` pass with the same 15 generated outputs; standalone TypeScript and `git diff --check` pass.
+- `npm run test:hero` passes nine tests covering timeline bounds, centering, crossfade, final hold, reversibility, CSS/JS eligibility parity, event coalescing, restored scroll/resize, static-mode changes, and unmount cleanup. Controller checks use simulated DOM objects, not a browser.
+- Local production responses return 200 for all eight content pages; an unknown Blog slug returns 404. Titles, descriptions, canonical/social metadata, original article language, Markdown, and syntax highlighting remain present.
+- Sitemap still lists all eight content URLs; robots, all three identity endpoints, and 14 referenced static assets return successfully.
+- Home server HTML includes both labeled placeholders, one H1, six existing content sections, both email destinations, the keyboard-focusable skip target, and the complete no-JavaScript layout overrides.
+- Independent source review found an incomplete no-JavaScript signature fallback; it was corrected to restore the full static scene and visible SVG guide.
+- Core route files, metadata generators, profile/project data, Markdown files, language provider, Navbar, Footer, and email-copy implementation are unchanged from the Version 8.0 baseline.
+- No desktop/mobile screenshots, real scroll playback, actual language/copy clicks, no-JavaScript browser rendering, or frame-rate/CLS measurements were performed. These are explicitly pending, not implied by passing builds or simulated tests.
 
 ### Version 8.0 — 2026-09-05
 
@@ -214,8 +231,9 @@ standard Next.js integration.
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Manually review Version 8.0 at desktop and mobile widths in English and Chinese, including navigation/reload persistence, both email-copy actions, keyboard access, reduced motion, and performance.
-- After acceptance, commit and push Version 8.0 through the existing GitHub `main` → Vercel workflow; recheck routes, metadata, icons, sharing image, and responsive interactions on the production URL.
+- Review Version 8.1 at 1280×800 or larger: scroll down through all stages, reverse scroll, reload mid-scene, resize, and test navigation back to Home. Test narrow/short windows, reduced motion, JavaScript disabled, keyboard skip, English/Chinese, and both email-copy actions.
+- Integrate the real portrait and final signature in their isolated placeholder components when assets are supplied, preserving the motion wrappers and dimensions.
+- After acceptance, commit and push Version 8.1 through GitHub `main` → Vercel; recheck core functionality and the cinematic scene on the production URL.
 - Consider Search Console submission manually as a separate external step.
 
 ## Maintenance Rule

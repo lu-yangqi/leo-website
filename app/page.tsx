@@ -7,7 +7,8 @@ import {
 } from "@/components/LanguageProvider";
 import ProjectCard from "@/components/ProjectCard";
 import RecentNoteCard from "@/components/RecentNoteCard";
-import HeroMark from "@/components/HeroMark";
+import CinematicHero from "@/components/hero/CinematicHero";
+import HeroScene from "@/components/hero/HeroScene";
 import {
   translationPair,
   translations,
@@ -60,75 +61,23 @@ function SectionHeading({
 
 export default function Home() {
   const latestPosts = getBlogPosts().slice(0, 3);
-  const [firstName, ...remainingName] = profile.names.public.split(" ");
 
   return (
     <main className="home-page flex-1">
       <LocalizedMetadata page="home" />
 
-      <section
-        className="hero site-container"
-        aria-labelledby="intro-heading"
-      >
-        <div className="hero-topline eyebrow hero-enter">
-          <span>
-            <LocalizedText value={translationPair("home", "fieldNotes")} />
-          </span>
-          <span aria-hidden="true">LY / 01</span>
-        </div>
-        <div className="hero-grid">
-          <div className="hero-copy">
-            <p className="eyebrow hero-enter">
-              <LocalizedText value={translationPair("home", "greeting")} />
-            </p>
+      <CinematicHero><HeroScene /></CinematicHero>
 
-            <h1 id="intro-heading" className="hero-name hero-enter">
-              <span>{firstName}</span>{" "}
-              <span className="hero-name-serif">
-                {remainingName.join(" ")}
-                <span className="hero-period" aria-hidden="true">.</span>
-              </span>
-            </h1>
-
-            <div className="hero-identity hero-enter">
-              <p>
-                <LocalizedText value={profile.heroHeadline} />
-              </p>
-              <span className="hidden text-slate-600 sm:inline" aria-hidden="true">
-                /
-              </span>
-              <p>
-                <LocalizedText value={profile.university} />
-              </p>
-            </div>
-
-            <p className="hero-summary hero-enter">
-              <LocalizedText value={profile.heroSummary} />
-            </p>
-
-            <div className="hero-actions hero-enter">
-              <Link href="/projects" className="primary-link">
-                <LocalizedText value={translationPair("common", "viewAllProjects")} />
-                <span aria-hidden="true">↗</span>
-              </Link>
-              <Link href="/about" className="text-link">
-                <LocalizedText value={translationPair("home", "moreAboutMe")} />
-                <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </div>
-          <div className="hero-art hero-enter">
-            <div className="hero-art-top eyebrow" aria-hidden="true">
-              <span>LY</span><span>↗</span>
-            </div>
-            <HeroMark />
-            <p className="hero-art-caption">
-              <LocalizedText value={translationPair("home", "inProgress")} />
-            </p>
-            <p className="hero-formal-name">
-              {profile.names.formal} <span aria-hidden="true">/</span> {profile.names.chinese}
-            </p>
-          </div>
+      <div id="home-content" tabIndex={-1} className="hero-details site-container">
+        <div className="hero-actions">
+          <Link href="/projects" className="primary-link">
+            <LocalizedText value={translationPair("common", "viewAllProjects")} />
+            <span aria-hidden="true">↗</span>
+          </Link>
+          <Link href="/about" className="text-link">
+            <LocalizedText value={translationPair("home", "moreAboutMe")} />
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
         <div className="hero-bottom">
           <p id="primary-interests-label" className="sr-only">
@@ -155,7 +104,7 @@ export default function Home() {
         <div className="hero-contacts">
           <ContactLinks links={profile.contact.homepage} />
         </div>
-      </section>
+      </div>
 
       <div className="site-container home-sections">
         <section

@@ -1,11 +1,12 @@
 {
   "name": "leo-personal-website",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test:hero": "node --test tests/hero-motion.test.cjs"
   },
   "dependencies": {
     "lowlight": "^3.3.0",

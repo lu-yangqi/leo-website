@@ -6,6 +6,12 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Resolved
 
+### Desktop no-JavaScript cinematic fallback hid the signature
+
+- **Observed:** Source review of the initial Version 8.1 implementation found that the no-JavaScript override removed only the long track, leaving the signature's desktop opacity at zero.
+- **Resolution:** Restore static scene positioning, grid layout, full placeholder visibility, and the SVG guide when JavaScript is disabled.
+- **Status:** Corrected in Version 8.1 source; actual no-JavaScript browser rendering remains part of pending visual acceptance.
+
 ### Email links depended on a desktop mail client
 
 - **Observed:** `mailto:` links attempted to launch Outlook or another system mail application and could fail when no default client was configured.
@@ -83,6 +89,13 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Intentional Decisions
 
+### Version 8.1 builds the cinematic sequence before personal assets
+
+- Keep a clearly labeled, replaceable 3:4 portrait and SVG-compatible signature slot; do not invent a photograph or final personal signature.
+- Use a sticky desktop scene and reversible CSS-variable timeline. requestAnimationFrame is event-coalesced, not a continuous loop; no React state is updated during scrolling.
+- Reserve the desktop track before hydration and provide a no-JavaScript static override. Narrow/short screens and reduced-motion preferences receive a static scene without scroll pinning.
+- Preserve original profile facts, homepage content, bilingual state, SEO, LY Navbar/icons, and the user-selected Version 7.2 palette. Final signature paths remain future asset work.
+
 ### Version 7.2 colors are retained within the Version 8.0 layout
 
 - **Feedback:** The Version 7.2 background and text colors are preferred over the initial Version 8.0 charcoal/mint palette.
@@ -93,7 +106,7 @@ This document records development problems, decisions, and unresolved limitation
 
 - **Feedback:** The initial right-hand `LY` mark was too large.
 - **Adjustment:** Bound the desktop panel to 360px, center it vertically instead of stretching to match the Hero copy, and reduce the centered SVG to 72% width with a 240px cap. Preserve the existing 100px mobile graphic column, caption, and motion behavior.
-- **Status:** Implemented locally in Version 8.0; visual acceptance remains pending.
+- **Status:** Historical Version 8.0 refinement; Version 8.1 replaces this decorative Hero panel with the requested portrait/signature sequence. Functional LY Navbar/icons remain.
 
 ### Version 8.0 motion is a lightweight progressive enhancement
 
@@ -110,12 +123,18 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Open
 
-### Version 8.0 browser acceptance is pending
+### Version 8.0 / 8.1 browser acceptance is pending
 
-- **Observed:** The browser permission check denied creation of a local test tab during Version 8.0 validation.
-- **Impact:** Build, TypeScript, and local production HTTP checks passed, but desktop/mobile appearance, horizontal overflow, bilingual persistence, email copying, keyboard interaction, reduced-motion behavior, and runtime performance were not retested in a browser. This is an acceptance gap, not a confirmed application defect.
+- **Observed:** The browser permission check denied a local test tab during Version 8.0 validation. The user later reported no noticeable motion. Renewed local-browser permission was requested during Version 8.1 but has not been granted; browser automation was not retried.
+- **Impact:** Version 8.1 build, TypeScript, nine simulated motion tests, and local HTTP checks pass, but actual playback, appearance/overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. The prior motion report is not considered resolved by the new implementation alone.
 - **Planned resolution:** Manually review at desktop and mobile widths (including 320px and 390px), switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
-- **Status:** Open; visual/interaction acceptance and Version 8.0 public verification remain pending.
+- **Status:** Open; Version 8.1 playback, visual/interaction acceptance, and public verification remain pending.
+
+### Final portrait and signature assets are intentionally absent
+
+- **Observed:** Version 8.1 contains only clearly labeled portrait/signature placeholders and an SVG guide for the reserved drawing phase.
+- **Planned resolution:** Integrate user-supplied final assets inside the isolated components, keeping their motion wrappers and stable dimensions; tune actual stroke timing when the signature paths exist.
+- **Status:** Open, non-blocking for the requested Version 8.1 motion foundation.
 
 ### Project showcase has limited content
 
@@ -138,7 +157,7 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Evaluate locale routes or another server-readable locale strategy only if Chinese search discoverability justifies a separate architecture milestone.
 - **Status:** Open, non-blocking by design after Version 7.1.
 
-No production-build blockers are currently known. Version 8.0 visual/interaction
+No production-build blockers are currently known. Version 8.1 visual/interaction
 acceptance remains open and must not be inferred from older-version checks.
 
 ## Maintenance Rule

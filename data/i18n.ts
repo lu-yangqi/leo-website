@@ -103,6 +103,13 @@ export type TranslationDictionary = {
     contactTitle: string;
     contactDescription: string;
   };
+  cinematic: {
+    skipIntro: string;
+    portraitPlaceholder: string;
+    signaturePlaceholder: string;
+    scrollHint: string;
+    assetsPending: string;
+  };
   about: {
     eyebrow: string;
     educationEyebrow: string;
@@ -254,6 +261,13 @@ export const translations = {
       contactTitle: "Let’s connect",
       contactDescription:
         "Find my public work on GitHub or start an email in your browser.",
+    },
+    cinematic: {
+      skipIntro: "Skip intro",
+      portraitPlaceholder: "Portrait to come",
+      signaturePlaceholder: "Signature to come",
+      scrollHint: "Scroll to bring the portrait into focus",
+      assetsPending: "Portrait and signature reserved for a future update.",
     },
     about: {
       eyebrow: "About",
@@ -407,6 +421,13 @@ export const translations = {
       contactTitle: "保持联系",
       contactDescription:
         "你可以在 GitHub 查看我的公开作品，或通过浏览器给我发送邮件。",
+    },
+    cinematic: {
+      skipIntro: "跳过开场",
+      portraitPlaceholder: "照片预留位置",
+      signaturePlaceholder: "签名预留位置",
+      scrollHint: "向下滚动，让画面聚焦于中央",
+      assetsPending: "照片与签名将在后续版本补充。",
     },
     about: {
       eyebrow: "关于",
