@@ -4,11 +4,12 @@ Last updated: 2026-09-05
 
 ## Current Version
 
-Version 8.1.3 — Refined the Hero with a configurable 0.58 portrait center scale, a visible center hold, and a sequential portrait fade → signature reveal. The latest tuning shortens the whole scroll track to 90% while preserving stage proportions, the controller, components, CSS-variable system, and static layouts. Build, TypeScript, motion/portrait tests, and local response checks pass.
+Version 8.1.4 — Responsive cinematic adaptation: wide, compact/windowed, and mobile presentations share one scroll-linked Hero controller and the approved timeline. The 0.58 portrait center scale, fade/hold/handoff/reveal intervals, assets, and wide desktop composition are preserved. Static presentation is reserved for reduced motion, no JavaScript, and print.
 
-Version 8.1.3's larger-portrait baseline is recorded in local commit `9a41f90`.
-The subsequent 90%-distance tuning remains uncommitted; this task did not push or
-deploy it. Browser visual/interaction acceptance and public verification remain pending.
+The approved Version 8.1.3 baseline is local commit `3747226`; the user explicitly
+approved its desktop visual result before this work. Version 8.1.4 remains local
+and uncommitted. This task has not pushed or deployed it; responsive browser
+visual/interaction acceptance and public verification remain pending.
 
 Production URL: [https://leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 
@@ -43,10 +44,12 @@ standard Next.js integration.
 - Centered object-fit cropping with no new image effects; portrait alt text follows the existing English/Chinese language context, and static guidance no longer promises missing assets
 - Original `public/signatures/leo-signature-traced.svg` preserved byte-for-byte; an alpha mask supplies currentColor ink and left-to-right clipping consumes the existing `--signature-draw` progress
 - Shortened the complete desktop track from 213.12svh to 191.808svh (90%) after feedback about excessive scrolling; every stage retains its proportion, with a 62.208svh signature draw, 11.52svh opacity-to-ink lead-in, and 2.88svh final hold
-- Signature dimensions reserve the original SVG aspect ratio; static mobile, reduced-motion, and no-JavaScript modes show the complete signature
+- Signature dimensions reserve the original SVG aspect ratio; reduced-motion and no-JavaScript modes show the complete signature
 - Reversible, clamped timing stages driven by CSS variables; event-coalesced requestAnimationFrame updates without React state changes or a continuous idle loop
-- Desktop cinematic mode at viewport widths of at least 900px and heights of at least 700px with motion enabled; static narrow/short-screen and reduced-motion presentations
-- Explicit no-JavaScript static layout, reserved desktop scroll-track space, restored-scroll initialization, resize handling, and lifecycle cleanup
+- Wide cinematic mode at >=900x700; compact cinematic mode for other widths above 640px; vertically stacked mobile cinematic mode at <=640px. Viewport height no longer disables animation
+- CSS-selected presentation modes with svh scene/track sizing, shorter compact/mobile tracks, and natural opening scroll before bottom-locking scenes that are taller than the available viewport
+- Shared two-axis center measurement for stacked mobile portraits; wide vertical displacement stays zero. Compact/mobile portrait and signature share the visible-body center below the measured header
+- Explicit no-JavaScript static layout, reserved responsive scroll-track space, restored-scroll initialization, resize/header/copy-reflow measurement, and lifecycle cleanup
 - Bilingual skip-intro, portrait alt text, static guidance, and accessible signature label; Projects/About links, technical interests, and both email contacts remain outside fading layers
 - Original LY Navbar/icon branding preserved; obsolete decorative Hero monogram component and orbit CSS removed
 - Six numbered homepage sections with distinct profile, research, project, learning, note, and contact presentations
@@ -123,8 +126,8 @@ standard Next.js integration.
 
 ## Current Limitations
 
-- Version 8.1.3 desktop/mobile presentation and the subjective 0.58 center-scale/hold feel still require browser acceptance, alongside real bilingual/contact interactions, keyboard navigation, reduced-motion behavior, external SVG-mask rendering, and runtime performance. Previous browser permission was declined and renewed permission was requested during Version 8.1 but not granted; no browser automation was retried.
-- The latest 90%-distance tuning is uncommitted and has not been pushed or verified on the public deployment in this task; the preceding larger-portrait baseline is committed as `9a41f90`.
+- The user approved the preceding wide desktop visual result. New Version 8.1.4 compact/mobile framing, browser toolbar/orientation behavior, zoom, and actual resize/scroll playback still need browser acceptance, alongside bilingual/contact interactions, keyboard navigation, reduced motion, no JavaScript, external SVG-mask rendering, and runtime performance. Previous browser permission was declined; no browser automation was retried.
+- Version 8.1.4 is uncommitted and has not been pushed or verified on the public deployment in this task.
 - Both supplied identity assets are integrated. The signature's filled outline contains no pen-stroke order: its reveal remains a spatial wipe, not true handwriting choreography. Advanced portrait effects and stroke-order animation remain separate future work.
 - Native reading-progress enhancement outside the Hero is omitted in unsupported browsers.
 - The project showcase currently contains two projects, so overall variety remains limited.
@@ -138,6 +141,31 @@ standard Next.js integration.
 
 ## Validation
 
+### Version 8.1.4 — 2026-09-05
+
+- `npm run build` passes with the same 15 generated outputs; `npx tsc --noEmit --incremental false` and `git diff --check` pass.
+- `npm run test:hero` passes 33 simulated/source tests. Responsive cases include 1280x800, 900x700, 1200x650, 850x800, 768x1024, 844x390, 390x844, 320x568, and 568x320. Tests cover eligibility, reduced-motion override, mode changes, geometry/opacity cleanup, unchanged-progress resize, copy reflow, no-JS markup, and forward/reverse playback in every cinematic mode.
+- Compared `HERO_TIMELINE` and all `getHeroFrame()` outputs at 2,001 progress samples against approved baseline `3747226`: unchanged. Wide scale remains 0.58, its physical track remains 191.808svh, and its vertical translation is explicitly zero.
+- `HeroScene.tsx`, `LeoSignature.tsx`, both supplied assets, routes, SEO, i18n, Blog, profile/project data, and dependency declarations are unchanged. `LeoPortrait.tsx` only updates responsive image size hints; one controller and one content tree remain.
+- Local production HTTP checks cover core/article routes, metadata, article highlighting, 404, sitemap/robots, identity assets, and optimized portrait delivery. Served CSS includes all three modes and served JavaScript uses motion preference without the former viewport gate.
+- No browser automation, screenshots, runtime performance measurements, or deployment were performed for this version. Simulated geometry tests do not establish real-device visual acceptance.
+
+#### Responsive presentation modes
+
+| Mode | Motion-enabled viewport | Physical track | Presentation |
+| --- | --- | --- | --- |
+| wide | Width >=900px and height >=700px | 191.808svh (ratio 0.9) | Approved side-by-side composition and 88px sticky offset unchanged |
+| compact | Width >640px, not wide | 159.84svh (ratio 0.75) | Side-by-side with bounded frames/type; minimum 24rem scene |
+| mobile | Width <=640px | 138.528svh (ratio 0.65) | Text above portrait; minimum 38rem scene, two-axis center transition |
+| static | Reduced motion or no JavaScript; also print | No cinematic track | Complete readable introduction, portrait, and signature |
+
+CSS `--hero-mode` is the presentation source of truth. The controller reads it
+when measuring, adapts to the actual compact/mobile header height, and refreshes
+both translation axes and opacity values. If a scene exceeds the available svh
+height, its opening content scrolls naturally before the scene locks; the two
+identity assets then center in the visible body. The shorter tracks change only
+physical distances, not normalized stage timing. There is no mobile autoplay.
+
 ### Version 8.1.3 — 2026-09-05
 
 - `npm run build` passes with the same 15 generated outputs; standalone TypeScript and `git diff --check` pass.
@@ -146,12 +174,12 @@ standard Next.js integration.
 - Local HTTP checks pass for eight content pages with metadata, a representative highlighted article, an unknown-slug 404, eight sitemap entries, robots, identity assets, the portrait and its optimized WebP response. Home retains static/no-JavaScript markup and contact destinations; served CSS contains the updated track height.
 - Full-screen/windowed appearance, real reverse scrolling, mobile/reduced-motion/no-JavaScript rendering, and perceived transition quality remain browser acceptance work. No production deployment or runtime performance measurements were performed.
 
-#### Current Hero timing
+#### Approved wide Hero timing (shared normalized timeline in Version 8.1.4)
 
 `HERO_TIMELINE.finalPortraitScale = 0.58` is the center-scale setting. It was
 raised from the initial 0.48 after the user requested a larger preview: about
 20.8% more centered width and height, with all timing and static sizes unchanged.
-This is a visual tuning candidate, not final browser acceptance. Timeline
+The user approved this wide desktop result before Version 8.1.4. Timeline
 coordinates below use the existing 160svh reference distance; divide them by
 `HERO_SCROLL_SCALE = 1.332` for normalized controller progress. The cinematic CSS
 setting `--hero-scroll-distance-ratio: 0.9` then shortens physical scroll distances
@@ -290,9 +318,9 @@ retain the existing simultaneous portrait/signature layout without this timeline
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Review Version 8.1.3 at full-screen and windowed desktop sizes: confirm the 90%-distance track feels less prolonged while the 0.58 portrait remains recognizable, holds clearly, and fades before the signature starts. Reverse scroll, reload mid-scene, resize, and test navigation back to Home. Test mobile/narrow/short windows, reduced motion, JavaScript disabled, keyboard skip, English/Chinese, and both email-copy actions.
+- Review Version 8.1.4 compact/windowed desktop, tablet, mobile portrait/landscape, and wide regression: confirm stacked framing, visible center, shorter tracks, reverse scroll, mid-scene reload, repeated resize/orientation changes, and navigation back to Home. Test browser toolbar changes, zoom, reduced motion, no JavaScript, keyboard skip, English/Chinese, and both email-copy actions.
 - Treat advanced portrait effects and true pen-stroke-order animation as separate future tasks; both supplied identity assets are now integrated.
-- After acceptance, commit and push Version 8.1.3 through GitHub `main` → Vercel; recheck core functionality, image optimization, and the cinematic scene on the production URL.
+- After acceptance, commit and push Version 8.1.4 through GitHub `main` → Vercel; recheck core functionality, image optimization, and all cinematic modes on the production URL.
 - Consider Search Console submission manually as a separate external step.
 
 ## Maintenance Rule

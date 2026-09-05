@@ -730,7 +730,12 @@ a, button {
   }
 }
 
-/* Hero motion: the desktop track is reserved before hydration to avoid shifting content. */
+/* Hero tracks are reserved before hydration; CSS alone selects presentation modes. */
+
+.cinematic-hero {
+  --hero-mode: static;
+  --hero-header-height: 88px;
+}
 
 .hero-scene {
   display: flex;
@@ -886,16 +891,19 @@ a, button {
 
 /* Keep eligibility aligned with CINEMATIC_MEDIA in components/hero/motion.ts. */
 
-@media screen and (min-width: 900px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+@media screen and (prefers-reduced-motion: no-preference) {
   .cinematic-hero {
     /* Match HERO_SCROLL_SCALE; shorten only the scroll track, not the sticky scene. */
+    --hero-mode: wide;
     --hero-scroll-distance-ratio: 0.9;
-    height: calc(100svh + 160svh * 1.332 * var(--hero-scroll-distance-ratio) - 88px);
+    --hero-scene-height: calc(100svh - var(--hero-header-height));
+    --hero-sticky-top: var(--hero-header-height);
+    height: calc(var(--hero-scene-height) + 160svh * 1.332 * var(--hero-scroll-distance-ratio));
   }
   .hero-scene {
     position: sticky;
-    top: 88px;
-    height: calc(100svh - 88px);
+    top: var(--hero-sticky-top);
+    height: var(--hero-scene-height);
   }
   .hero-scene-body {
     display: block;
@@ -917,12 +925,12 @@ a, button {
     transform: translate(-50%, -50%);
   }
   .hero-portrait {
-    transform: translate3d(var(--portrait-x, 0px), 0, 0) scale(var(--portrait-scale, 1));
+    transform: translate3d(var(--portrait-x, 0px), var(--portrait-y, 0px), 0) scale(var(--portrait-scale, 1));
     opacity: var(--portrait-opacity, 1);
   }
   .hero-signature {
     position: absolute;
-    top: 50%;
+    top: var(--hero-center-y, 50%);
     left: 50%;
     width: min(65%, 520px);
     transform: translate(-50%, -50%) scale(var(--signature-scale, 0.94));
@@ -977,6 +985,82 @@ a, button {
   }
   .hero-sequence-label {
     font-size: 0.6rem;
+  }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* The approved >=900x700 wide composition above remains unchanged. */
+  @media (width < 900px), (height < 700px) {
+    .cinematic-hero {
+      --hero-mode: compact;
+      --hero-scroll-distance-ratio: 0.75;
+      --hero-scene-height: max(24rem, calc(100svh - var(--hero-header-height)));
+      /* Tall content scrolls naturally before the scene locks to the viewport bottom. */
+      --hero-sticky-top: min(var(--hero-header-height), calc(100svh - var(--hero-scene-height)));
+    }
+    .hero-scene {
+      gap: 0.75rem;
+      padding-block: 0.75rem;
+    }
+    .hero-opening-copy .hero-name {
+      font-size: clamp(2.25rem, min(6vw, 10svh), 4.5rem);
+      margin-block: 0.65rem;
+    }
+    .hero-opening-copy .hero-identity {
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+    .hero-opening-copy .hero-summary {
+      margin-top: 0.65rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .hero-portrait-anchor {
+      width: min(38%, calc((var(--hero-scene-height) - 8rem) * 0.75));
+    }
+    .hero-signature {
+      width: min(65%, 480px, max(120px, calc((100svh - var(--hero-header-height) - 12rem) * 1.577)));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .cinematic-hero {
+      --hero-mode: mobile;
+      --hero-scroll-distance-ratio: 0.65;
+      --hero-scene-height: max(38rem, calc(100svh - var(--hero-header-height)));
+    }
+    .hero-scene-body {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+    .hero-opening-copy {
+      position: relative;
+      top: auto;
+      width: 100%;
+      transform: none;
+    }
+    .hero-opening-copy .hero-name {
+      font-size: clamp(2rem, 8vw, 3rem);
+      line-height: 1.05;
+    }
+    .hero-opening-copy .hero-name > span {
+      display: inline;
+    }
+    .hero-opening-copy .hero-summary {
+      font-size: 0.82rem;
+    }
+    .hero-portrait-anchor {
+      position: relative;
+      inset: auto;
+      width: min(65%, 240px, calc((var(--hero-scene-height) - 24rem) * 0.75));
+      align-self: center;
+      transform: none;
+    }
+    .hero-signature {
+      width: min(100%, 360px, max(120px, calc((100svh - var(--hero-header-height) - 10rem) * 1.577)));
+    }
   }
 }
 

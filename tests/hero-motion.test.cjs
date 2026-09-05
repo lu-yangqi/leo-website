@@ -12,9 +12,12 @@ const compiled = ts.transpileModule(source, {
 }).outputText;
 const moduleExports = {};
 vm.runInNewContext(compiled, { exports: moduleExports });
-const { getHeroFrame, clampProgress, HERO_TIMELINE, HERO_SCROLL_SCALE, CINEMATIC_MEDIA } = moduleExports;
+const { getHeroFrame, clampProgress, HERO_TIMELINE, HERO_SCROLL_SCALE, CINEMATIC_MEDIA, WIDE_CINEMATIC_MEDIA } = moduleExports;
 const heroCss = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
 const scrollDistanceRatio = Number(heroCss.match(/--hero-scroll-distance-ratio:\s*([\d.]+)/)[1]);
+const modeRatios = Object.fromEntries([...heroCss.matchAll(/\.cinematic-hero\s*\{([^}]+)\}/g)]
+  .filter(match => /--hero-scroll-distance-ratio:/.test(match[1]))
+  .map(match => [match[1].match(/--hero-mode:\s*(\w+)/)[1], Number(match[1].match(/--hero-scroll-distance-ratio:\s*([\d.]+)/)[1])]));
 
 test('progress clamps safely and starts with the full portrait', () => {
   assert.equal(clampProgress(-1), 0);
@@ -98,10 +101,16 @@ test('all frames remain bounded and reversible without accumulating state', () =
   }
 });
 
-test('CSS and JS share the same desktop and reduced-motion eligibility', () => {
+test('CSS and JS enable motion without width or height restrictions and preserve the wide track', () => {
   const css = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
   assert.ok(css.includes(`@media screen and ${CINEMATIC_MEDIA}`));
-  assert.ok(css.includes(`height: calc(100svh + 160svh * ${HERO_SCROLL_SCALE} * var(--hero-scroll-distance-ratio) - 88px)`));
+  assert.equal(CINEMATIC_MEDIA, '(prefers-reduced-motion: no-preference)');
+  assert.ok(css.includes(`height: calc(var(--hero-scene-height) + 160svh * ${HERO_SCROLL_SCALE} * var(--hero-scroll-distance-ratio))`));
+  assert.ok(css.includes('--hero-scene-height: calc(100svh - var(--hero-header-height))'));
+  assert.ok(css.includes('--hero-header-height: 88px'));
+  assert.deepEqual(modeRatios, { wide: 0.9, compact: 0.75, mobile: 0.65 });
+  assert.ok(css.includes('@media (width < 900px), (height < 700px)'));
+  assert.ok(css.includes('@media (max-width: 640px)'));
   assert.ok(css.includes('clip-path: inset(0 calc((1 - var(--signature-draw, 0)) * 100%) 0 0)'));
 });
 
@@ -148,7 +157,7 @@ test('signature mask uses the provided asset at its original aspect ratio', () =
   assert.ok(svg.includes('<path') && !svg.includes('<image'));
 });
 
-test('signature clipping is opt-in to the motion-enabled desktop scene', () => {
+test('signature clipping is opt-in to all motion-enabled scenes', () => {
   const css = fs.readFileSync(path.join(__dirname, '../app/globals.css'), 'utf8');
   const baseRule = css.match(/\.leo-signature-ink\s*\{([^}]+)\}/)[1];
   assert.ok(!baseRule.includes('clip-path'), 'Static, reduced-motion and no-JS signature stays complete');
@@ -160,7 +169,7 @@ test('signature clipping is opt-in to the motion-enabled desktop scene', () => {
   assert.ok(component.includes('translationPair("cinematic", "signatureLabel")'));
 });
 
-function controllerHarness(initiallyEnabled = true, initialScroll = 0) {
+function controllerHarness(initiallyEnabled = true, initialScroll = 0, width = 1280, height = 800) {
   const styles = new Map();
   const events = new Map();
   const frames = new Map();
@@ -169,22 +178,55 @@ function controllerHarness(initiallyEnabled = true, initialScroll = 0) {
   let effect;
   let frameId = 0;
   let bodyLeft = 100;
-  const body = { getBoundingClientRect: () => ({ left: bodyLeft, width: 1000 }) };
-  const anchor = { getBoundingClientRect: () => ({ left: 750, width: 300 }) };
-  const scene = { offsetHeight: 712 };
+  let portraitRowOffset = 0;
+  const intro = {};
+  const mode = () => width <= 640 ? 'mobile' : width >= 900 && height >= 700 ? 'wide' : 'compact';
+  const header = { get offsetHeight() { return width <= 640 ? 96 : 88; } };
+  const sceneHeight = () => mode() === 'wide' ? height - 88 : Math.max(mode() === 'mobile' ? 608 : 384, height - header.offsetHeight);
+  const stickyTop = () => mode() === 'wide' ? 88 : Math.min(header.offsetHeight, height - sceneHeight());
+  const trackDistance = () => height * 1.6 * HERO_SCROLL_SCALE * modeRatios[mode()];
+  const scene = {
+    get offsetHeight() { return sceneHeight(); },
+    getBoundingClientRect() {
+      const rootTop = header.offsetHeight - window.scrollY;
+      return { top: Math.min(Math.max(rootTop, stickyTop()), rootTop + trackDistance()), height: sceneHeight() };
+    },
+  };
+  const body = { getBoundingClientRect() {
+    const top = scene.getBoundingClientRect().top + (mode() === 'wide' ? 80 : 60);
+    const bodyHeight = sceneHeight() - (mode() === 'wide' ? 164 : 124);
+    return { left: mode() === 'wide' ? bodyLeft : 20, top, bottom: top + bodyHeight, width: mode() === 'wide' ? 1000 : width - 40, height: bodyHeight };
+  } };
+  const anchor = { getBoundingClientRect() {
+    const rect = body.getBoundingClientRect();
+    const anchorWidth = mode() === 'mobile' ? 168 : 300;
+    const anchorHeight = anchorWidth * 4 / 3;
+    return {
+      left: mode() === 'wide' ? 750 : rect.left + rect.width * (mode() === 'mobile' ? 0.5 : 0.75) - anchorWidth / 2,
+      top: rect.top + rect.height * (mode() === 'mobile' ? 0.75 : 0.5) - anchorHeight / 2 + portraitRowOffset,
+      width: anchorWidth, height: anchorHeight,
+    };
+  } };
   const root = {
     dataset: {},
     style: { setProperty: (key, value) => styles.set(key, value), removeProperty: key => styles.delete(key) },
-    querySelector: selector => ({ '[data-hero-scene]': scene, '[data-hero-body]': body, '[data-portrait-anchor]': anchor })[selector],
-    getBoundingClientRect: () => ({ top: 88 - window.scrollY, height: 712 + 1280 * HERO_SCROLL_SCALE * scrollDistanceRatio }),
+    querySelector: selector => ({ '[data-hero-scene]': scene, '[data-hero-body]': body, '[data-portrait-anchor]': anchor, '.hero-opening-copy': intro })[selector],
+    getBoundingClientRect: () => ({ top: header.offsetHeight - window.scrollY, height: sceneHeight() + trackDistance() }),
   };
+  let motionAllowed = initiallyEnabled;
   const media = {
-    matches: initiallyEnabled,
+    // Evaluate the actual eligibility query, so the old >=900x700 gate fails compact/mobile tests.
+    get matches() {
+      return motionAllowed && [...CINEMATIC_MEDIA.matchAll(/\(min-(width|height): (\d+)px\)/g)]
+        .every(([, axis, minimum]) => (axis === 'width' ? width : height) >= Number(minimum));
+    },
     addEventListener: (_, callback) => changes.add(callback),
     removeEventListener: (_, callback) => changes.delete(callback),
   };
   const window = {
     scrollY: initialScroll,
+    get innerWidth() { return width; },
+    get innerHeight() { return height; },
     matchMedia: () => media,
     addEventListener: (name, callback) => events.set(name, callback),
     removeEventListener: (name, callback) => { if (events.get(name) === callback) events.delete(name); },
@@ -202,7 +244,11 @@ function controllerHarness(initiallyEnabled = true, initialScroll = 0) {
   }).outputText;
   const exports = {};
   vm.runInNewContext(controller, {
-    exports, window, ResizeObserver, getComputedStyle: () => ({ top: '88px' }),
+    exports, window, ResizeObserver,
+    document: { querySelector: selector => selector === '.site-header' ? header : null },
+    getComputedStyle: element => element === root
+      ? { getPropertyValue: name => name === '--hero-mode' ? mode() : '' }
+      : { top: `${stickyTop()}px` },
     require: name => {
       if (name === './motion') return moduleExports;
       if (name === 'react') return { useRef: () => ({ current: root }), useEffect: callback => { effect = callback; } };
@@ -213,10 +259,14 @@ function controllerHarness(initiallyEnabled = true, initialScroll = 0) {
   exports.default({ children: null });
   const cleanup = effect();
   return {
-    root, styles, window, events, frames, observers, changes, cleanup,
+    root, styles, window, events, frames, observers, changes, cleanup, anchor, body, scene, header, intro,
+    get start() { return header.offsetHeight - stickyTop(); },
+    get distance() { return trackDistance(); },
     flush() { const pending = [...frames.values()]; frames.clear(); pending.forEach(callback => callback()); },
-    changeMode(enabled) { media.matches = enabled; [...changes].forEach(callback => callback()); },
+    changeMode(enabled) { motionAllowed = enabled; [...changes].forEach(callback => callback()); },
+    resize(nextWidth, nextHeight) { width = nextWidth; height = nextHeight; events.get('resize')?.(); },
     moveBody(left) { bodyLeft = left; },
+    movePortraitRow(offset) { portraitRowOffset = offset; },
   };
 }
 
@@ -271,6 +321,134 @@ test('controller initializes from restored scroll and remeasures on resize', () 
   env.events.get('pageshow')();
   env.flush();
   assert.equal(env.styles.get('--portrait-scale'), '1');
+  env.cleanup();
+});
+
+const responsiveViewports = [
+  ['wide', 1280, 800], ['wide', 900, 700],
+  ['compact', 1200, 650], ['compact', 850, 800], ['compact', 768, 1024], ['compact', 844, 390],
+  ['mobile', 390, 844], ['mobile', 320, 568], ['mobile', 568, 320],
+];
+
+for (const [mode, width, height] of responsiveViewports) {
+  test(`${mode} ${width}x${height} is cinematic and follows the shared forward/reverse timeline`, () => {
+    const env = controllerHarness(true, 0, width, height);
+    assert.equal(env.root.dataset.heroMotion, 'active');
+    assert.equal(env.root.dataset.heroMode, mode);
+    assert.ok(env.events.has('scroll'));
+    const properties = {
+      '--portrait-scale': 'portraitScale', '--portrait-opacity': 'portraitOpacity',
+      '--intro-opacity': 'introOpacity', '--signature-opacity': 'signatureOpacity',
+      '--signature-scale': 'signatureScale', '--signature-draw': 'signatureDraw',
+    };
+    for (let step = 0; step <= 80; step++) {
+      const progress = (step <= 40 ? step : 80 - step) / 40;
+      env.window.scrollY = env.start + env.distance * progress;
+      env.events.get('scroll')();
+      env.flush();
+      const expected = getHeroFrame(progress);
+      for (const [property, key] of Object.entries(properties)) {
+        assert.ok(Math.abs(Number(env.styles.get(property)) - expected[key]) < 1e-10, property);
+      }
+    }
+    assert.equal(env.frames.size, 0, 'No autoplay or idle loop');
+    env.cleanup();
+  });
+}
+
+test('reduced-motion overrides wide, compact, and mobile and cleans every inline geometry value', () => {
+  for (const [, width, height] of responsiveViewports) {
+    const env = controllerHarness(false, 0, width, height);
+    assert.equal(env.root.dataset.heroMotion, undefined);
+    assert.equal(env.events.size, 0);
+    assert.equal(env.styles.size, 0);
+    env.changeMode(true);
+    env.window.scrollY = env.start + env.distance * 0.7;
+    env.events.get('scroll')();
+    env.flush();
+    env.changeMode(false);
+    assert.equal(env.styles.size, 0);
+    assert.equal(env.frames.size, 0);
+    assert.equal(env.events.size, 0);
+    assert.equal(env.root.dataset.heroMode, undefined);
+    env.cleanup();
+  }
+});
+
+test('resize switches wide, compact, mobile, and back without stale geometry or opacity', () => {
+  const env = controllerHarness();
+  for (const [mode, width, height] of [
+    ['wide', 1280, 800], ['compact', 1200, 650], ['mobile', 390, 844],
+    ['mobile', 568, 320], ['compact', 844, 390], ['wide', 1280, 800],
+  ]) {
+    env.resize(width, height);
+    env.window.scrollY = env.start + env.distance * 0.5;
+    env.flush();
+    assert.equal(env.root.dataset.heroMode, mode);
+    assert.ok(Math.abs(Number(env.styles.get('--hero-progress')) - 0.5) < 1e-10);
+    assert.ok(Math.abs(Number(env.styles.get('--portrait-scale')) - 0.58) < 1e-10);
+    assert.ok(Math.abs(Number(env.styles.get('--portrait-opacity')) - getHeroFrame(0.5).portraitOpacity) < 1e-10);
+    assert.equal(env.styles.get('--signature-opacity'), '0');
+    if (mode === 'wide') {
+      assert.equal(env.styles.get('--portrait-y'), '0px');
+      assert.equal(env.styles.has('--hero-header-height'), false);
+      assert.equal(env.styles.has('--hero-center-y'), false);
+    } else {
+      assert.equal(env.styles.get('--hero-header-height'), `${env.header.offsetHeight}px`);
+      const body = env.body.getBoundingClientRect();
+      const anchor = env.anchor.getBoundingClientRect();
+      const targetY = body.top + Number.parseFloat(env.styles.get('--hero-center-y'));
+      const portraitY = anchor.top + anchor.height / 2 + Number.parseFloat(env.styles.get('--portrait-y'));
+      assert.ok(Math.abs(targetY - portraitY) < 1e-10, 'Portrait and signature share one visible center');
+      assert.ok(targetY >= env.header.offsetHeight && targetY <= height, 'Center stays in the visible viewport');
+    }
+  }
+  env.cleanup();
+});
+
+test('resize re-renders geometry even when normalized scroll progress stays unchanged', () => {
+  const env = controllerHarness();
+  env.window.scrollY = env.distance * 0.4;
+  env.events.get('scroll')();
+  env.flush();
+  assert.equal(env.styles.get('--portrait-y'), '0px');
+  env.resize(390, 844);
+  env.window.scrollY = env.start + env.distance * 0.4;
+  env.flush();
+  assert.equal(env.root.dataset.heroMode, 'mobile');
+  assert.notEqual(env.styles.get('--portrait-y'), '0px');
+  assert.equal(env.styles.get('--portrait-x'), '0px');
+  env.cleanup();
+});
+
+test('mobile CSS keeps text above the portrait and no-JS restores a complete static scene', () => {
+  const responsive = heroCss.slice(heroCss.indexOf('/* The approved >=900x700'));
+  assert.ok(responsive.includes('grid-template-rows: auto minmax(0, 1fr)'));
+  assert.match(responsive, /position: relative;\s+inset: auto;/);
+  assert.ok(responsive.includes('--hero-scene-height: max(38rem, calc(100svh - var(--hero-header-height)))'));
+  assert.ok(responsive.includes('--hero-sticky-top: min(var(--hero-header-height), calc(100svh - var(--hero-scene-height)))'));
+  const controller = fs.readFileSync(path.join(__dirname, '../components/hero/CinematicHero.tsx'), 'utf8');
+  const fallback = controller.slice(controller.indexOf('<noscript>'), controller.indexOf('</noscript>'));
+  assert.ok(fallback.includes('--hero-mode: static !important; height: auto !important'));
+  assert.ok(fallback.includes('position: static !important; height: auto !important'));
+  assert.ok(fallback.includes('grid-template-rows: none !important'));
+  assert.ok(fallback.includes('transform: none !important; opacity: 1 !important'));
+  assert.ok(fallback.includes('.leo-signature-ink { clip-path: none !important; }'));
+});
+
+test('copy reflow is observed so language changes cannot leave the mobile center stale', () => {
+  const env = controllerHarness(true, 0, 390, 844);
+  env.window.scrollY = env.start + env.distance * 0.4;
+  env.events.get('scroll')();
+  env.flush();
+  const before = Number.parseFloat(env.styles.get('--portrait-y'));
+  const observer = env.observers.find(item => item.targets.has(env.intro));
+  assert.ok(observer);
+  assert.ok(observer.targets.has(env.header));
+  env.movePortraitRow(30);
+  observer.callback();
+  env.flush();
+  assert.ok(Math.abs(Number.parseFloat(env.styles.get('--portrait-y')) - (before - 30)) < 1e-10);
   env.cleanup();
 });
 
@@ -341,8 +519,10 @@ test('portrait uses the supplied optimized image with preloading and English/Chi
     assert.equal(image.props.preload, true);
     assert.equal(image.props.unoptimized, undefined);
     assert.equal(image.props.onLoad, undefined, 'Image loading must not drive the motion timeline');
-    assert.ok(image.props.sizes.startsWith(CINEMATIC_MEDIA));
-    assert.ok(image.props.sizes.endsWith('240px, 280px'));
+    assert.ok(image.props.sizes.startsWith(WIDE_CINEMATIC_MEDIA));
+    assert.ok(image.props.sizes.includes('(max-width: 640px) 240px'));
+    assert.ok(image.props.sizes.includes(`${CINEMATIC_MEDIA} min(38vw, 30rem)`));
+    assert.ok(image.props.sizes.endsWith('280px'));
   }
   assert.notEqual(dictionaries.translations.en.cinematic.portraitAlt, dictionaries.translations.zh.cinematic.portraitAlt);
 });

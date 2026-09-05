@@ -95,6 +95,14 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Intentional Decisions
 
+### Version 8.1.4 shares one cinematic sequence across responsive modes
+
+- **Cause:** Both `CINEMATIC_MEDIA` and the CSS motion block required >=900x700, so compact windows and mobile devices could only show a static Hero.
+- **Resolution:** Eligibility now depends on motion preference, while CSS `--hero-mode` selects wide, compact, or mobile presentation. All modes use the original normalized timeline and 0.58 center scale; no duplicate Hero or mobile timer is introduced.
+- **Geometry:** Keep wide composition and its 0.9 track ratio unchanged. Use compact/mobile ratios of 0.75/0.65 and svh-safe minimum scene sizes. Text remains above the mobile portrait. Short windows allow natural opening scroll before locking, then center both identities in the visible body below the measured header.
+- **Lifecycle:** The existing controller measures both axes, observes header/intro-copy reflow, refreshes geometry on resize, and removes stale geometry/opacity values on reduced motion or teardown. Wide mode explicitly restores zero vertical translation and the approved 88px sticky offset.
+- **Status:** Implemented; 33 simulated/source tests cover all modes, reduced motion, resize, forward/reverse playback, and no-JS fallback. The user approved the previous wide result; new responsive framing and real-device browser behavior remain pending acceptance.
+
 ### Version 8.1.3 preserves portrait identity before handing over to the signature
 
 - **Feedback:** Visual testing reported that the centered portrait was too small and faded before it established a recognizable identity.
@@ -102,7 +110,7 @@ This document records development problems, decisions, and unresolved limitation
 - **Diagnosis:** The source and locally served bundle consumed `finalPortraitScale = 0.48` correctly; no conflicting scale override was found. Scaling is relative to the viewport-constrained portrait frame, not the screen. The exact cause of the user's perceived unchanged size was not established; the viewing environment was unconfirmed.
 - **Pacing:** The initial refinement shifted the signature later while retaining its existing drawing distance. After the user reported excessive scrolling, shorten the whole desktop track to 90% through the cinematic CSS `--hero-scroll-distance-ratio: 0.9`. Total distance becomes 191.808svh; the portrait hold is 17.28svh, fade is 28.8svh, signature draw is 62.208svh, and final hold is 2.88svh. Keep normalization at 1.332, stage proportions, the 0.58 center scale, sticky scene height, and controller unchanged. Actual elapsed time still depends on the user's scrolling speed.
 - **Scope:** Static mobile/reduced-motion/no-JavaScript layouts continue to show both identity assets as before. Routes, SEO, i18n, and content models are untouched.
-- **Status:** Implemented and covered by timeline/controller tests; subjective scale and transition quality still require browser acceptance. The current 0.58 remains a tuning value, not a claim of final visual approval.
+- **Status:** Implemented and covered by timeline/controller tests. The user subsequently approved the wide desktop result, including 0.58 scale and 90%-distance pacing, before Version 8.1.4.
 
 ### Version 8.1.2 adds the portrait without changing motion
 
@@ -156,9 +164,9 @@ This document records development problems, decisions, and unresolved limitation
 ### Version 8.x browser acceptance is pending
 
 - **Observed:** The browser permission check denied a local test tab during Version 8.0 validation. The user later reported no noticeable motion. Renewed local-browser permission was requested during Version 8.1 but has not been granted; browser automation was not retried.
-- **Impact:** Version 8.1.3 build, TypeScript, 19 simulated/source motion and portrait tests, and local HTTP/image-optimization checks pass, but actual center-scale/hold appearance, shortened-track playback, external SVG-mask rendering, overflow, bilingual persistence, email copying, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser. User-reported visual feedback informed the timing change; the new implementation alone is not final visual acceptance.
+- **Impact:** Version 8.1.4 build, TypeScript, 33 simulated/source tests, and local HTTP/image-optimization checks pass. The user approved the preceding wide desktop result, but new compact/mobile framing, orientation, browser toolbar/zoom behavior, repeated resize playback, SVG-mask rendering, overflow, bilingual/contact interactions, keyboard access, reduced-motion/no-JavaScript behavior, and runtime performance remain unverified in a browser.
 - **Planned resolution:** Review full-screen and windowed desktop plus mobile widths (including 320px and 390px), confirm portrait recognition and a clear center hold, inspect forward/reverse fade-to-signature transitions, switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, disable JavaScript, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
-- **Status:** Open; Version 8.1.3 playback, visual/interaction acceptance, and public verification remain pending.
+- **Status:** Open; Version 8.1.4 responsive visual/interaction acceptance and public verification remain pending. Do not infer these from simulated geometry tests or the prior wide-desktop approval.
 
 ### Pen-stroke-order signature animation is deferred
 
@@ -187,7 +195,7 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Evaluate locale routes or another server-readable locale strategy only if Chinese search discoverability justifies a separate architecture milestone.
 - **Status:** Open, non-blocking by design after Version 7.1.
 
-No production-build blockers are currently known. Version 8.1.3 visual/interaction
+No production-build blockers are currently known. Version 8.1.4 responsive visual/interaction
 acceptance remains open and must not be inferred from older-version checks.
 
 ## Maintenance Rule

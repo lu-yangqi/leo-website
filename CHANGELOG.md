@@ -2,6 +2,27 @@
 
 All notable changes to this project are documented in this file.
 
+## [8.1.4] - 2026-09-05
+
+### Changed
+
+- Removed the >=900x700 motion eligibility gate. CSS now selects wide, compact, or mobile presentation; reduced motion and no JavaScript retain static fallbacks.
+- Preserved the approved 0.58 portrait scale, center/fade/hold/handoff/signature timeline, assets, and wide desktop composition/191.808svh track.
+- Added svh-safe compact and stacked-mobile frames with 159.84svh and 138.528svh tracks. Tall openings scroll naturally before locking; mobile remains scroll-linked, never autoplay.
+- Extended the existing controller's geometry measurement to both axes and the visible body center. Resize, header changes, and intro-copy reflow remeasure the scene; cleanup removes geometry and opacity state, including when returning to wide or reduced motion.
+- Updated portrait responsive image size hints and package/lockfile version to 8.1.4. No new components, dependencies, routes, SEO, i18n, Blog, or profile/project-data changes.
+
+### Verified
+
+- Production build (15 outputs), standalone TypeScript, whitespace checks, and 33 motion/portrait tests pass. Tests cover compact/mobile eligibility, reduced-motion override, repeated mode changes, no-JS source fallback, copy reflow, and forward/reverse playback across nine viewport cases.
+- The timeline settings and all frame outputs at 2,001 progress samples exactly match approved baseline `3747226`.
+- Local production route/metadata, sitemap/robots, 404, identity-asset, optimized-portrait, and served responsive CSS/JS checks pass.
+
+### Pending Acceptance and Deployment
+
+- The user approved the preceding wide desktop visual result. New responsive browser framing, orientation/toolbar/zoom handling, real interactions, and runtime performance still require acceptance; source/simulated tests are not browser playback.
+- Version 8.1.4 remains local and uncommitted; this task has not pushed or deployed it. The provided responsive specification retains its original internal V8.1.3 heading, but the implementation follows the user's explicit V8.1.4 request.
+
 ## [8.1.3] - 2026-09-05
 
 ### Changed
@@ -21,7 +42,7 @@ All notable changes to this project are documented in this file.
 ### Pending Acceptance and Deployment
 
 - The 0.58 center scale and new timing await full-screen/windowed desktop, mobile, reduced-motion, no-JavaScript, and real reverse-scroll visual acceptance. No browser playback or performance measurements were performed.
-- The larger-portrait Version 8.1.3 baseline was subsequently committed as `9a41f90`. The latest 90%-distance tuning remains uncommitted and has not been pushed or publicly verified by this task.
+- The larger-portrait baseline was committed as `9a41f90`; the 90%-distance tuning was subsequently committed as `3747226`. The user approved the wide desktop result before Version 8.1.4. Public verification remains unconfirmed.
 
 ## [8.1.2] - 2026-09-05
 

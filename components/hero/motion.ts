@@ -1,6 +1,7 @@
 // Keep this eligibility query aligned with the cinematic media block in globals.css.
-export const CINEMATIC_MEDIA =
-  "(min-width: 900px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)";
+export const CINEMATIC_MEDIA = "(prefers-reduced-motion: no-preference)";
+// Layout modes are selected by CSS; this query is only for responsive image sizing.
+export const WIDE_CINEMATIC_MEDIA = `(min-width: 900px) and (min-height: 700px) and ${CINEMATIC_MEDIA}`;
 
 // Reference coordinates retain the centered hold and sequential signature handoff.
 // Normalize them independently of the physical scroll distance: globals.css applies

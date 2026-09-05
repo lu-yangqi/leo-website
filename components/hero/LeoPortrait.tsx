@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLanguage } from "@/components/LanguageProvider";
-import { CINEMATIC_MEDIA } from "./motion";
+import { CINEMATIC_MEDIA, WIDE_CINEMATIC_MEDIA } from "./motion";
 
 /** Image loading and its localized description stay separate from parent motion. */
 export default function LeoPortrait() {
@@ -15,7 +15,7 @@ export default function LeoPortrait() {
         alt={translations.cinematic.portraitAlt}
         fill
         preload
-        sizes={`${CINEMATIC_MEDIA} min(38vw, 30rem, calc((100svh - 17rem) * 0.75)), (max-width: 640px) 240px, 280px`}
+        sizes={`${WIDE_CINEMATIC_MEDIA} min(38vw, 30rem, calc((100svh - 17rem) * 0.75)), (max-width: 640px) 240px, ${CINEMATIC_MEDIA} min(38vw, 30rem), 280px`}
         className="leo-portrait-image"
       />
     </div>
