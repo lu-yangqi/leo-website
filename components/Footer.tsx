@@ -1,15 +1,19 @@
 "use client";
 
 import { useLanguage } from "@/components/LanguageProvider";
+import { siteConfig } from "@/lib/site";
 
 export default function Footer() {
   const { translations } = useLanguage();
 
   return (
-    <footer className="border-t border-white/10">
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-2 px-6 py-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-16">
-        <p>© {new Date().getFullYear()} Leo Yangqi</p>
+    <footer className="site-footer">
+      <div className="site-container footer-content">
+        <p>© {new Date().getFullYear()} {siteConfig.name}</p>
         <p>{translations.footer.builtWith}</p>
+        <a href="#main-content" className="text-link">
+          {translations.footer.backToTop} <span aria-hidden="true">↑</span>
+        </a>
       </div>
     </footer>
   );

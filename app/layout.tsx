@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
-import { LanguageProvider } from "@/components/LanguageProvider";
+import { LanguageProvider, LocalizedText } from "@/components/LanguageProvider";
+import MotionEffects from "@/components/MotionEffects";
+import { translationPair } from "@/data/i18n";
 import Navbar from "@/components/Navbar";
 import { getAbsoluteUrl, siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -47,9 +49,15 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <LanguageProvider>
+          <a className="skip-link" href="#main-content">
+            <LocalizedText value={translationPair("nav", "skipToContent")} />
+          </a>
+          <MotionEffects />
           <div className="flex min-h-screen flex-col">
             <Navbar />
-            <div className="flex flex-1 flex-col">{children}</div>
+            <div id="main-content" tabIndex={-1} className="flex flex-1 flex-col">
+              {children}
+            </div>
             <Footer />
           </div>
         </LanguageProvider>

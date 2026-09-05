@@ -1,13 +1,14 @@
 # Project Status
 
-Last updated: 2026-08-23
+Last updated: 2026-09-05
 
 ## Current Version
 
-Version 7.2.0 — Site identity and sharing-image foundation implemented and production-build verified.
+Version 8.0.0 — Editorial visual redesign and lightweight motion implemented; production build and local response checks pass.
 
-The Version 7.2 code is ready for the next GitHub `main` → Vercel deployment.
-Public verification of the new icons and sharing image remains pending that deployment.
+Version 8.0 remains local. Browser visual/interaction acceptance and verification
+after a GitHub `main` → Vercel deployment are pending. No Version 8.0 commit,
+push, or public deployment was performed in this task.
 
 Production URL: [https://leo-website-lilac.vercel.app](https://leo-website-lilac.vercel.app)
 
@@ -35,6 +36,14 @@ standard Next.js integration.
 
 ## Completed Features
 
+- Editorial layout with the restored Version 7.2 midnight-navy dual-gradient background, white/cool-slate text, cyan accents, serif/sans-serif typography, fine rules, and shared layout widths
+- Redesigned two-column homepage Hero with a decorative geometric `LY` mark, authentic profile identity, and prominent Projects/About links
+- Refined the Hero after size feedback: a compact, vertically centered identity panel (maximum 360px) and centered monogram (72% width, capped at 240px), retaining the existing 100px mobile graphic column
+- Six numbered homepage sections with distinct profile, research, project, learning, note, and contact presentations
+- Consistent Navbar, Footer, About, Projects, Blog index, and article presentation without changing their content models
+- Lightweight CSS entrance and hover effects, once-only SVG motion, and IntersectionObserver scroll reveals
+- Progressive CSS reading-progress line in supporting browsers; native scrolling retained
+- Reduced-motion support, visible server-rendered content without JavaScript, reveal cleanup on route changes, and a translated keyboard skip link
 - Public HTTPS production deployment through the zero-config GitHub → Vercel workflow
 - Central production origin and factual site identity in `lib/site.ts`
 - Native Next.js `metadataBase`, title template, descriptions, canonical URLs, Open Graph, and Twitter text metadata
@@ -62,7 +71,7 @@ standard Next.js integration.
 - Distinct navigation default, hover, active, and keyboard focus states
 - Shared footer
 - Projects, Blog, and About routes
-- Consistent placeholder page structure and alignment
+- Consistent inner-page structure and alignment
 - Route-specific metadata
 - Typed project data separated from presentation
 - Reusable responsive ProjectCard component
@@ -104,6 +113,9 @@ standard Next.js integration.
 
 ## Current Limitations
 
+- Version 8.0 desktop/mobile visual quality, real bilingual/contact interactions, keyboard navigation, reduced-motion behavior, and runtime performance still require manual browser acceptance; browser automation permission was declined in this session.
+- Version 8.0 has not been committed, pushed, or verified on the public deployment in this task.
+- Advanced signature animation, portrait storytelling, and complex scroll choreography remain deferred; native scroll-progress enhancement is omitted in unsupported browsers.
 - The project showcase currently contains two projects, so overall variety remains limited.
 - Project detail pages, filtering, and category views are not implemented.
 - The personal website is publicly deployed, but the RISC-V CPU source remains local and has no live demo.
@@ -114,6 +126,21 @@ standard Next.js integration.
 - All current blog articles are English-language samples; the validated Chinese article path is ready but has no published Chinese sample yet.
 
 ## Validation
+
+### Version 8.0 — 2026-09-05
+
+- Baseline and updated `npm run build` pass with all 15 generated pages/metadata outputs, including four Blog articles.
+- `npx tsc --noEmit --incremental false` and `git diff --check` pass.
+- Local production HTTP checks return 200 for Home, About, Projects, Blog, and all four Blog articles; an unknown article slug returns 404.
+- Each content route retains one main landmark, one H1, the correct active navigation state, a title/description, its production canonical URL, and shared social-image metadata.
+- The representative article retains original English language, Markdown markup, syntax highlighting, and article metadata.
+- Home retains all six preview/contact sections, the confirmed GitHub and both email addresses, accessible copy-feedback markup, and the skip-link target.
+- Sitemap contains the expected eight public content URLs; robots policy, all three identity-image endpoints, and 14 referenced static assets respond successfully.
+- Server HTML has no hidden reveal-state attributes. Source review confirms reduced-motion handling and unchanged language persistence, content loaders, contact callbacks, and SEO generators; this is not a substitute for browser interaction testing.
+- No dependencies, downloaded fonts, continuous JavaScript animation loops, or architecture changes were introduced. Runtime frame rate, layout shifts, and Lighthouse scores were not measured.
+- Browser tab creation was denied by the permission check. No Version 8.0 screenshots, mobile overflow checks, live language/copy clicks, or production visual checks were performed; these remain acceptance work.
+
+### Earlier-version verification (historical, not a Version 8.0 browser retest)
 
 - The Version 7.2 production build generates `/icon.svg`, `/apple-icon`, and `/opengraph-image` alongside every existing route.
 - Local production responses return the custom SVG icon, Apple PNG, and Open Graph PNG with correct content types and no 404 errors.
@@ -187,7 +214,8 @@ standard Next.js integration.
 - Add real article content incrementally
 - Consider table of contents, previous/next navigation, and tag filtering only when content volume justifies them
 - Research notes and CTF writeups
-- Deploy Version 7.2 through the existing GitHub `main` → Vercel workflow and verify production icon and share-image URLs plus representative page metadata.
+- Manually review Version 8.0 at desktop and mobile widths in English and Chinese, including navigation/reload persistence, both email-copy actions, keyboard access, reduced motion, and performance.
+- After acceptance, commit and push Version 8.0 through the existing GitHub `main` → Vercel workflow; recheck routes, metadata, icons, sharing image, and responsive interactions on the production URL.
 - Consider Search Console submission manually as a separate external step.
 
 ## Maintenance Rule

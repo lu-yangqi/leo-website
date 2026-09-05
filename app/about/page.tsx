@@ -22,14 +22,14 @@ const tagClassName =
 
 export default function AboutPage() {
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
+    <main className="site-container inner-page about-page flex-1">
       <LocalizedMetadata page="about" />
 
-      <header className="max-w-3xl">
+      <header className="page-intro hero-enter max-w-3xl">
         <p className="text-sm font-medium tracking-[0.22em] text-cyan-300 uppercase">
           <LocalizedText value={translationPair("about", "eyebrow")} />
         </p>
-        <h1 className="mt-5 text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl">
+        <h1 className="page-title">
           {profile.names.public}
         </h1>
         <p className="mt-3 text-lg text-slate-400">
@@ -59,6 +59,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="education-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText
@@ -91,6 +92,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="research-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText
@@ -123,6 +125,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="technical-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText
@@ -220,6 +223,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="skills-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText value={translationPair("about", "skillsEyebrow")} />
@@ -269,6 +273,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="learning-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText value={translationPair("about", "learningEyebrow")} />
@@ -318,6 +323,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="background-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText
@@ -367,6 +373,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="work-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText value={translationPair("about", "workEyebrow")} />
@@ -401,6 +408,7 @@ export default function AboutPage() {
       <section
         className="mt-16 border-t border-white/10 pt-10"
         aria-labelledby="contact-heading"
+        data-reveal
       >
         <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
           <LocalizedText value={translationPair("about", "contactEyebrow")} />

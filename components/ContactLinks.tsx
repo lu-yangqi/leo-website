@@ -45,7 +45,7 @@ export default function ContactLinks({ links }: ContactLinksProps) {
 
   return (
     <div
-      className="flex flex-wrap gap-4"
+      className="contact-links flex flex-wrap gap-4"
       aria-label={translations.contact.ariaLabel}
     >
       {links.map((link, index) => {

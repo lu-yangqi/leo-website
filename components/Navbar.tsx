@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/components/LanguageProvider";
+import { siteConfig } from "@/lib/site";
 
 const navigationLinks = [
   { key: "home", href: "/" },
@@ -16,20 +17,23 @@ export default function Navbar() {
   const { locale, setLocale, translations } = useLanguage();
 
   return (
-    <header className="border-b border-white/10">
+    <header className="site-header">
       <nav
-        className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-10 lg:px-16"
+        className="site-nav site-container"
         aria-label={translations.nav.ariaLabel}
       >
         <Link
           href="/"
-          className="w-fit text-base font-semibold tracking-tight text-white transition-colors hover:text-cyan-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
+          className="brand-link"
         >
-          Leo Yangqi
+          <svg className="brand-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <path d="M5 8v24h13M21 8l7 11 7-11M28 19v13" stroke="currentColor" strokeWidth="3" />
+          </svg>
+          <span>{siteConfig.name}</span>
         </Link>
 
-        <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
-          <ul className="flex flex-wrap items-center gap-1 text-sm">
+        <div className="nav-controls">
+          <ul className="nav-links">
             {navigationLinks.map((link) => {
               const isActive =
                 pathname === link.href ||
@@ -40,11 +44,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     aria-current={isActive ? "page" : undefined}
-                    className={`block rounded-md px-3 py-2 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 ${
-                      isActive
-                        ? "bg-white/[0.08] font-medium text-white"
-                        : "text-slate-400 hover:bg-white/[0.04] hover:text-slate-100"
-                    }`}
+                    className="nav-link"
                   >
                     {translations.nav[link.key]}
                   </Link>
@@ -54,7 +54,7 @@ export default function Navbar() {
           </ul>
 
           <div
-            className="flex shrink-0 items-center gap-1 text-xs"
+            className="language-control"
             role="group"
             aria-label={translations.nav.languageSelector}
           >
@@ -64,11 +64,7 @@ export default function Navbar() {
               aria-label={translations.nav.switchTo(translations.nav.english)}
               aria-pressed={locale === "en"}
               onClick={() => setLocale("en")}
-              className={`rounded px-1.5 py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 ${
-                locale === "en"
-                  ? "bg-white/[0.08] font-semibold text-white"
-                  : "text-slate-500 hover:text-slate-200"
-              }`}
+              className="language-button"
             >
               {translations.nav.english}
             </button>
@@ -81,11 +77,7 @@ export default function Navbar() {
               aria-label={translations.nav.switchTo(translations.nav.chinese)}
               aria-pressed={locale === "zh"}
               onClick={() => setLocale("zh")}
-              className={`rounded px-1.5 py-1 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 ${
-                locale === "zh"
-                  ? "bg-white/[0.08] font-semibold text-white"
-                  : "text-slate-500 hover:text-slate-200"
-              }`}
+              className="language-button"
             >
               {translations.nav.chinese}
             </button>

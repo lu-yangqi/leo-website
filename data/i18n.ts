@@ -37,6 +37,7 @@ export function localize<T>(
 export type TranslationDictionary = {
   nav: {
     ariaLabel: string;
+    skipToContent: string;
     home: string;
     projects: string;
     blog: string;
@@ -48,6 +49,7 @@ export type TranslationDictionary = {
   };
   footer: {
     builtWith: string;
+    backToTop: string;
   };
   contact: {
     ariaLabel: string;
@@ -74,6 +76,9 @@ export type TranslationDictionary = {
   };
   home: {
     greeting: string;
+    fieldNotes: string;
+    inProgress: string;
+    explore: string;
     primaryInterestsAriaLabel: string;
     aboutEyebrow: string;
     aboutTitle: string;
@@ -178,6 +183,7 @@ export const translations = {
   en: {
     nav: {
       ariaLabel: "Main navigation",
+      skipToContent: "Skip to content",
       home: "Home",
       projects: "Projects",
       blog: "Blog",
@@ -189,6 +195,7 @@ export const translations = {
     },
     footer: {
       builtWith: "Built with Next.js and Tailwind CSS",
+      backToTop: "Back to top",
     },
     contact: {
       ariaLabel: "Profile links",
@@ -217,6 +224,9 @@ export const translations = {
     },
     home: {
       greeting: "Hello, I’m",
+      fieldNotes: "A personal field notebook",
+      inProgress: "Learning. Building. Becoming.",
+      explore: "Explore the notebook",
       primaryInterestsAriaLabel: "Primary technical interests",
       aboutEyebrow: "Profile",
       aboutTitle: "About",
@@ -329,6 +339,7 @@ export const translations = {
   zh: {
     nav: {
       ariaLabel: "主导航",
+      skipToContent: "跳转到正文",
       home: "首页",
       projects: "项目",
       blog: "博客",
@@ -340,6 +351,7 @@ export const translations = {
     },
     footer: {
       builtWith: "使用 Next.js 和 Tailwind CSS 构建",
+      backToTop: "回到顶部",
     },
     contact: {
       ariaLabel: "个人链接",
@@ -367,6 +379,9 @@ export const translations = {
     },
     home: {
       greeting: "你好，我是",
+      fieldNotes: "一本持续更新的个人手记",
+      inProgress: "在学习中探索，在实践中成长。",
+      explore: "翻开这本手记",
       primaryInterestsAriaLabel: "主要技术兴趣",
       aboutEyebrow: "个人简介",
       aboutTitle: "关于我",

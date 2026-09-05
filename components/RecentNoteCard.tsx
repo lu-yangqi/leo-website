@@ -24,7 +24,8 @@ export default function RecentNoteCard({ post }: { post: BlogPostSummary }) {
   return (
     <article
       lang={postLanguage}
-      className="flex h-full flex-col rounded-xl border border-white/10 bg-white/[0.03] p-6"
+      className="surface-card note-card flex h-full flex-col p-6"
+      data-reveal
     >
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
         <p className="font-medium tracking-[0.12em] text-cyan-300 uppercase">

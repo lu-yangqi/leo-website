@@ -2,6 +2,33 @@
 
 All notable changes to this project are documented in this file.
 
+## [8.0.0] - 2026-09-05
+
+### Added
+
+- Decorative geometric `LY` Hero mark with a short, once-only SVG entrance motion.
+- Lightweight IntersectionObserver reveal enhancement, reduced-motion handling, and an optional native CSS reading-progress line.
+- Translated skip-to-content and back-to-top links, plus bilingual Hero framing text.
+
+### Changed
+
+- Introduced an editorial visual system with expressive system-font typography, fine rules, and consistent surfaces; restored the Version 7.2 navy background, cool-slate/white text, and cyan palette after user feedback.
+- Redesigned the homepage Hero and six numbered content sections while preserving factual profile, project, learning, Blog, and contact content.
+- Reduced the Hero monogram and bounded its panel after user feedback; removed full-height stretching while preserving the caption, mobile layout, and existing motion.
+- Updated navigation, footer, cards, and inner-page presentation; preserved existing routes, shared-route language architecture, Markdown rendering, syntax highlighting, and SEO behavior.
+- Updated package and lockfile versions to 8.0.0 without adding dependencies.
+
+### Verified
+
+- Production build, standalone TypeScript validation, and whitespace checks pass.
+- Local production responses pass checks for eight content routes, invalid-slug 404, canonical/social metadata, Blog markup, sitemap, robots, icons, and referenced static assets.
+- Server-rendered content is not hidden by reveal-state attributes; motion source includes reduced-motion and route-cleanup handling.
+
+### Pending Acceptance and Deployment
+
+- Browser automation was denied by the permission check. Desktop/mobile visual review, real language/copy interactions, keyboard and reduced-motion checks, and runtime performance measurements remain manual acceptance work.
+- Version 8.0 has not been committed, pushed, or publicly verified in this task. The existing GitHub `main` → Vercel workflow is unchanged.
+
 ## [7.2.0] - 2026-08-23
 
 ### Added

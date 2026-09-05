@@ -1,6 +1,6 @@
 # Issues Log
 
-Last updated: 2026-08-23
+Last updated: 2026-09-05
 
 This document records development problems, decisions, and unresolved limitations.
 
@@ -83,6 +83,25 @@ This document records development problems, decisions, and unresolved limitation
 
 ## Intentional Decisions
 
+### Version 7.2 colors are retained within the Version 8.0 layout
+
+- **Feedback:** The Version 7.2 background and text colors are preferred over the initial Version 8.0 charcoal/mint palette.
+- **Adjustment:** Restore the `#050816` canvas, both original radial gradients, `#e2e8f0` body text, white headings, original selection colors, and default Tailwind slate/cyan colors from commit `9d685d9`. Align the new sticky header and panels with that palette.
+- **Scope:** Keep the current layout, font families and sizes, reduced Hero monogram, and motion implementation. Browser visual/interaction acceptance remains open.
+
+### Hero monogram stays secondary to the personal introduction
+
+- **Feedback:** The initial right-hand `LY` mark was too large.
+- **Adjustment:** Bound the desktop panel to 360px, center it vertically instead of stretching to match the Hero copy, and reduce the centered SVG to 72% width with a 240px cap. Preserve the existing 100px mobile graphic column, caption, and motion behavior.
+- **Status:** Implemented locally in Version 8.0; visual acceptance remains pending.
+
+### Version 8.0 motion is a lightweight progressive enhancement
+
+- CSS handles entrances, short once-only monogram motion, and hover states; IntersectionObserver handles below-the-fold reveals without a scroll-event loop.
+- Server-rendered content remains visible without JavaScript. Reduced-motion preferences disable animation/smooth scrolling and reset pending reveals; keyboard focus reveals pending content.
+- The reading-progress line uses native CSS scroll timelines only where supported. No animation framework or remote font was added.
+- Signature animation, portrait storytelling, and complex scroll choreography remain separate future work, not requirements for the initial redesign.
+
 ### Blog posts keep their original writing language
 
 - Each Markdown article declares `lang: en` or `lang: zh`.
@@ -90,6 +109,13 @@ This document records development problems, decisions, and unresolved limitation
 - Only generic Blog interface text and date formatting follow the selected website language.
 
 ## Open
+
+### Version 8.0 browser acceptance is pending
+
+- **Observed:** The browser permission check denied creation of a local test tab during Version 8.0 validation.
+- **Impact:** Build, TypeScript, and local production HTTP checks passed, but desktop/mobile appearance, horizontal overflow, bilingual persistence, email copying, keyboard interaction, reduced-motion behavior, and runtime performance were not retested in a browser. This is an acceptance gap, not a confirmed application defect.
+- **Planned resolution:** Manually review at desktop and mobile widths (including 320px and 390px), switch languages and reload/navigate, copy both addresses, use keyboard navigation, enable reduced motion, and check browser console/performance. After approval and deployment, repeat core checks on the public URL.
+- **Status:** Open; visual/interaction acceptance and Version 8.0 public verification remain pending.
 
 ### Project showcase has limited content
 
@@ -112,7 +138,8 @@ This document records development problems, decisions, and unresolved limitation
 - **Planned resolution:** Evaluate locale routes or another server-readable locale strategy only if Chinese search discoverability justifies a separate architecture milestone.
 - **Status:** Open, non-blocking by design after Version 7.1.
 
-No blocking issues are currently known.
+No production-build blockers are currently known. Version 8.0 visual/interaction
+acceptance remains open and must not be inferred from older-version checks.
 
 ## Maintenance Rule
 

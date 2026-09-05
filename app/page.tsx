@@ -7,6 +7,7 @@ import {
 } from "@/components/LanguageProvider";
 import ProjectCard from "@/components/ProjectCard";
 import RecentNoteCard from "@/components/RecentNoteCard";
+import HeroMark from "@/components/HeroMark";
 import {
   translationPair,
   translations,
@@ -22,11 +23,9 @@ export const metadata: Metadata = createPageMetadata({
   path: "/",
 });
 
-const sectionLinkClassName =
-  "inline-flex text-sm font-medium text-slate-200 transition-colors hover:text-cyan-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300";
-
 type SectionHeadingProps = {
   id: string;
+  number: string;
   eyebrow: LocalizedTextValue;
   title: LocalizedTextValue;
   description?: LocalizedTextValue;
@@ -34,19 +33,20 @@ type SectionHeadingProps = {
 
 function SectionHeading({
   id,
+  number,
   eyebrow,
   title,
   description,
 }: SectionHeadingProps) {
   return (
-    <div className="max-w-2xl">
-      <p className="text-xs font-medium tracking-[0.18em] text-cyan-300 uppercase">
+    <div className="section-heading">
+      <p className="eyebrow">
+        <span className="section-number" aria-hidden="true">
+          {number} /
+        </span>
         <LocalizedText value={eyebrow} />
       </p>
-      <h2
-        id={id}
-        className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl"
-      >
+      <h2 id={id} className="section-title">
         <LocalizedText value={title} />
       </h2>
       {description ? (
@@ -60,95 +60,138 @@ function SectionHeading({
 
 export default function Home() {
   const latestPosts = getBlogPosts().slice(0, 3);
+  const [firstName, ...remainingName] = profile.names.public.split(" ");
 
   return (
-    <main className="flex-1">
+    <main className="home-page flex-1">
       <LocalizedMetadata page="home" />
 
       <section
-        className="mx-auto w-full max-w-5xl px-6 py-20 sm:px-10 sm:py-24 lg:px-16"
+        className="hero site-container"
         aria-labelledby="intro-heading"
       >
-        <p className="text-sm font-medium tracking-[0.22em] text-cyan-300 uppercase">
-          <LocalizedText value={translationPair("home", "greeting")} />
-        </p>
-
-        <h1
-          id="intro-heading"
-          className="mt-5 text-5xl font-semibold tracking-[-0.04em] text-white sm:text-7xl lg:text-8xl"
-        >
-          {profile.names.public}
-        </h1>
-
-        <div className="mt-6 flex flex-col gap-1 text-lg text-slate-300 sm:flex-row sm:items-center sm:gap-3 sm:text-xl">
-          <p>
-            <LocalizedText value={profile.heroHeadline} />
-          </p>
-          <span className="hidden text-slate-600 sm:inline" aria-hidden="true">
-            /
+        <div className="hero-topline eyebrow hero-enter">
+          <span>
+            <LocalizedText value={translationPair("home", "fieldNotes")} />
           </span>
-          <p>
-            <LocalizedText value={profile.university} />
+          <span aria-hidden="true">LY / 01</span>
+        </div>
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow hero-enter">
+              <LocalizedText value={translationPair("home", "greeting")} />
+            </p>
+
+            <h1 id="intro-heading" className="hero-name hero-enter">
+              <span>{firstName}</span>{" "}
+              <span className="hero-name-serif">
+                {remainingName.join(" ")}
+                <span className="hero-period" aria-hidden="true">.</span>
+              </span>
+            </h1>
+
+            <div className="hero-identity hero-enter">
+              <p>
+                <LocalizedText value={profile.heroHeadline} />
+              </p>
+              <span className="hidden text-slate-600 sm:inline" aria-hidden="true">
+                /
+              </span>
+              <p>
+                <LocalizedText value={profile.university} />
+              </p>
+            </div>
+
+            <p className="hero-summary hero-enter">
+              <LocalizedText value={profile.heroSummary} />
+            </p>
+
+            <div className="hero-actions hero-enter">
+              <Link href="/projects" className="primary-link">
+                <LocalizedText value={translationPair("common", "viewAllProjects")} />
+                <span aria-hidden="true">↗</span>
+              </Link>
+              <Link href="/about" className="text-link">
+                <LocalizedText value={translationPair("home", "moreAboutMe")} />
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </div>
+          <div className="hero-art hero-enter">
+            <div className="hero-art-top eyebrow" aria-hidden="true">
+              <span>LY</span><span>↗</span>
+            </div>
+            <HeroMark />
+            <p className="hero-art-caption">
+              <LocalizedText value={translationPair("home", "inProgress")} />
+            </p>
+            <p className="hero-formal-name">
+              {profile.names.formal} <span aria-hidden="true">/</span> {profile.names.chinese}
+            </p>
+          </div>
+        </div>
+        <div className="hero-bottom">
+          <p id="primary-interests-label" className="sr-only">
+            <LocalizedText
+              value={translationPair("home", "primaryInterestsAriaLabel")}
+            />
           </p>
+          <ul
+            className="hero-interests"
+            aria-labelledby="primary-interests-label"
+          >
+            {profile.technicalInterests.primary.map((interest) => (
+              <li key={interest.en}>
+                <LocalizedText value={interest} />
+              </li>
+            ))}
+          </ul>
+          <a href="#about-preview-heading" className="text-link explore-link">
+            <LocalizedText value={translationPair("home", "explore")} />
+            <span aria-hidden="true">↓</span>
+          </a>
         </div>
 
-        <p className="mt-8 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">
-          <LocalizedText value={profile.heroSummary} />
-        </p>
-
-        <p id="primary-interests-label" className="sr-only">
-          <LocalizedText
-            value={translationPair("home", "primaryInterestsAriaLabel")}
-          />
-        </p>
-        <ul
-          className="mt-8 flex flex-wrap gap-3"
-          aria-labelledby="primary-interests-label"
-        >
-          {profile.technicalInterests.primary.map((interest) => (
-            <li
-              key={interest.en}
-              className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-slate-200"
-            >
-              <LocalizedText value={interest} />
-            </li>
-          ))}
-        </ul>
-
-        <div className="mt-10">
+        <div className="hero-contacts">
           <ContactLinks links={profile.contact.homepage} />
         </div>
       </section>
 
-      <div className="mx-auto w-full max-w-5xl px-6 pb-20 sm:px-10 sm:pb-24 lg:px-16">
+      <div className="site-container home-sections">
         <section
-          className="border-t border-white/10 pt-12"
+          className="editorial-section about-preview"
+          data-reveal
           aria-labelledby="about-preview-heading"
         >
           <SectionHeading
             id="about-preview-heading"
+            number="01"
             eyebrow={translationPair("home", "aboutEyebrow")}
             title={translationPair("home", "aboutTitle")}
           />
-          <div className="mt-6 max-w-3xl space-y-4 leading-8 text-slate-400">
-            {profile.bio.slice(0, 2).map((paragraph) => (
-              <p key={paragraph.en}>
-                <LocalizedText value={paragraph} />
-              </p>
-            ))}
+          <div className="about-preview-body">
+            <div className="space-y-4 leading-8 text-slate-400">
+              {profile.bio.slice(0, 2).map((paragraph) => (
+                <p key={paragraph.en}>
+                  <LocalizedText value={paragraph} />
+                </p>
+              ))}
+            </div>
+            <Link href="/about" className="text-link mt-6">
+              <LocalizedText value={translationPair("home", "moreAboutMe")} />{" "}
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
-          <Link href="/about" className={`${sectionLinkClassName} mt-6`}>
-            <LocalizedText value={translationPair("home", "moreAboutMe")} />{" "}
-            <span aria-hidden="true">→</span>
-          </Link>
         </section>
 
         <section
-          className="mt-16 border-t border-white/10 pt-12"
+          className="editorial-section"
+          data-reveal
           aria-labelledby="research-preview-heading"
         >
           <SectionHeading
             id="research-preview-heading"
+            number="02"
             eyebrow={translationPair("home", "researchEyebrow")}
             title={translationPair("home", "researchTitle")}
             description={translationPair("home", "researchDescription")}
@@ -157,7 +200,7 @@ export default function Home() {
             {profile.researchInterests.map((interest) => (
               <article
                 key={interest.title.en}
-                className="rounded-xl border border-white/10 bg-white/[0.03] p-6"
+                className="surface-card research-card p-6 sm:p-8"
               >
                 <h3 className="text-lg font-semibold text-white">
                   <LocalizedText value={interest.title} />
@@ -171,11 +214,13 @@ export default function Home() {
         </section>
 
         <section
-          className="mt-16 border-t border-white/10 pt-12"
+          className="editorial-section"
+          data-reveal
           aria-labelledby="projects-preview-heading"
         >
           <SectionHeading
             id="projects-preview-heading"
+            number="03"
             eyebrow={translationPair("home", "projectsEyebrow")}
             title={translationPair("home", "projectsTitle")}
             description={translationPair("home", "projectsDescription")}
@@ -190,7 +235,7 @@ export default function Home() {
               />
             ))}
           </div>
-          <Link href="/projects" className={`${sectionLinkClassName} mt-7`}>
+          <Link href="/projects" className="text-link mt-7">
             <LocalizedText
               value={translationPair("common", "viewAllProjects")}
             />{" "}
@@ -199,11 +244,13 @@ export default function Home() {
         </section>
 
         <section
-          className="mt-16 border-t border-white/10 pt-12"
+          className="editorial-section"
+          data-reveal
           aria-labelledby="learning-preview-heading"
         >
           <SectionHeading
             id="learning-preview-heading"
+            number="04"
             eyebrow={translationPair("home", "learningEyebrow")}
             title={translationPair("home", "learningTitle")}
           />
@@ -211,7 +258,7 @@ export default function Home() {
             {profile.currentlyLearning.map((area) => (
               <article
                 key={area.title.en}
-                className="rounded-xl border border-white/10 bg-white/[0.03] p-6"
+                className="surface-card learning-card p-6"
               >
                 <h3 className="text-lg font-semibold text-white">
                   <LocalizedText value={area.title} />
@@ -249,7 +296,7 @@ export default function Home() {
               return (
                 <article
                   key={item.title}
-                  className="rounded-xl border border-white/10 bg-white/[0.02] p-6"
+                  className="surface-card milestone-card p-6"
                 >
                   <p className="text-xs font-medium tracking-[0.16em] text-cyan-300 uppercase">
                     <LocalizedText
@@ -287,11 +334,13 @@ export default function Home() {
         </section>
 
         <section
-          className="mt-16 border-t border-white/10 pt-12"
+          className="editorial-section"
+          data-reveal
           aria-labelledby="notes-preview-heading"
         >
           <SectionHeading
             id="notes-preview-heading"
+            number="05"
             eyebrow={translationPair("home", "notesEyebrow")}
             title={translationPair("home", "notesTitle")}
             description={translationPair("home", "notesDescription")}
@@ -301,18 +350,20 @@ export default function Home() {
               <RecentNoteCard key={post.slug} post={post} />
             ))}
           </div>
-          <Link href="/blog" className={`${sectionLinkClassName} mt-7`}>
+          <Link href="/blog" className="text-link mt-7">
             <LocalizedText value={translationPair("home", "viewAllNotes")} />{" "}
             <span aria-hidden="true">→</span>
           </Link>
         </section>
 
         <section
-          className="mt-16 border-t border-white/10 pt-12"
+          className="editorial-section contact-section"
+          data-reveal
           aria-labelledby="connect-heading"
         >
           <SectionHeading
             id="connect-heading"
+            number="06"
             eyebrow={translationPair("home", "contactEyebrow")}
             title={translationPair("home", "contactTitle")}
             description={translationPair("home", "contactDescription")}

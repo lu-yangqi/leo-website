@@ -75,7 +75,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const articleLanguage = post.lang === "zh" ? "zh-CN" : "en";
 
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-16 sm:px-10 sm:py-20">
+    <main className="site-container article-page inner-page flex-1">
       <Link
         href="/blog"
         className="inline-flex text-sm font-medium text-slate-400 transition-colors hover:text-cyan-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <LocalizedText value={translationPair("blog", "backToBlog")} />
       </Link>
 
-      <header lang={articleLanguage}>
+      <header lang={articleLanguage} className="article-intro hero-enter">
         <p className="mt-8 text-sm font-medium tracking-[0.18em] text-cyan-300 uppercase">
           {post.category}
         </p>

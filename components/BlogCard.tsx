@@ -25,14 +25,15 @@ export default function BlogCard({ post }: BlogCardProps) {
   return (
     <article
       lang={postLanguage}
-      className="flex h-full flex-col rounded-xl border border-white/10 bg-white/[0.03] p-6 sm:p-7"
+      className="surface-card note-card flex h-full flex-col p-6 sm:p-8"
+      data-reveal
     >
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs">
         <p className="font-medium tracking-[0.14em] text-cyan-300 uppercase">
           {post.category}
         </p>
         <span className="text-slate-700" aria-hidden="true">
-          / 
+          /
         </span>
         <time
           dateTime={post.date}
